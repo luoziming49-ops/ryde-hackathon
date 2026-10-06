@@ -17,7 +17,7 @@
 | 仓库所有者 | luoziming49-ops |
 | 协作者 | unknownAndy123（YAN XINYU）；用户提供的用户名与 GitHub 搜索结果一致，已发出普通协作者邀请 |
 | 邀请状态 | 所有者已完成邮箱身份验证；成员管理页显示 1 invitation、Pending Invite / Awaiting unknownAndy123’s response，尚未接受 |
-| 分支保护 | 创建规则页明确提示当前私有仓库不会强制执行保护，需转入 GitHub Team 或 Enterprise 组织账号；本次未升级、迁移或创建不生效的规则。独立分支、PR 与另一名成员审阅目前为团队约定 |
+| 分支保护 | 未启用。后续套餐核验及用户取消设置的结果见 [T011](T011-branch-protection.md)；独立分支、PR 与另一名成员审阅继续为团队约定 |
 | 本地同步方式 | 当前工作目录尚未初始化 Git；本次通过 GitHub 插件同步指定文档，后续成员可克隆仓库 |
 
 `ryde-hackathon` 是本次协作所用仓库名，不是经确认的产品名称。用户提供的私人联系地址不写入项目记录。

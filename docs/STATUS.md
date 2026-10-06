@@ -1,6 +1,6 @@
 # 当前状态
 
-修订：7 · CP-007 · 2026-10-06（Asia/Singapore）· 同步：complete
+修订：8 · CP-008 · 2026-10-06（Asia/Singapore）· 同步：complete
 
 ## 目标与阶段
 
@@ -16,7 +16,7 @@ Digital Native / Ryde 赛道，冲击比赛名次，兼顾可运行原型和展�
 
 ## 协作与交接
 
-协作入口为 [GitHub 仓库](https://github.com/luoziming49-ops/ryde-hackathon)，private / main；unknownAndy123 的邀请已发送、待接受。配置与共享范围完整维护在 [T010](tasks/T010-collaboration.md)，操作见 [协作说明](../CONTRIBUTING.md)。按任务分支、PR 和相互审阅协作；当前账号套餐不强制执行私有仓库分支保护。
+协作入口为 [GitHub 仓库](https://github.com/luoziming49-ops/ryde-hackathon)，private / main；unknownAndy123 的邀请已发送、待接受。配置与共享范围见 [T010](tasks/T010-collaboration.md)，操作见 [协作说明](../CONTRIBUTING.md)。用户不采用付费升级，main 当前未启用强制保护，实际核验与取消记录见 [T011](tasks/T011-branch-protection.md)；团队按任务分支、PR 和相互审阅约定协作。
 
 远端保存 Markdown 文档及模板；原始资料、图片副本和旧快照留本地。本次用插件同步指定文件，本地目录尚未初始化 Git，没有自动上传机制；跨机器工作先核对 STATUS 修订、main 实际文件及负责人，再领取任务。
 
