@@ -1,0 +1,35 @@
+# 本地系统、编辑器与工具状态
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.codex/
+.agents/
+*.swp
+*.swo
+*.log
+
+# 账号、令牌与本地配置
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# 依赖与生成产物
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+dist/
+build/
+coverage/
+
+# 本次仅共享整理后的文档，原始资料和旧快照留在本地
+/背景资料/
+/docs/sources/2026-09-16-timeline.png
+/docs/sources/2026-09-16-participation.png
+/docs/archive/2026-09-20-before-layering/
