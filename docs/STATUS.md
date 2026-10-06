@@ -1,6 +1,6 @@
 # 当前状态
 
-修订：9 · CP-009 · 2026-10-06（Asia/Singapore）· 同步：updating（配置记录分支）
+修订：9 · CP-009 · 2026-10-06（Asia/Singapore）· 同步：complete（配置记录分支；main 待 PR 审阅）
 
 ## 目标与阶段
 
