@@ -1,6 +1,6 @@
 # 当前状态
 
-修订：8 · CP-008 · 2026-10-06（Asia/Singapore）· 同步：complete
+修订：9 · CP-009 · 2026-10-06（Asia/Singapore）· 同步：updating（配置记录分支）
 
 ## 目标与阶段
 
@@ -10,15 +10,17 @@ Digital Native / Ryde 赛道，冲击比赛名次，兼顾可运行原型和展�
 
 ## 当前任务与待选事项
 
+[T011](tasks/T011-branch-protection.md) 的公开与强制保护设置已生效；协调助手已更新说明，记录经 docs/public-main-protection 分支和 PR 提交，需另一成员审阅合并。
+
 当前业务任务为 [T009 框架讨论](ideas/2026-09-27-framework.md)。已有三个方向，推荐平台争议处理工作台；首版建议聚焦绕路收费与未到场取消费，突出证据引用与结果解释。产品名称、主要使用者、具体场景和技术栈尚未确认。
 
 两种工具未配置等资源缺口继续由 [T004](tasks/T004-resources.md) 管理；不以工具配置完成为构思前提，不再追问已确认的团队条件或精确工时，也不把开发工具积分等同于应用运行时的模型调用额度。
 
 ## 协作与交接
 
-协作入口为 [GitHub 仓库](https://github.com/luoziming49-ops/ryde-hackathon)，private / main；unknownAndy123 的邀请已发送、待接受。配置与共享范围见 [T010](tasks/T010-collaboration.md)，操作见 [协作说明](../CONTRIBUTING.md)。用户不采用付费升级，main 当前未启用强制保护，实际核验与取消记录见 [T011](tasks/T011-branch-protection.md)；团队按任务分支、PR 和相互审阅约定协作。
+协作入口为 [GitHub 仓库](https://github.com/luoziming49-ops/ryde-hackathon)，public / main；unknownAndy123 已获 write。main 必须通过 PR、至少一名成员批准、解决讨论，新增修改须重新审阅；管理员同样遵守，禁止强制推送和删除。实际规则与核验见 [T011](tasks/T011-branch-protection.md)，其他配置与共享范围见 [T010](tasks/T010-collaboration.md)，操作见 [协作说明](../CONTRIBUTING.md)。
 
-远端保存 Markdown 文档及模板；原始资料、图片副本和旧快照留本地。本次用插件同步指定文件，本地目录尚未初始化 Git，没有自动上传机制；跨机器工作先核对 STATUS 修订、main 实际文件及负责人，再领取任务。
+远端保存 Markdown 文档及模板；原始资料、图片副本和旧快照留本地。本次用插件同步指定文件，本地目录尚未初始化 Git，没有自动上传机制。本地修订 9 对齐配置记录分支，main 的旧记录待 PR 合并；跨机器工作先核对实际分支、STATUS 修订、PR 状态及负责人，再领取任务。
 
 下一步继续确认主要使用者、推荐方向和两类争议，再细化设计。未获采纳时，不把建议复制进有效决策，不把赛事要求标成已实现。数据、政策与模型可用性在具体设计时核实，模拟资料须标识且可替换为真实来源。
 

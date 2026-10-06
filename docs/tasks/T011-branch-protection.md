@@ -1,14 +1,14 @@
 # T011：为 main 启用强制分支保护
 
-2026-10-06（Asia/Singapore）· 基线修订 7，记录修订 8 / CP-008 · 负责人：协调助手。用户已取消设置，main 未启用强制保护。
+2026-10-06（Asia/Singapore）· 基线修订 8，配置记录修订 9 / CP-009 · 负责人：协调助手。公开与强制保护设置已生效；记录更新须经 PR 审阅后进入 main。
 
 ## 目标与授权范围
 
-用户明确要求添加强制分支保护。目标仓库为 [luoziming49-ops/ryde-hackathon](https://github.com/luoziming49-ops/ryde-hackathon)，保护 main；准备及保存保护规则属于本次授权，付费升级、公开仓库或迁移所有者需单独决定。产品阶段保持不变。
+用户已明确要求将 [luoziming49-ops/ryde-hackathon](https://github.com/luoziming49-ops/ryde-hackathon) 设为公开，并为 main 开启强制保护；此前不付费的偏好继续有效。授权覆盖可见性变更与保护规则，产品阶段保持不变。
 
-可写范围：GitHub main 保护规则、docs/STATUS、TASKS、archive/LOG、本任务包及 T010 的配置引用。CONTRIBUTING 仅在强制执行确实生效后更新对应说明。
+可写范围：GitHub 可见性、main 保护规则、docs/STATUS、TASKS、archive/LOG、本任务包及 T010 的配置引用、CONTRIBUTING。文档通过 docs/public-main-protection 分支和 PR 同步，不绕过已经生效的保护。
 
-## 曾准备的规则与验收（未实施）
+## 本次规则与验收
 
 | 规则 | 目标 |
 |---|---|
@@ -30,4 +30,18 @@
 - 用户随后明确表示不接受付费并取消设置。已清空分支名并撤下主要勾选项，Create 恢复禁用；服务端再次返回 protected=false。
 - 本轮未购买套餐、公开或迁移仓库，未保存保护规则；T011 从活动任务索引移出，取消检查点写入 CP-008。
 
-当前不继续启用，也不继续核对付费流程。沿用 CONTRIBUTING 中的分支、PR 与相互审阅约定；仅在用户未来重新提出请求时再核验套餐条件。
+用户的新指令替代本任务的取消状态；旧取消检查点保留在 CP-008。
+
+## 当前结果与验证
+
+- 公开前检查当前 19 个文件、全部 4 次可达提交及 27 个不同版本的文件内容：未发现敏感码、私人原文、个人联系地址或被忽略的原件；来源摘要仅含主办方业务地址。提交历史包含 GitHub 记录的作者邮箱，公开前已告知用户。
+- GitHub 网页完成可见性变更，仓库接口回读 visibility=public、default_branch=main；未购买套餐或迁移所有者。
+- 保存经典分支保护 [main 规则](https://github.com/luoziming49-ops/ryde-hackathon/settings/branch_protection_rules/84317034)，当前适用于 1 个分支；规则重新打开后逐项读取，PR、1 人批准、旧批准失效、讨论解决及管理员不可绕过均启用，force pushes / deletions 均未允许。
+- main 接口回读 protected=true。插件无 administration 权限，完整 protection 子接口返回 integration 403，因此详细字段用已经保存的 GitHub 设置页回读核验，而非将接口访问失败解释为保护未生效。
+- unknownAndy123 当前权限为 write，可作为另一位审阅者。无需重复邀请。
+
+## 文档交接
+
+配置记录在 [docs/public-main-protection 分支](https://github.com/luoziming49-ops/ryde-hackathon/tree/docs/public-main-protection) 提交，并通过 PR 请求合入 main；本地与该分支对齐修订 9。保护启用后不能由作者自己批准并绕过合并；PR 合并前，main 的旧记录可能仍显示先前可见性和规则状态，实际设置以上述服务端和已保存页面为准。
+
+剩余步骤为另一位成员审阅并合并记录 PR；设置本身已经生效。后续业务工作仍为 T009 / T004，不进入产品开发。
