@@ -1,25 +1,17 @@
 # 当前状态
 
-修订：8 · CP-008 · 2026-10-06（Asia/Singapore）· 同步：complete
+修订：9 · 2026-10-07（Asia/Singapore）· 同步：complete
 
-## 目标与阶段
+## 阶段
 
-Digital Native / Ryde 赛道，冲击比赛名次，兼顾可运行原型和展示效果。当前仍在候选方向讨论，P0 尚未正式通过；文档、协作仓库和讨论稿不代表方案获批，不据此开始产品开发。
+实施冲刺（implementation sprint）。方向已确认：平台争议处理工作台；两类争议 route_deviation + no_show；三类代理（Rider Advocate / Driver Advocate / Judge）。产品开发已授权。
 
-核心交付边界：乘客、司机、裁决三类代理，至少两类争议端到端运行，沟通过程可见，并保留工具使用证据；细则按需查 [要求](REQUIREMENTS.md)。工具选择与粗粒度规划沿用 DEC-008/009。
+## 计划与下一步
 
-## 当前任务与待选事项
+- 计划：[SPRINT](SPRINT.md)（9 天冲刺排期 S0–S5）。
+- 下一步任务：**S1**（健壮性 + 官方 DISP-002 数据格式适配）。
+- 已完成：S0 导入 V2 代码、更新规则、跑通测试与 API。
 
-当前业务任务为 [T009 框架讨论](ideas/2026-09-27-framework.md)。已有三个方向，推荐平台争议处理工作台；首版建议聚焦绕路收费与未到场取消费，突出证据引用与结果解释。产品名称、主要使用者、具体场景和技术栈尚未确认。
+## 协作
 
-两种工具未配置等资源缺口继续由 [T004](tasks/T004-resources.md) 管理；不以工具配置完成为构思前提，不再追问已确认的团队条件或精确工时，也不把开发工具积分等同于应用运行时的模型调用额度。
-
-## 协作与交接
-
-协作入口为 [GitHub 仓库](https://github.com/luoziming49-ops/ryde-hackathon)，private / main；unknownAndy123 的邀请已发送、待接受。配置与共享范围见 [T010](tasks/T010-collaboration.md)，操作见 [协作说明](../CONTRIBUTING.md)。用户不采用付费升级，main 当前未启用强制保护，实际核验与取消记录见 [T011](tasks/T011-branch-protection.md)；团队按任务分支、PR 和相互审阅约定协作。
-
-远端保存 Markdown 文档及模板；原始资料、图片副本和旧快照留本地。本次用插件同步指定文件，本地目录尚未初始化 Git，没有自动上传机制；跨机器工作先核对 STATUS 修订、main 实际文件及负责人，再领取任务。
-
-下一步继续确认主要使用者、推荐方向和两类争议，再细化设计。未获采纳时，不把建议复制进有效决策，不把赛事要求标成已实现。数据、政策与模型可用性在具体设计时核实，模拟资料须标识且可替换为真实来源。
-
-后续依次审阅正式规格与实施计划，资源确认可与讨论并行。新的资料只更新所属记录中的变化及引用；旧检查点见 [历史](archive/LOG.md)。当前无产品代码、产品验证结果、后台服务或子 agent。
+仓库：https://github.com/luoziming49-ops/ryde-hackathon（private / main）。团队按任务分支、PR 和相互审阅协作。工程规则见 [PROJECT_RULES.md](../PROJECT_RULES.md)。
