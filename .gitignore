@@ -1,4 +1,4 @@
-# 本地系统、编辑器与工具状态
+# ==== 本地系统、编辑器与工具状态 ====
 .DS_Store
 Thumbs.db
 .idea/
@@ -9,7 +9,7 @@ Thumbs.db
 *.swo
 *.log
 
-# 账号、令牌与本地配置
+# ==== 账号、令牌与本地配置 ====
 .env
 .env.*
 !.env.example
@@ -18,17 +18,33 @@ Thumbs.db
 credentials.json
 service-account*.json
 
-# 依赖与生成产物
+# ==== 依赖与生成产物 ====
 node_modules/
-.venv/
-venv/
 __pycache__/
 *.py[cod]
-dist/
+*.egg-info/
+.eggs/
 build/
+dist/
 coverage/
+.pytest_cache/
+.coverage
+htmlcov/
 
-# 本次仅共享整理后的文档，原始资料和旧快照留在本地
+# ==== 虚拟环境 ====
+.venv/
+venv/
+env/
+
+# ==== 数据与数据库 ====
+*.db
+*.sqlite3
+data/
+
+# ==== 打包文件（本次不提交 zip 快照）====
+*.zip
+
+# ==== 本次仅共享整理后的文档，原始资料和旧快照留在本地 ====
 /背景资料/
 /docs/sources/2026-09-16-timeline.png
 /docs/sources/2026-09-16-participation.png

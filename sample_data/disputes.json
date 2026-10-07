@@ -1,0 +1,218 @@
+[
+  {
+    "case_id": "RYDE-2026-0001",
+    "category": "route_deviation",
+    "filed_at": "2026-09-20T09:14:22+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "RDR-88213",
+      "name": "Priya N.",
+      "account_age_days": 412,
+      "trips_completed": 187,
+      "dispute_history": 0,
+      "avg_rating": 4.9,
+      "claim": "The driver took a much longer route and I was clearly overcharged. He also stopped for about 6 minutes somewhere that wasn't on the way."
+    },
+    "driver": {
+      "id": "DRV-33017",
+      "name": "Marcus T.",
+      "account_age_days": 720,
+      "trips_completed": 3410,
+      "dispute_history": 2,
+      "avg_rating": 4.7,
+      "response": "I followed the GPS to avoid heavy traffic on the expressway. The stop was a quick toilet break which I told the rider about. The fare is correct."
+    },
+    "trip": {
+      "id": "TRP-55091",
+      "pickup": { "name": "Marina Bay Sands", "lat": 1.2834, "lng": 103.8607 },
+      "dropoff": { "name": "Changi Airport T1", "lat": 1.3644, "lng": 103.9915 },
+      "scheduled_pickup": "2026-09-20T08:30:00+08:00",
+      "actual_pickup": "2026-09-20T08:31:00+08:00",
+      "actual_dropoff": "2026-09-20T09:12:00+08:00",
+      "actual_duration_min": 41,
+      "estimated_duration_min": 26,
+      "optimal_distance_km": 19.8,
+      "actual_distance_km": 28.4,
+      "traffic_detected": false,
+      "unexpected_stops": [
+        { "lat": 1.3155, "lng": 103.9050, "dwell_min": 6.2, "label": "Unexpected stop (no traffic)" }
+      ]
+    },
+    "gps": {
+      "optimal_route": [
+        { "lat": 1.2834, "lng": 103.8607 },
+        { "lat": 1.3050, "lng": 103.9000 },
+        { "lat": 1.3300, "lng": 103.9450 },
+        { "lat": 1.3644, "lng": 103.9915 }
+      ],
+      "actual_route": [
+        { "lat": 1.2834, "lng": 103.8607 },
+        { "lat": 1.2980, "lng": 103.8900 },
+        { "lat": 1.3155, "lng": 103.9050 },
+        { "lat": 1.3180, "lng": 103.9080 },
+        { "lat": 1.3400, "lng": 103.9550 },
+        { "lat": 1.3520, "lng": 103.9800 },
+        { "lat": 1.3644, "lng": 103.9915 }
+      ]
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 3.00,
+      "distance_fare_actual": 16.20,
+      "distance_fare_optimal": 11.30,
+      "time_fare_actual": 8.20,
+      "time_fare_optimal": 5.20,
+      "surge_multiplier": 1.3,
+      "promo_code": null,
+      "total_charged": 35.62,
+      "optimal_total_estimate": 25.35,
+      "cancellation_fee": 0
+    },
+    "chat_log": [
+      { "ts": "2026-09-20T08:40:00+08:00", "from": "rider", "text": "Why are we going this way? This doesn't look like the usual route." },
+      { "ts": "2026-09-20T08:40:30+08:00", "from": "driver", "text": "Avoiding traffic on ECP, this is faster." },
+      { "ts": "2026-09-20T08:48:00+08:00", "from": "rider", "text": "We've stopped. Everything ok?" },
+      { "ts": "2026-09-20T08:54:30+08:00", "from": "driver", "text": "Quick break, sorry." },
+      { "ts": "2026-09-20T09:13:00+08:00", "from": "rider", "text": "This fare is way higher than usual for this trip." }
+    ]
+  },
+  {
+    "case_id": "RYDE-2026-0002",
+    "category": "no_show",
+    "filed_at": "2026-09-20T18:40:05+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "RDR-77190",
+      "name": "Wei L.",
+      "account_age_days": 96,
+      "trips_completed": 34,
+      "dispute_history": 0,
+      "avg_rating": 4.8,
+      "claim": "The driver never showed up at my pickup point, but I was still charged a $5 cancellation fee. I waited more than 10 minutes."
+    },
+    "driver": {
+      "id": "DRV-44122",
+      "name": "Siti R.",
+      "account_age_days": 350,
+      "trips_completed": 1980,
+      "dispute_history": 1,
+      "avg_rating": 4.6,
+      "response": "I arrived near the pickup location and waited. The rider did not come to the car, so I cancelled after waiting. The fee is valid."
+    },
+    "trip": {
+      "id": "TRP-55102",
+      "pickup": { "name": "ION Orchard (Taxi Stand)", "lat": 1.3040, "lng": 103.8318 },
+      "dropoff": { "name": "Woodlands MRT", "lat": 1.4360, "lng": 103.7865 },
+      "scheduled_pickup": "2026-09-20T18:15:00+08:00",
+      "actual_pickup": null,
+      "actual_dropoff": null,
+      "actual_duration_min": 0,
+      "estimated_duration_min": 32,
+      "optimal_distance_km": 21.6,
+      "actual_distance_km": 0,
+      "traffic_detected": false,
+      "unexpected_stops": []
+    },
+    "gps": {
+      "optimal_route": [],
+      "actual_route": [],
+      "driver_arrival": {
+        "closest_distance_to_pickup_m": 1180,
+        "arrival_time": "2026-09-20T18:23:00+08:00",
+        "wait_time_min": 2,
+        "left_pickup_time": "2026-09-20T18:25:00+08:00",
+        "late_min": 8
+      }
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 0,
+      "distance_fare_actual": 0,
+      "distance_fare_optimal": 0,
+      "time_fare_actual": 0,
+      "time_fare_optimal": 0,
+      "surge_multiplier": 1.0,
+      "promo_code": null,
+      "total_charged": 0,
+      "optimal_total_estimate": 0,
+      "cancellation_fee": 5.00
+    },
+    "chat_log": [
+      { "ts": "2026-09-20T18:14:00+08:00", "from": "driver", "text": "I'm on the way." },
+      { "ts": "2026-09-20T18:19:00+08:00", "from": "rider", "text": "I'm at the taxi stand. Are you here?" },
+      { "ts": "2026-09-20T18:21:00+08:00", "from": "driver", "text": "Almost there, 2 min." },
+      { "ts": "2026-09-20T18:25:00+08:00", "from": "rider", "text": "I've been waiting 10 minutes, I don't see you." },
+      { "ts": "2026-09-20T18:26:00+08:00", "from": "driver", "text": "I am at the location. Cancelling as no-show." }
+    ]
+  },
+  {
+    "case_id": "RYDE-2026-0003",
+    "category": "no_show",
+    "filed_at": "2026-09-20T22:10:00+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "RDR-19034",
+      "name": "Arjun K.",
+      "account_age_days": 200,
+      "trips_completed": 89,
+      "dispute_history": 1,
+      "avg_rating": 4.5,
+      "claim": "I was charged a cancellation fee even though I was waiting at the pickup point the whole time."
+    },
+    "driver": {
+      "id": "DRV-23011",
+      "name": "Daniel O.",
+      "account_age_days": 510,
+      "trips_completed": 2600,
+      "dispute_history": 0,
+      "avg_rating": 4.9,
+      "response": "I arrived at the pickup point and waited more than 5 minutes. The rider did not appear, so the no-show fee applies."
+    },
+    "trip": {
+      "id": "TRP-55113",
+      "pickup": { "name": "Clarke Quay Central", "lat": 1.2886, "lng": 103.8466 },
+      "dropoff": { "name": "Tampines Mall", "lat": 1.3536, "lng": 103.9440 },
+      "scheduled_pickup": "2026-09-20T21:45:00+08:00",
+      "actual_pickup": null,
+      "actual_dropoff": null,
+      "actual_duration_min": 0,
+      "estimated_duration_min": 28,
+      "optimal_distance_km": 16.2,
+      "actual_distance_km": 0,
+      "traffic_detected": false,
+      "unexpected_stops": []
+    },
+    "gps": {
+      "optimal_route": [],
+      "actual_route": [],
+      "driver_arrival": {
+        "closest_distance_to_pickup_m": 45,
+        "arrival_time": "2026-09-20T21:46:00+08:00",
+        "wait_time_min": 6,
+        "left_pickup_time": "2026-09-20T21:52:00+08:00",
+        "late_min": 1
+      }
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 0,
+      "distance_fare_actual": 0,
+      "distance_fare_optimal": 0,
+      "time_fare_actual": 0,
+      "time_fare_optimal": 0,
+      "surge_multiplier": 1.0,
+      "promo_code": null,
+      "total_charged": 0,
+      "optimal_total_estimate": 0,
+      "cancellation_fee": 5.00
+    },
+    "chat_log": [
+      { "ts": "2026-09-20T21:44:00+08:00", "from": "driver", "text": "I'm arriving at Clarke Quay Central." },
+      { "ts": "2026-09-20T21:46:00+08:00", "from": "driver", "text": "I'm at the pickup point, where are you?" },
+      { "ts": "2026-09-20T21:52:00+08:00", "from": "driver", "text": "No response, cancelling as no-show." }
+    ]
+  }
+]

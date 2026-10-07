@@ -1,0 +1,120 @@
+{
+  "company": "Ryde",
+  "version": "2026.09",
+  "config": {
+    "traffic_tolerance": 0.30
+  },
+  "policies": [
+    {
+      "id": "POL-RD-001",
+      "category": "route_deviation",
+      "title": "Route Deviation & Overcharge",
+      "clauses": [
+        {
+          "id": "RD-001.1",
+          "text": "A route deviation is measured as the percentage by which the actual distance travelled exceeds the optimal (shortest/expected) route distance."
+        },
+        {
+          "id": "RD-001.2",
+          "text": "Deviation below 5% is considered within normal navigation tolerance and no refund is issued."
+        },
+        {
+          "id": "RD-001.3",
+          "text": "Deviation between 5% and 15% without a valid traffic or safety reason entitles the rider to a refund of the excess distance fare."
+        },
+        {
+          "id": "RD-001.4",
+          "text": "Deviation of 15% or more, or any deviation accompanied by an unexplained stop, entitles the rider to a refund of the excess distance fare plus 50% of the base fare."
+        },
+        {
+          "id": "RD-001.5",
+          "text": "A valid traffic detour (confirmed by live traffic data) reduces the assessed deviation severity and may void the refund if the detour is reasonable."
+        },
+        {
+          "id": "RD-001.6",
+          "text": "Surge pricing applied to the disputed excess distance shall be refunded proportionally."
+        },
+        {
+          "id": "RD-001.7",
+          "text": "Excess TIME fare attributable to a route deviation is not separately refunded; only the excess distance fare (and its proportional surge) is refunded under RD-001.3 or RD-001.4."
+        }
+      ]
+    },
+    {
+      "id": "POL-NS-001",
+      "category": "no_show",
+      "title": "No-Show & Cancellation Fee",
+      "clauses": [
+        {
+          "id": "NS-001.1",
+          "text": "A no-show cancellation fee may only be charged when the driver has arrived within 150 metres of the pickup point and waited at least 5 minutes."
+        },
+        {
+          "id": "NS-001.2",
+          "text": "If the driver never arrived within 150 metres of the pickup point, the cancellation fee must be fully refunded."
+        },
+        {
+          "id": "NS-001.3",
+          "text": "If the driver arrived more than 10 minutes late, the cancellation fee is waived regardless of rider no-show."
+        },
+        {
+          "id": "NS-001.4",
+          "text": "If the driver arrived on time but waited less than 5 minutes before cancelling, the cancellation fee must be refunded."
+        },
+        {
+          "id": "NS-001.5",
+          "text": "If the driver arrived on time and waited at least 5 minutes with documented contact attempts, the no-show fee is upheld against the rider."
+        },
+        {
+          "id": "NS-001.6",
+          "text": "A first-time rider no-show dispute may receive a one-time courtesy credit at the reviewer's discretion."
+        }
+      ]
+    },
+    {
+      "id": "POL-PD-001",
+      "category": "property_damage",
+      "title": "Property Damage / Mess Cleaning Fee",
+      "clauses": [
+        {
+          "id": "PD-001.1",
+          "text": "A cleaning fee may be charged only when supported by photo evidence that matches the trip timestamp and is not AI-generated."
+        },
+        {
+          "id": "PD-001.2",
+          "text": "Standard mess cleaning fee is SGD 25; severe soiling or damage is SGD 50 to SGD 150 subject to review."
+        }
+      ]
+    },
+    {
+      "id": "POL-SF-001",
+      "category": "safety_incident",
+      "title": "Safety Incident",
+      "clauses": [
+        {
+          "id": "SF-001.1",
+          "text": "Safety incidents are high priority, are routed for fast-track review, and may result in immediate account suspension pending investigation."
+        },
+        {
+          "id": "SF-001.2",
+          "text": "Any report of threats, violence, or inappropriate behaviour is escalated to a human reviewer regardless of model confidence."
+        }
+      ]
+    },
+    {
+      "id": "POL-FR-001",
+      "category": "fraud",
+      "title": "Dispute Abuse & Bad-Faith",
+      "clauses": [
+        {
+          "id": "FR-001.1",
+          "text": "Accounts with repeated dispute filings may be flagged for bad-faith behaviour and their claims subjected to higher scrutiny."
+        },
+        {
+          "id": "FR-001.2",
+          "text": "Evidence of collusion or fabricated claims voids the dispute and may result in account restrictions."
+        }
+      ]
+    }
+  ]
+}

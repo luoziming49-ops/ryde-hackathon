@@ -1,0 +1,98 @@
+<svg viewBox="0 0 920 620" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4f8cff"/></marker>
+    <marker id="arwO" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#fb923c"/></marker>
+    <marker id="arwP" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#a78bfa"/></marker>
+    <style>
+      .box{fill:#151d33;stroke:#26304f;stroke-width:1.5;}
+      .t{fill:#e8ecf8;font:700 14px sans-serif;}
+      .s{fill:#8a94b8;font:11px sans-serif;}
+      .core{stroke:#22d3a5;stroke-width:2.2;}
+      .stretch{stroke:#f5b942;stroke-width:1.6;}
+      .ln{stroke:#4f8cff;stroke-width:1.8;fill:none;marker-end:url(#arw);}
+      .lnO{stroke:#fb923c;stroke-width:1.6;fill:none;marker-end:url(#arwO);}
+      .lnP{stroke:#a78bfa;stroke-width:1.6;fill:none;marker-end:url(#arwP);}
+      .hd{fill:#8a94b8;font:700 12px sans-serif;letter-spacing:.1em;}
+    </style>
+  </defs>
+
+  <rect width="920" height="620" fill="#0b0f1a" rx="14"/>
+
+  <text x="30" y="34" class="hd">RYDE DISPUTE AI — MULTI-AGENT AUTONOMOUS DISPUTE RESOLUTION SYSTEM</text>
+
+  <!-- ===== Intake ===== -->
+  <rect class="box" x="30" y="60" width="210" height="64" rx="11"/>
+  <text class="t" x="135" y="88" text-anchor="middle">Dispute Filed</text>
+  <text class="s" x="135" y="108" text-anchor="middle">text + structured evidence</text>
+
+  <!-- ===== Evidence Collection ===== -->
+  <rect class="box stretch" x="30" y="170" width="210" height="70" rx="11"/>
+  <text class="t" x="135" y="198" text-anchor="middle">Evidence Collection Agent</text>
+  <text class="s" x="135" y="218" text-anchor="middle">GPS · chat · fare · history</text>
+
+  <!-- ===== Data sources ===== -->
+  <rect class="box" x="30" y="290" width="210" height="92" rx="11"/>
+  <text class="t" x="135" y="316" text-anchor="middle">Data Sources (mocked)</text>
+  <text class="s" x="135" y="338" text-anchor="middle">GPS / Telemetry</text>
+  <text class="s" x="135" y="354" text-anchor="middle">Chat &amp; Communication Logs</text>
+  <text class="s" x="135" y="370" text-anchor="middle">Fare &amp; Payment Records</text>
+
+  <!-- ===== Fraud ===== -->
+  <rect class="box stretch" x="30" y="430" width="210" height="64" rx="11"/>
+  <text class="t" x="135" y="456" text-anchor="middle">Fraud &amp; Bad-Faith Agent</text>
+  <text class="s" x="135" y="476" text-anchor="middle">behavioural risk scoring</text>
+
+  <!-- ===== Policy ===== -->
+  <rect class="box stretch" x="30" y="532" width="210" height="64" rx="11"/>
+  <text class="t" x="135" y="558" text-anchor="middle">Policy &amp; Precedent Agent</text>
+  <text class="s" x="135" y="578" text-anchor="middle">RAG over policy / precedent KB</text>
+
+  <!-- ===== Advocates ===== -->
+  <rect class="box core" x="350" y="170" width="230" height="78" rx="11"/>
+  <text class="t" x="465" y="200" text-anchor="middle">Rider Advocate Agent</text>
+  <text class="s" x="465" y="220" text-anchor="middle">gathers rider evidence</text>
+  <text class="s" x="465" y="236" text-anchor="middle">argues rider-favourable case</text>
+
+  <rect class="box core" x="350" y="310" width="230" height="78" rx="11"/>
+  <text class="t" x="465" y="340" text-anchor="middle">Driver Advocate Agent</text>
+  <text class="s" x="465" y="360" text-anchor="middle">gathers driver evidence</text>
+  <text class="s" x="465" y="376" text-anchor="middle">argues driver-favourable case</text>
+
+  <!-- ===== Judge ===== -->
+  <rect class="box core" x="700" y="210" width="200" height="170" rx="11"/>
+  <text class="t" x="800" y="240" text-anchor="middle">Judge Agent</text>
+  <text class="s" x="800" y="262" text-anchor="middle">weighs both cases</text>
+  <text class="s" x="800" y="278" text-anchor="middle">applies company policy</text>
+  <text class="s" x="800" y="294" text-anchor="middle">confidence scoring</text>
+  <text class="s" x="800" y="310" text-anchor="middle">natural-language ruling</text>
+  <text class="s" x="800" y="326" text-anchor="middle">escalation protocol</text>
+  <text class="s" x="800" y="342" text-anchor="middle">(human-in-the-loop)</text>
+
+  <!-- ===== Output ===== -->
+  <rect class="box" x="700" y="440" width="200" height="84" rx="11"/>
+  <text class="t" x="800" y="468" text-anchor="middle">Ruling Output</text>
+  <text class="s" x="800" y="488" text-anchor="middle">refund / compensation /</text>
+  <text class="s" x="800" y="504" text-anchor="middle">no action + explanation</text>
+
+  <!-- ===== Reasoning layer ===== -->
+  <rect class="box" x="350" y="470" width="230" height="76" rx="11" opacity=".8"/>
+  <text class="t" x="465" y="498" text-anchor="middle">Reasoning Layer</text>
+  <text class="s" x="465" y="518" text-anchor="middle">Optional LLM (OpenAI-compatible)</text>
+  <text class="s" x="465" y="534" text-anchor="middle">+ deterministic policy engine</text>
+
+  <!-- ===== Arrows ===== -->
+  <path class="ln" d="M240,92 L345,92 L345,209"/>
+  <path class="ln" d="M240,205 L345,205 L345,209"/>
+  <path class="ln" d="M240,336 L345,336 L345,349"/>
+  <path class="ln" d="M580,209 L700,260"/>
+  <path class="ln" d="M580,349 L700,330"/>
+  <path class="ln" d="M800,380 L800,440"/>
+  <path class="lnO" d="M240,462 L345,462 L345,349"/>
+  <path class="lnP" d="M240,564 L345,564 L345,349"/>
+  <path class="lnP" d="M135,532 L135,382" stroke-dasharray="4 4"/>
+
+  <!-- ===== Legend ===== -->
+  <rect x="700" y="552" width="200" height="44" rx="8" fill="#101627" stroke="#26304f"/>
+  <text class="s" x="716" y="570" fill="#22d3a5">■ Core agents (required)</text>
+  <text class="s" x="716" y="586" fill="#f5b942">■ Stretch agents (bonus)</text>
+</svg>

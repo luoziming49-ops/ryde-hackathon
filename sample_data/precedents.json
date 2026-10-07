@@ -1,0 +1,58 @@
+{
+  "precedents": [
+    {
+      "id": "PRC-RD-201",
+      "category": "route_deviation",
+      "summary": "Driver detoured 18% without traffic and made an unexplained 5-minute stop; refunded excess distance fare plus 50% base fare.",
+      "ruling": "partial_refund",
+      "amount": 6.85,
+      "confidence": 0.94,
+      "reasoning": "Deviation exceeded 15% and an unexplained stop was confirmed by GPS dwell time."
+    },
+    {
+      "id": "PRC-RD-202",
+      "category": "route_deviation",
+      "summary": "Driver detoured 6% due to a confirmed accident on the expressway; no refund issued.",
+      "ruling": "no_action",
+      "amount": 0,
+      "confidence": 0.91,
+      "reasoning": "Deviation was minor and justified by live traffic data."
+    },
+    {
+      "id": "PRC-RD-203",
+      "category": "route_deviation",
+      "summary": "Driver took a 12% longer route with no valid reason; refunded excess distance fare only.",
+      "ruling": "partial_refund",
+      "amount": 2.40,
+      "confidence": 0.88,
+      "reasoning": "Deviation between 5% and 15% with no traffic justification."
+    },
+    {
+      "id": "PRC-NS-301",
+      "category": "no_show",
+      "summary": "Driver GPS showed arrival 1.1km from pickup and a 2-minute wait; cancellation fee fully refunded.",
+      "ruling": "full_refund",
+      "amount": 5.00,
+      "confidence": 0.95,
+      "reasoning": "Driver never arrived within 150 metres of the pickup point."
+    },
+    {
+      "id": "PRC-NS-302",
+      "category": "no_show",
+      "summary": "Driver arrived on time and waited 6 minutes with documented messages; no-show fee upheld.",
+      "ruling": "no_action",
+      "amount": 0,
+      "confidence": 0.93,
+      "reasoning": "Driver satisfied the arrival and wait-time requirements."
+    },
+    {
+      "id": "PRC-NS-303",
+      "category": "no_show",
+      "summary": "Driver arrived 12 minutes late and cancelled after 3 minutes; cancellation fee refunded.",
+      "ruling": "full_refund",
+      "amount": 5.00,
+      "confidence": 0.9,
+      "reasoning": "Driver arrived more than 10 minutes late, voiding the no-show fee."
+    }
+  ]
+}

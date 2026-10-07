@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ryde Dispute AI — Multi-Agent Autonomous Dispute Resolution</title>
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --bg-2: #101627;
+    --panel: #151d33;
+    --panel-2: #1b2440;
+    --border: #26304f;
+    --text: #e8ecf8;
+    --muted: #8a94b8;
+    --accent: #4f8cff;
+    --accent-2: #22d3a5;
+    --gold: #f5b942;
+    --danger: #ff6b6b;
+    --rider: #34d399;
+    --driver: #f87171;
+    --judge: #f5b942;
+    --evidence: #4f8cff;
+    --fraud: #fb923c;
+    --policy: #a78bfa;
+    --radius: 14px;
+    --shadow: 0 8px 30px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+    background: radial-gradient(1200px 600px at 20% -10%, #1c2a55 0%, var(--bg) 55%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  a { color: var(--accent); }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px; border-bottom: 1px solid var(--border);
+    background: rgba(11,15,26,.7); backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand .logo {
+    width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); font-weight: 800; font-size: 20px; color: #06101f;
+  }
+  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+  .brand p { font-size: 12px; color: var(--muted); }
+  .badge {
+    font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--muted); display: inline-flex; align-items: center; gap: 7px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
+  .dot.off { background: var(--danger); }
+  .dot.warn { background: #f5b942; }
+
+  .wrap { max-width: 1380px; margin: 0 auto; padding: 24px 28px 60px; }
+  .grid { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .card h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 16px 18px 10px; }
+  .card .body { padding: 6px 18px 18px; }
+
+  /* Dispute cards */
+  .dispute { padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; margin-bottom: 10px; transition: .15s; background: var(--panel-2); }
+  .dispute:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .dispute.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,140,255,.15); }
+  .dispute .tag { font-size: 11px; padding: 3px 9px; border-radius: 6px; background: rgba(79,140,255,.15); color: var(--accent); font-weight: 600; text-transform: capitalize; }
+  .dispute .tag.no_show { background: rgba(248,113,113,.15); color: var(--driver); }
+  .dispute h3 { font-size: 14px; margin: 8px 0 6px; }
+  .dispute p { font-size: 12.5px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+    background: linear-gradient(135deg, var(--accent), #6d5bff); color: #fff; border: none;
+    padding: 13px 20px; border-radius: 11px; font-weight: 700; font-size: 14px; cursor: pointer; width: 100%; transition: .15s;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.ghost { background: var(--panel-2); border: 1px solid var(--border); color: var(--text); }
+
+  /* Evidence tabs */
+  .tabs { display: flex; gap: 6px; padding: 0 18px; }
+  .tabs button { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 8px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+  .tabs button.active { background: var(--panel-2); color: var(--text); border-color: var(--accent); }
+  .evt { display: none; padding: 14px 18px; font-size: 13px; }
+  .evt.active { display: block; }
+  .evt .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(38,48,79,.6); }
+  .evt .row:last-child { border-bottom: none; }
+  .evt .k { color: var(--muted); }
+  .evt .v { font-weight: 600; text-align: right; }
+
+  .chat { display: flex; flex-direction: column; gap: 8px; }
+  .msg { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 12.5px; }
+  .msg.rider { background: rgba(52,211,153,.12); align-self: flex-start; border-bottom-left-radius: 3px; }
+  .msg.driver { background: rgba(248,113,113,.12); align-self: flex-end; border-bottom-right-radius: 3px; }
+  .msg .who { font-size: 10.5px; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .05em; }
+
+  .map-wrap { width: 100%; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--muted); margin-top: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+
+  /* Pipeline */
+  .pipeline { max-height: 520px; overflow-y: auto; }
+  .step { display: flex; gap: 12px; padding: 11px 18px; border-bottom: 1px solid rgba(38,48,79,.5); animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .step .avatar { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+  .step .txt { flex: 1; }
+  .step .agent-name { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .step .msg-body { font-size: 13px; color: var(--text); margin-top: 2px; }
+  .step .role { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1px; }
+
+  .agent-evidence { background: #4f8cff; color: #fff; }
+  .agent-fraud { background: #fb923c; color: #3a1a00; }
+  .agent-policy { background: #a78bfa; color: #1c1133; }
+  .agent-rider { background: #34d399; color: #04251a; }
+  .agent-driver { background: #f87171; color: #2b0808; }
+  .agent-judge { background: #f5b942; color: #2b1a00; }
+
+  /* Ruling */
+  .ruling { text-align: center; padding: 20px; }
+  .gauge { position: relative; width: 150px; height: 150px; margin: 6px auto 10px; }
+  .gauge svg { transform: rotate(-90deg); }
+  .gauge .val { position: absolute; inset: 0; display: grid; place-items: center; font-size: 30px; font-weight: 800; }
+  .verdict { font-size: 20px; font-weight: 800; margin: 4px 0; }
+  .amount { font-size: 34px; font-weight: 800; color: var(--accent-2); }
+  .reason { text-align: left; background: var(--panel-2); border: 1px solid var(--border); border-radius: 11px; padding: 14px; font-size: 13.5px; color: var(--text); margin-top: 14px; }
+  .reason .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+  .pill { font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(79,140,255,.14); color: var(--accent); border: 1px solid rgba(79,140,255,.25); }
+  .escalate { background: rgba(248,113,113,.15); color: var(--driver); border: 1px solid rgba(248,113,113,.3); padding: 12px; border-radius: 11px; margin-top: 12px; font-weight: 700; }
+
+  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 40px 20px; }
+  .hint { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .section-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 18px 0 8px; }
+
+  .arch-btn { position: fixed; right: 24px; bottom: 24px; z-index: 20; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; place-items: center; padding: 30px; }
+  .modal.open { display: grid; }
+  .modal .box { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; max-width: 980px; width: 100%; max-height: 90vh; overflow: auto; padding: 24px; }
+  .modal h2 { margin-bottom: 16px; }
+  .close { float: right; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">R</div>
+    <div>
+      <h1>Ryde Dispute AI</h1>
+      <p>Multi-Agent Autonomous Dispute Resolution System · Digital Native Track</p>
+    </div>
+  </div>
+  <div class="badge" id="llmBadge"><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <!-- LEFT: case selection + evidence -->
+    <div>
+      <div class="card">
+        <h2>Dispute Cases</h2>
+        <div class="body" id="disputeList"><div class="empty">Loading cases…</div></div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>Evidence & Case File</h2>
+        <div class="tabs" id="evtTabs">
+          <button data-tab="gps" class="active">GPS / Trip</button>
+          <button data-tab="chat">Chat</button>
+          <button data-tab="fare">Fare</button>
+          <button data-tab="history">Parties</button>
+        </div>
+        <div id="evidencePanel"><div class="empty">Select a case to inspect evidence.</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: pipeline + ruling -->
+    <div>
+      <div class="card">
+        <h2>Agent Orchestration — Live Communication Log</h2>
+        <div class="body">
+          <button class="btn" id="resolveBtn" disabled>⚡ Resolve Dispute</button>
+          <div class="pipeline" id="pipeline"><div class="empty">The multi-agent workflow will appear here when you resolve a case.</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>Ruling</h2>
+        <div class="ruling" id="ruling"><div class="empty">No ruling yet.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn ghost arch-btn" id="archBtn" style="width:auto;">🗺 Architecture</button>
+
+<div class="modal" id="archModal">
+  <div class="box">
+    <button class="close" id="archClose">✕</button>
+    <h2>System Architecture</h2>
+    <div id="archSvg"></div>
+  </div>
+</div>
+
+<script>
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+
+let disputes = [];
+let selected = null;
+let selectedData = null;
+
+const AGENT_META = {
+  "Evidence Collection": { cls: "agent-evidence", icon: "📦" },
+  "Fraud & Bad-Faith Detection": { cls: "agent-fraud", icon: "🛡" },
+  "Policy & Precedent": { cls: "agent-policy", icon: "📚" },
+  "Rider Advocate": { cls: "agent-rider", icon: "🙋" },
+  "Driver Advocate": { cls: "agent-driver", icon: "🚗" },
+  "Judge": { cls: "agent-judge", icon: "⚖" },
+};
+
+async function init() {
+  // Bug #10: bind evidence-tab listeners exactly once.
+  $$('#evtTabs button').forEach(b => b.addEventListener('click', () => {
+    $$('#evtTabs button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    renderEvidenceTab(b.dataset.tab);
+  }));
+  try {
+    const [h, d] = await Promise.all([fetch('/api/health').then(r=>r.json()), fetch('/api/disputes').then(r=>r.json())]);
+    renderHealth(h);
+    disputes = d;
+    renderDisputes();
+  } catch (e) {
+    $('#llmText').textContent = 'Backend unreachable';
+    $('#disputeList').innerHTML = '<div class="empty">Could not load cases. Is the server running?</div>';
+  }
+}
+
+function renderHealth(h) {
+  const dot = $('#llmBadge .dot');
+  const state = h.state || 'no_key';
+  if (state === 'ok') {
+    dot.className = 'dot';
+    $('#llmText').textContent = `LLM online · ${h.model || ''}`;
+  } else if (state === 'fallback' || state === 'configured') {
+    dot.className = 'dot warn';
+    $('#llmText').textContent = state === 'configured'
+      ? `LLM configured (${h.model || ''}) · not yet called`
+      : `LLM configured · falling back (last call failed)`;
+  } else {
+    dot.className = 'dot off';
+    $('#llmText').textContent = 'Deterministic mode (no API key)';
+  }
+}
+
+function renderDisputes() {
+  const wrap = $('#disputeList');
+  wrap.innerHTML = disputes.map(d => `
+    <div class="dispute" data-id="${d.case_id}">
+      <span class="tag ${d.category}">${d.category.replace('_',' ')}</span>
+      <h3>${d.case_id}</h3>
+      <p>${esc(d.rider_claim)}</p>
+    </div>`).join('');
+  $$('.dispute', wrap).forEach(el => el.addEventListener('click', () => selectDispute(el.dataset.id)));
+}
+
+async function selectDispute(id) {
+  selected = id;
+  $$('.dispute').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+  $('#resolveBtn').disabled = false;
+  try {
+    selectedData = await fetch(`/api/disputes/${id}`).then(r=>r.json());
+    renderEvidence();
+    $('#ruling').innerHTML = '<div class="empty">Case loaded. Press “Resolve Dispute” to run the agents.</div>';
+    $('#pipeline').innerHTML = '<div class="empty">Ready. Press “Resolve Dispute” to begin.</div>';
+  } catch(e) { console.error(e); }
+}
+
+function esc(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function renderEvidence() {
+  // Bug #10: tab listeners are bound ONCE at startup (see init()), not on every render.
+  renderEvidenceTab('gps');
+}
+
+function renderEvidenceTab(tab) {
+  const d = selectedData;
+  const p = $('#evidencePanel');
+  if (tab === 'gps') {
+    p.innerHTML = `<div class="evt active">
+      <div class="row"><span class="k">Pickup</span><span class="v">${esc(d.trip.pickup.name)}</span></div>
+      <div class="row"><span class="k">Dropoff</span><span class="v">${esc(d.trip.dropoff.name)}</span></div>
+      <div class="row"><span class="k">Distance</span><span class="v">${d.trip.actual_distance_km} km (optimal ${d.trip.optimal_distance_km} km)</span></div>
+      <div class="row"><span class="k">Duration</span><span class="v">${d.trip.actual_duration_min} min (est. ${d.trip.estimated_duration_min} min)</span></div>
+      <div class="row"><span class="k">Traffic detected</span><span class="v">${d.trip.traffic_detected ? 'Yes' : 'No'}</span></div>
+      <div class="map-wrap" style="margin-top:12px;">${routeMap(d)}</div>
+      <div class="legend">
+        <span><span style="width:12px;height:3px;background:#34d399;display:inline-block;"></span> Optimal route</span>
+        <span><span style="width:12px;height:3px;background:#f87171;display:inline-block;"></span> Actual route</span>
+        <span><span style="width:8px;height:8px;border-radius:50%;background:#f5b942;display:inline-block;"></span> Stop</span>
+      </div>
+    </div>`;
+  } else if (tab === 'chat') {
+    const msgs = (d.chat_log||[]).map(m => `
+      <div class="msg ${m.from}">
+        <div class="who">${m.from}</div>${esc(m.text)}
+      </div>`).join('');
+    p.innerHTML = `<div class="evt active"><div class="chat">${msgs || '<div class="empty">No chat log.</div>'}</div></div>`;
+  } else if (tab === 'fare') {
+    const f = d.fare;
+    p.innerHTML = `<div class="evt active">
+      <div class="row"><span class="k">Base fare</span><span class="v">${f.base_fare.toFixed(2)}</span></div>
+      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${f.distance_fare_actual.toFixed(2)}</span></div>
+      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${f.distance_fare_optimal.toFixed(2)}</span></div>
+      <div class="row"><span class="k">Surge</span><span class="v">${f.surge_multiplier}×</span></div>
+      <div class="row"><span class="k">Total charged</span><span class="v">${f.total_charged.toFixed(2)} ${f.currency}</span></div>
+      <div class="row"><span class="k">Cancellation fee</span><span class="v">${f.cancellation_fee.toFixed(2)}</span></div>
+    </div>`;
+  } else if (tab === 'history') {
+    const r = d.rider, dr = d.driver;
+    p.innerHTML = `<div class="evt active">
+      <div class="row"><span class="k">Rider</span><span class="v">${esc(r.name)}</span></div>
+      <div class="row"><span class="k">Rider rating</span><span class="v">${r.avg_rating}</span></div>
+      <div class="row"><span class="k">Rider prior disputes</span><span class="v">${r.dispute_history}</span></div>
+      <div class="row"><span class="k">Driver</span><span class="v">${esc(dr.name)}</span></div>
+      <div class="row"><span class="k">Driver rating</span><span class="v">${dr.avg_rating}</span></div>
+      <div class="row"><span class="k">Driver prior disputes</span><span class="v">${dr.dispute_history}</span></div>
+    </div>`;
+  }
+}
+
+function routeMap(d) {
+  const norm = arr => (arr || []).map(p => Array.isArray(p) ? p : [p.lat, p.lng]);
+  const opt = norm(d.gps.optimal_route);
+  const act = norm(d.gps.actual_route);
+  const stops = (d.trip.unexpected_stops || []).map(s => [s.lat, s.lng]);
+  const pts = [...opt, ...act, ...stops];
+  if (!pts.length) return '<div class="empty">No GPS route available.</div>';
+  const lats = pts.map(p=>p[0]), lngs = pts.map(p=>p[1]);
+  const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+  const W = 340, H = 200, pad = 16;
+  const spanLat = (maxLat-minLat) || 1e-6, spanLng = (maxLng-minLng) || 1e-6;
+  const scale = Math.min((W-2*pad)/spanLng, (H-2*pad)/spanLat);
+  const X = lng => pad + (lng-minLng)*scale + ((W-2*pad) - spanLng*scale)/2;
+  const Y = lat => H - pad - (lat-minLat)*scale - ((H-2*pad) - spanLat*scale)/2;
+  const path = arr => arr.map((p,i)=>`${i?'L':'M'}${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}`).join(' ');
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:#0d1428;border:1px solid var(--border);border-radius:10px;">`;
+  svg += `<path d="${path(opt)}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4 3"/>`;
+  svg += `<path d="${path(act)}" fill="none" stroke="#f87171" stroke-width="2.5"/>`;
+  svg += `<circle cx="${X(d.trip.pickup.lng)}" cy="${Y(d.trip.pickup.lat)}" r="4" fill="#4f8cff"/>`;
+  svg += `<circle cx="${X(d.trip.dropoff.lng)}" cy="${Y(d.trip.dropoff.lat)}" r="4" fill="#fff"/>`;
+  stops.forEach(s => { svg += `<circle cx="${X(s[1])}" cy="${Y(s[0])}" r="5" fill="#f5b942" stroke="#0b0f1a" stroke-width="2"/>`; });
+  svg += `</svg>`;
+  return svg;
+}
+
+$('#resolveBtn').addEventListener('click', async () => {
+  const btn = $('#resolveBtn');
+  btn.disabled = true; btn.textContent = '⚙ Agents resolving…';
+  $('#pipeline').innerHTML = '<div class="empty">Dispatching agents…</div>';
+  $('#ruling').innerHTML = '<div class="empty">Deliberating…</div>';
+  try {
+    const res = await fetch('/api/resolve', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ case_id: selected })
+    }).then(r=>r.json());
+    animateTrace(res.trace, () => renderRuling(res));
+  } catch(e) {
+    $('#pipeline').innerHTML = `<div class="empty">Error: ${esc(e.message)}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = '⚡ Resolve Dispute';
+  }
+});
+
+function animateTrace(trace, done) {
+  const wrap = $('#pipeline');
+  wrap.innerHTML = '';
+  let i = 0;
+  const step = () => {
+    if (i >= trace.length) { done && done(); return; }
+    const m = trace[i++];
+    const meta = AGENT_META[m.agent] || { cls: 'agent-judge', icon: '•' };
+    const el = document.createElement('div');
+    el.className = 'step';
+    el.innerHTML = `
+      <div class="avatar ${meta.cls}">${meta.icon}</div>
+      <div class="txt">
+        <div class="role">${esc(m.role)}</div>
+        <div class="agent-name" style="color:${metaColor(m.agent)}">${esc(m.agent)}</div>
+        <div class="msg-body">${esc(m.content)}</div>
+      </div>`;
+    wrap.appendChild(el);
+    wrap.scrollTop = wrap.scrollHeight;
+    setTimeout(step, 260);
+  };
+  step();
+}
+
+function metaColor(agent) {
+  const map = { "Evidence Collection":"#4f8cff","Fraud & Bad-Faith Detection":"#fb923c","Policy & Precedent":"#a78bfa","Rider Advocate":"#34d399","Driver Advocate":"#f87171","Judge":"#f5b942" };
+  return map[agent] || '#fff';
+}
+
+function renderRuling(res) {
+  const r = res.ruling;
+  const conf = Math.round((r.confidence ?? 0) * 100);
+  const color = conf >= 80 ? '#22d3a5' : conf >= 60 ? '#f5b942' : '#ff6b6b';
+  const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human' }[r.action] || r.action;
+  const gauge = `<svg width="150" height="150"><circle cx="75" cy="75" r="64" fill="none" stroke="#26304f" stroke-width="12"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
+  const amountHtml = (r.amount != null) ? `<div class="amount">${r.currency} ${r.amount.toFixed(2)}</div>` : '';
+  const pills = (r.matched_policy_ids||[]).map(p=>`<span class="pill">${esc(p)}</span>`).join('');
+  $('#ruling').innerHTML = `
+    <div class="gauge">${gauge}<div class="val" style="color:${color}">${conf}%</div></div>
+    <div class="verdict">${esc(actionLabel)}</div>
+    ${amountHtml}
+    <div class="pills">${pills}</div>
+    ${r.escalated ? '<div class="escalate">⚠ Escalated to human review</div>' : ''}
+    <div class="reason"><div class="lbl">Judge's reasoning</div>${esc(r.reasoning)}</div>
+    ${(r.adjustment_notes||[]).length ? `<div class="reason"><div class="lbl">Risk adjustments</div>${r.adjustment_notes.map(esc).join('<br>')}</div>` : ''}
+    <div class="hint">Resolved in ${res.duration_ms} ms · ${res.trace.length} observable agent steps</div>`;
+}
+
+// Architecture modal
+$('#archBtn').addEventListener('click', async () => {
+  $('#archModal').classList.add('open');
+  const r = await fetch('/api/health').then(x=>x.json()).catch(()=>null);
+  $('#archSvg').innerHTML = architectureSvg(r);
+});
+$('#archClose').addEventListener('click', () => $('#archModal').classList.remove('open'));
+$('#archModal').addEventListener('click', e => { if (e.target.id === 'archModal') $('#archModal').classList.remove('open'); });
+
+function architectureSvg(health) {
+  const llm = health && health.llm_available ? `LLM (${health.llm_model})` : 'Deterministic fallback';
+  const t = 'fill="#e8ecf8" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle"';
+  const s = 'fill="#8a94b8" font-family="sans-serif" font-size="11" text-anchor="middle"';
+  const box = (x,y,w,h,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="11" fill="#151d33" stroke="${extra||'#26304f'}" stroke-width="${extra?2.2:1.5}"/>`;
+  const ln = (d,color='#4f8cff',dash='') => `<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" ${dash?`stroke-dasharray="${dash}"`:''} marker-end="url(#arw)"/>`;
+  return `<svg viewBox="0 0 900 560" width="100%" xmlns="http://www.w3.org/2000/svg" style="background:#0d1428;border-radius:12px;display:block;">
+  <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4f8cff"/></marker></defs>
+
+  ${box(30,60,210,64)}<text ${t} x="135" y="88">Dispute Filed</text><text ${s} x="135" y="108">text + structured evidence</text>
+  ${box(30,170,210,70,'#f5b942')}<text ${t} x="135" y="198">Evidence Collection</text><text ${s} x="135" y="218">GPS · chat · fare · history</text>
+  ${box(30,290,210,92)}<text ${t} x="135" y="316">Data Sources</text><text ${s} x="135" y="338">GPS/Telemetry · Chat Logs</text><text ${s} x="135" y="354">Fare/Payment · Profiles</text><text ${s} x="135" y="370">(mocked APIs)</text>
+  ${box(30,410,210,60,'#f5b942')}<text ${t} x="135" y="435">Fraud &amp; Bad-Faith</text><text ${s} x="135" y="454">risk scoring</text>
+  ${box(30,490,210,56,'#f5b942')}<text ${t} x="135" y="513">Policy &amp; Precedent</text><text ${s} x="135" y="530">RAG over policy/precedent KB</text>
+
+  ${box(340,150,220,70,'#22d3a5')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
+  ${box(340,300,220,70,'#22d3a5')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
+
+  ${box(680,190,200,140,'#22d3a5')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
+
+  ${box(680,410,200,80)}<text ${t} x="780" y="438">Ruling Output</text><text ${s} x="780" y="458">refund / compensation /</text><text ${s} x="780" y="474">no action + reasoning</text>
+
+  ${box(340,430,220,70)}<text ${t} x="450" y="455">Reasoning Layer</text><text ${s} x="450" y="474">${llm}</text><text ${s} x="450" y="490">deterministic policy engine</text>
+
+  ${ln('M240,92 L340,92 L340,185')}
+  ${ln('M240,205 L340,205 L340,185')}
+  ${ln('M240,336 L340,336 L340,335')}
+  ${ln('M560,185 L680,230')}
+  ${ln('M560,335 L680,300')}
+  ${ln('M780,330 L780,410')}
+  ${ln('M240,440 L340,440 L340,335','#fb923c')}
+  ${ln('M240,518 L560,518 L560,335','#a78bfa')}
+  ${ln('M135,490 L135,382','#a78bfa','4 3')}
+
+  <text ${s} x="780" y="360" fill="#22d3a5">Core agents (required)</text>
+  <text ${s} x="780" y="378" fill="#f5b942">Stretch agents (bonus)</text>
+</svg>`;
+}
+
+init();
+</script>
+</body>
+</html>
