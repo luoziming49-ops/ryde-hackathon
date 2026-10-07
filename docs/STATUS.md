@@ -1,17 +1,23 @@
 # 当前状态
 
-修订：9 · 2026-10-07（Asia/Singapore）· 同步：complete
+修订：11 · CP-011 · 2026-10-07（Asia/Singapore）· 同步：complete（计划分支文档；main待PR合并）
 
-## 阶段
+## 目标与实际进度
 
-实施冲刺（implementation sprint）。方向已确认：平台争议处理工作台；两类争议 route_deviation + no_show；三类代理（Rider Advocate / Driver Advocate / Judge）。产品开发已授权。
+Digital Native / Ryde 平台争议处理工作台；绕路收费与未到场取消费，乘客、司机、裁决三类代理。远端已记录方向确认并进入实施，本地旧“尚无代码、待确认方向”状态已过期。功能完成以实际运行和验收为准。
 
-## 计划与下一步
+GitHub main 已合并 S0；S1 的 [PR #3](https://github.com/luoziming49-ops/ryde-hackathon/pull/3) 尚未合并。本轮核验其代码并在隔离环境跑过79个测试，四个样例符合现有规则预期；这只证明无密钥路径，不证明真实模型、浏览器或部署通过。完整基线、问题和验证见 [T012](tasks/T012-structure-handoff.md)。
 
-- 计划：[SPRINT](SPRINT.md)（9 天冲刺排期 S0–S5）。
-- 下一步任务：**S1**（健壮性 + 官方 DISP-002 数据格式适配）。
-- 已完成：S0 导入 V2 代码、更新规则、跑通测试与 API。
+## 下一步与负责人
 
-## 协作
+当前执行入口为 [WB01](tasks/WB01-reliability.md)：收尾输入校验、缺失费用、到达时间与官方案例展示。用户转交 WorkBuddy 后执行；协调助手审查差异和报告，再安排代理输出校验、可追溯事件、评测与演示。先读任务包和实际工程规则，不从旧副本重做S0。
 
-仓库：https://github.com/luoziming49-ops/ryde-hackathon（private / main）。团队按任务分支、PR 和相互审阅协作。工程规则见 [PROJECT_RULES.md](../PROJECT_RULES.md)。
+[结构建议](ideas/2026-10-07-structure.md) 已明确模块边界与后续顺序；保持现有技术栈，不迁移大型框架。尚未改产品代码。执行者只写任务范围和报告，协调助手维护状态与任务索引。暂不与同伴并改S1，不合并其分支；已修复项只验证。
+
+## 协作与未决项
+
+[仓库](https://github.com/luoziming49-ops/ryde-hackathon) 实际公开，main受保护。旧PR #1含过期阶段记录，需核对后选择保留内容；本轮未合并或更改保护。现有冲刺计划继续作为排期参考，截止日期未在本轮重新核验。
+
+协调端Mac工作目录仍是文档控制副本，非完整代码checkout；测试使用远端准确提交的临时快照。交接必须核对实际HEAD、PR状态和未提交改动，修订号不能替代代码版本。新文档同步到独立 docs/workbuddy-structure-plan 分支；main暂不因此改变。
+
+真实模型额度与可用性、官方样例原件、浏览器验证和提交截图仍待执行核实。资源沿 [T004](tasks/T004-resources.md) 只补变化，不重问已确认事项。完成记录见 [历史](archive/LOG.md)；complete仅表示记录同步完成。
