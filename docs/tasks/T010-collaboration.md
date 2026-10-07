@@ -1,6 +1,6 @@
 # T010：建立 GitHub 协作仓库
 
-2026-10-06（Asia/Singapore）· 基线修订 6，交付修订 7 / CP-007 · 负责人：协调助手。仓库准备已完成；邀请待对方接受。
+2026-10-07（Asia/Singapore）· 首次交付于 2026-10-06，修订 7 / CP-007；当前配置引用修订 10 / CP-010 · 负责人：协调助手。初次仓库准备已完成；后续公开与保护变更见 T011。
 
 ## 目标与范围
 
@@ -13,11 +13,11 @@
 | 项目 | 核验结果 |
 |---|---|
 | 仓库 | [luoziming49-ops/ryde-hackathon](https://github.com/luoziming49-ops/ryde-hackathon) |
-| 可见性 / 默认分支 | private / main，已通过 GitHub 插件及网页核对 |
+| 可见性 / 默认分支 | public / main；后续变更与核验见 [T011](T011-branch-protection.md) |
 | 仓库所有者 | luoziming49-ops |
 | 协作者 | unknownAndy123（YAN XINYU）；用户提供的用户名与 GitHub 搜索结果一致，已发出普通协作者邀请 |
-| 邀请状态 | 所有者已完成邮箱身份验证；成员管理页显示 1 invitation、Pending Invite / Awaiting unknownAndy123’s response，尚未接受 |
-| 分支保护 | 未启用。后续套餐核验及用户取消设置的结果见 [T011](T011-branch-protection.md)；独立分支、PR 与另一名成员审阅继续为团队约定 |
+| 成员权限 | 最新 GitHub 权限接口确认 unknownAndy123 已具有 write，可提交分支并审阅 PR；首次邀请过程保留在 CP-007 |
+| 分支保护 | main 保留保护，管理员强制遵守已关闭；实际规则及核验完整维护在 [T011](T011-branch-protection.md) |
 | 本地同步方式 | 当前工作目录尚未初始化 Git；本次通过 GitHub 插件同步指定文档，后续成员可克隆仓库 |
 
 `ryde-hackathon` 是本次协作所用仓库名，不是经确认的产品名称。用户提供的私人联系地址不写入项目记录。
@@ -36,4 +36,4 @@
 
 ## 恢复与下一步
 
-邀请已发出，对方需以 unknownAndy123 登录 GitHub 并接受邀请；此次不等待对方即时响应，也不重复发送。收尾时核对 main 实际记录与本地修订 7 一致；本地目录没有自动上传机制。后续业务工作仍按 T009 与 T004 的任务包接续。
+成员权限已核验，不重复发送邀请。本地目录没有自动上传机制；后续记录通过分支与 PR 同步，普通成员需另一成员批准，管理员例外见 T011。业务工作仍按 T009 与 T004 的任务包接续。

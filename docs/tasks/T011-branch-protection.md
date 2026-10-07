@@ -1,33 +1,37 @@
-# T011：为 main 启用强制分支保护
+# T011：main 分支保护配置
 
-2026-10-06（Asia/Singapore）· 基线修订 7，记录修订 8 / CP-008 · 负责人：协调助手。用户已取消设置，main 未启用强制保护。
+2026-10-07（Asia/Singapore）· 基线修订 9，配置记录修订 10 / CP-010 · 负责人：协调助手。管理员强制遵守已关闭，普通成员保护保留；说明更新通过现有 PR 同步。
 
 ## 目标与授权范围
 
-用户明确要求添加强制分支保护。目标仓库为 [luoziming49-ops/ryde-hackathon](https://github.com/luoziming49-ops/ryde-hackathon)，保护 main；准备及保存保护规则属于本次授权，付费升级、公开仓库或迁移所有者需单独决定。产品阶段保持不变。
+用户先要求公开仓库并启用强制保护，随后要求“分支保护就行了不用强制”，并明确确认：仅关闭 `Do not allow bypassing the above settings`，让管理员可无需他人批准合并；普通成员的审批、防强制推送及防删除规则保留。不付费的偏好继续有效，仓库保持 public / main。
 
-可写范围：GitHub main 保护规则、docs/STATUS、TASKS、archive/LOG、本任务包及 T010 的配置引用。CONTRIBUTING 仅在强制执行确实生效后更新对应说明。
+可写范围：GitHub main 保护规则、docs/STATUS、TASKS、archive/LOG、本任务包及 T010 的配置引用、CONTRIBUTING、现有 PR #1 的说明。记录继续经 docs/public-main-protection 分支提交；本次没有合并 PR，没有改变业务阶段或开始产品开发。
 
-## 曾准备的规则与验收（未实施）
+## 当前规则与验收
 
-| 规则 | 目标 |
+| 规则 | 已保存配置 |
 |---|---|
-| 合并入口 | main 必须通过 Pull Request 修改 |
-| 审阅 | 至少 1 名有写入权限的另一位成员批准；新增修改后旧批准失效 |
-| 讨论 | 合并前解决所有审阅讨论 |
-| 管理员 | 同样执行保护，不设置绕过主体 |
-| 覆盖及删除 | 禁止强制推送、禁止删除 main |
+| 普通成员合并入口 | main 修改必须通过 Pull Request |
+| 普通成员审阅 | 至少 1 名有写入权限的另一位成员批准；新增修改撤销旧批准 |
+| 普通成员讨论 | 合并前解决所有审阅讨论 |
+| 管理员 | 不强制遵守上方 PR、审阅等要求，可选择绕过 |
+| 所有人的覆盖及删除 | 禁止强制推送、禁止删除 main |
 
-当前没有产品代码或 CI，不要求尚不存在的状态检查、签名或部署。
+当前没有产品代码或 CI，未要求状态检查、签名或部署。作者仍不能批准自己的 PR；管理员允许绕过审批合并，不代表已获得另一位成员的批准。普通成员保护不是仅供参考的约定，GitHub 仍强制执行。
 
-完成条件：保护设置保存、服务端回读规则一致、GitHub 套餐支持当前可见性的强制执行；不能仅凭配置存在或 protected 字段认定已强制生效。
+验收要求：保存规则后重新读取，确认仅管理员强制项关闭，其余要求与表格一致，main 仍受保护；不能仅凭未保存表单或 protected 字段判断各项设置。
 
-## 实际核验与阻塞
+## 当前核验
 
-- 2026-10-06，GitHub main API 返回 protected=false；读取规则集 API 返回 403，并明确要求升级 GitHub Pro 或将仓库设为公开。
-- 官方 [分支保护说明](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) 确认：Free 的公开仓库可用，私有仓库需要 Pro、Team 或 Enterprise。当前是个人账号仓库，无需仅为此迁入组织。
-- 仓库创建页仍显示当前私有仓库规则不会强制执行。已在未保存表单中准备 main、至少一人批准、修改后重新审阅、解决讨论及管理员不绕过；未点击 Create。
-- 用户随后明确表示不接受付费并取消设置。已清空分支名并撤下主要勾选项，Create 恢复禁用；服务端再次返回 protected=false。
-- 本轮未购买套餐、公开或迁移仓库，未保存保护规则；T011 从活动任务索引移出，取消检查点写入 CP-008。
+- 在 [main 规则](https://github.com/luoziming49-ops/ryde-hackathon/settings/branch_protection_rules/84317034) 取消管理员不可绕过选项后保存；GitHub 要求邮箱身份验证，用户自行完成，未收集或记录验证码。
+- GitHub 返回 `Branch protection rule settings saved.`。重新打开已保存的规则，适用于 main / 1 个分支；PR、一人批准、旧批准失效及讨论解决均启用，管理员强制项未勾选，force pushes / deletions 均未允许。
+- main 接口回读 protected=true，提交仍为 f5141ecac51ee35fba58785facc0b23a2c3c069d；main 的 STATUS 仍为修订 8。PR #1 仍 open、未合并，更新前分支头为 de7ee676c36f71f908db6af0f27cd1c7694fa3f0。
+- 插件的 administration 权限限制已在 CP-009 核验，完整保护字段由已保存页面回读；本次不反复请求已知无权限的接口。
+- 官方 [分支保护说明](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) 确认 Free 的公开仓库可用；关闭管理员不可绕过后，管理员可绕过上方限制。强制推送与删除选项属于页面明确注明的“适用于所有人，包括管理员”规则。
 
-当前不继续启用，也不继续核对付费流程。沿用 CONTRIBUTING 中的分支、PR 与相互审阅约定；仅在用户未来重新提出请求时再核验套餐条件。
+## 文档交接
+
+本地说明按修订 10 / CP-010 更新，通过 [docs/public-main-protection 分支](https://github.com/luoziming49-ops/ryde-hackathon/tree/docs/public-main-protection) 和 [PR #1](https://github.com/luoziming49-ops/ryde-hackathon/pull/1) 同步；main 的旧记录须在 PR 合并后才更新，实际规则以上述核验为准。管理员现在可自行选择合并，无需强制等待另一成员批准，本次只更新设置与 PR 说明。
+
+此前私有仓库设置取消、公开审查和首次强制保护的历史见 [CP-008–010](../archive/LOG.md)。成员权限及共享范围见 [T010](T010-collaboration.md)，操作见 [CONTRIBUTING](../../CONTRIBUTING.md)。业务工作仍为 T009 / T004。
