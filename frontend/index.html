@@ -410,18 +410,25 @@ function metaColor(agent) {
 
 function renderRuling(res) {
   const r = res.ruling;
-  const conf = Math.round((r.confidence ?? 0) * 100);
+  const confNull = (r.confidence == null);
+  const conf = confNull ? 0 : Math.round(r.confidence * 100);
   const color = conf >= 80 ? '#22d3a5' : conf >= 60 ? '#f5b942' : '#ff6b6b';
-  const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human' }[r.action] || r.action;
-  const gauge = `<svg width="150" height="150"><circle cx="75" cy="75" r="64" fill="none" stroke="#26304f" stroke-width="12"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
+  const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human', insufficient_evidence:'Insufficient Evidence' }[r.action] || r.action;
+  const gaugeSvg = `<svg width="150" height="150"><circle cx="75" cy="75" r="64" fill="none" stroke="#26304f" stroke-width="12"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
+  const gaugeHtml = confNull
+    ? `<div class="gauge"><div class="val" style="color:var(--muted);font-size:24px;">n/a</div></div>`
+    : `<div class="gauge">${gaugeSvg}<div class="val" style="color:${color}">${conf}%</div></div>`;
   const amountHtml = (r.amount != null) ? `<div class="amount">${r.currency} ${r.amount.toFixed(2)}</div>` : '';
   const pills = (r.matched_policy_ids||[]).map(p=>`<span class="pill">${esc(p)}</span>`).join('');
+  const missing = (r.missing_fields || []);
+  const missingHtml = missing.length ? `<div class="reason"><div class="lbl">Missing evidence</div>${missing.map(esc).join('<br>')}</div>` : '';
   $('#ruling').innerHTML = `
-    <div class="gauge">${gauge}<div class="val" style="color:${color}">${conf}%</div></div>
+    ${gaugeHtml}
     <div class="verdict">${esc(actionLabel)}</div>
     ${amountHtml}
     <div class="pills">${pills}</div>
     ${r.escalated ? '<div class="escalate">⚠ Escalated to human review</div>' : ''}
+    ${missingHtml}
     <div class="reason"><div class="lbl">Judge's reasoning</div>${esc(r.reasoning)}</div>
     ${(r.adjustment_notes||[]).length ? `<div class="reason"><div class="lbl">Risk adjustments</div>${r.adjustment_notes.map(esc).join('<br>')}</div>` : ''}
     <div class="hint">Resolved in ${res.duration_ms} ms · ${res.trace.length} observable agent steps</div>`;

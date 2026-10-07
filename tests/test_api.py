@@ -15,7 +15,12 @@ def test_health_endpoint(client):
 def test_list_disputes(client):
     r = client.get("/api/disputes")
     assert r.status_code == 200
-    assert len(r.json()) == 3
+    body = r.json()
+    # 3 internal sample cases + 1 official sample.
+    assert len(body) == 4
+    by_id = {d["case_id"]: d for d in body}
+    assert by_id["RYDE-2026-0001"]["source"] == "internal"
+    assert by_id["DISP-002"]["source"] == "official"
 
 
 def test_get_dispute(client):

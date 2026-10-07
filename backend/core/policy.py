@@ -74,7 +74,10 @@ class PolicyEngine:
             amount=0.0,
             confidence=0.5,
             matched_policy_ids=[],
-            explanation="Insufficient structured evidence; escalated for human review.",
+            explanation=(
+                f"Dispute category '{evidence.category}' is not supported by automated "
+                "resolution; escalated for human review."
+            ),
             escalate=True,
         )
 
@@ -169,6 +172,9 @@ class PolicyEngine:
         arrived = e.driver_arrived
         wait = e.driver_wait_min
         late = e.driver_late_min
+        # Per-ticket free-wait threshold overrides the global default (5 min)
+        # for this case only; the global config is never mutated.
+        free_wait = e.free_wait_min if e.free_wait_min is not None else 5.0
 
         if arrived is None or wait is None:
             # Defensive: should have been caught by the gaps check, but never crash.
@@ -200,13 +206,15 @@ class PolicyEngine:
                 explanation="Driver arrived more than 10 minutes late; fee waived.",
             )
 
-        if wait < 5:
+        if wait < free_wait:
             return PolicyDecision(
                 action=FULL_REFUND,
                 amount=e.cancellation_fee,
                 confidence=0.88,
                 matched_policy_ids=ids + ["NS-001.4"],
-                explanation="Driver waited less than 5 minutes before cancelling; fee refunded.",
+                explanation=(
+                    f"Driver waited less than {free_wait:.0f} minutes before cancelling; fee refunded."
+                ),
             )
 
         # Bug #4: NS-001.5 requires documented driver contact attempts.

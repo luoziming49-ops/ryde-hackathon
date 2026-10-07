@@ -22,8 +22,8 @@ class FraudDetectionAgent(BaseAgent):
     description = "Scores dispute-abuse risk per party and flags suspicious patterns."
 
     def analyze(self, dispute: dict, evidence: EvidenceAnalysis) -> dict[str, Any]:
-        rider = dispute.get("rider", {})
-        driver = dispute.get("driver", {})
+        rider = dispute.get("rider", {}) or {}
+        driver = dispute.get("driver", {}) or {}
 
         rider_risk = self._score(
             dispute_history=rider.get("dispute_history", 0),
@@ -47,6 +47,11 @@ class FraudDetectionAgent(BaseAgent):
         if evidence.category == "no_show" and evidence.driver_arrived is False and evidence.cancellation_fee > 0:
             flags.append("Cancellation fee charged despite driver never arriving — possible fee abuse.")
 
+        # Adapter-supplied per-party flags (e.g. official-ticket fraud signals).
+        for label, party in (("Rider", rider), ("Driver", driver)):
+            for flag in party.get("fraud_flags_list") or []:
+                flags.append(f"{label} fraud flag: {flag}")
+
         self.emit(
             "risk",
             f"Bad-faith risk: rider={rider_risk:.2f}, driver={driver_risk:.2f}.",
@@ -65,14 +70,17 @@ class FraudDetectionAgent(BaseAgent):
 
     @staticmethod
     def _high_rate(party: dict) -> bool:
-        trips = party.get("trips_completed", 0)
+        trips = party.get("trips_completed") or 0
         if trips < MIN_SAMPLE_TRIPS:
             return False
-        return (party.get("dispute_history", 0) / trips) >= HIGH_RATE_THRESHOLD
+        return ((party.get("dispute_history") or 0) / trips) >= HIGH_RATE_THRESHOLD
 
     @staticmethod
-    def _score(dispute_history: int, trips: int, account_age: int) -> float:
+    def _score(dispute_history, trips, account_age) -> float:
         """Per-party risk in [0, 1], based on dispute rate with a minimum sample."""
+        dispute_history = dispute_history or 0
+        trips = trips or 0
+        account_age = account_age or 0
         score = 0.0
         if trips >= MIN_SAMPLE_TRIPS:
             rate = dispute_history / trips
@@ -86,8 +94,8 @@ class FraudDetectionAgent(BaseAgent):
 
     @staticmethod
     def _rationale(party: dict, risk: float) -> str:
-        trips = party.get("trips_completed", 0)
-        disputes = party.get("dispute_history", 0)
+        trips = party.get("trips_completed") or 0
+        disputes = party.get("dispute_history") or 0
         if trips >= MIN_SAMPLE_TRIPS:
             rate = disputes / trips
             return f"{disputes} dispute(s) over {trips} trips ({rate:.2%} rate)."
