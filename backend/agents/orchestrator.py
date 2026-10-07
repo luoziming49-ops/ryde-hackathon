@@ -104,4 +104,5 @@ class DisputeOrchestrator:
             "ruling": ruling,
             "trace": [m.to_dict() for m in trace],
             "duration_ms": duration_ms,
+            "raw_app_events": dispute.get("raw_app_events"),
         }

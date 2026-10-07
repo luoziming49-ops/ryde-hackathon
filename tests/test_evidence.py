@@ -128,8 +128,8 @@ def test_driver_stop_disclosure_false_when_replied_after_rider_asked():
     dispute = _route_case(19.8, 28.4)
     dispute["trip"]["unexpected_stops"] = [{"dwell_min": 6.2}]
     dispute["chat_log"] = [
-        {"ts": "08:48", "from": "rider", "text": "We've stopped. Everything ok?"},
-        {"ts": "08:54", "from": "driver", "text": "Quick break, sorry."},
+        {"ts": "2026-09-20T08:48:00+08:00", "from": "rider", "text": "We've stopped. Everything ok?"},
+        {"ts": "2026-09-20T08:54:30+08:00", "from": "driver", "text": "Quick break, sorry."},
     ]
     result = analyze_evidence(dispute)
     assert result.driver_disclosed_stop is False
@@ -140,8 +140,8 @@ def test_driver_stop_disclosure_true_when_proactive():
     dispute = _route_case(19.8, 28.4)
     dispute["trip"]["unexpected_stops"] = [{"dwell_min": 6.2}]
     dispute["chat_log"] = [
-        {"ts": "08:40", "from": "driver", "text": "Need a quick toilet break, sorry."},
-        {"ts": "08:48", "from": "rider", "text": "Why are we stopped?"},
+        {"ts": "2026-09-20T08:40:00+08:00", "from": "driver", "text": "Need a quick toilet break, sorry."},
+        {"ts": "2026-09-20T08:48:00+08:00", "from": "rider", "text": "Why are we stopped?"},
     ]
     result = analyze_evidence(dispute)
     assert result.driver_disclosed_stop is True

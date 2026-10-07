@@ -32,8 +32,8 @@ class PolicyPrecedentAgent(BaseAgent):
         category = dispute.get("category", "")
         query = " ".join(
             [
-                dispute.get("rider", {}).get("claim", ""),
-                dispute.get("driver", {}).get("response", ""),
+                dispute.get("rider", {}).get("claim") or "",
+                dispute.get("driver", {}).get("response") or "",
                 category,
             ]
         )

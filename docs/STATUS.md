@@ -14,4 +14,4 @@
 
 ## 协作
 
-仓库：https://github.com/luoziming49-ops/ryde-hackathon（private / main）。团队按任务分支、PR 和相互审阅协作。工程规则见 [PROJECT_RULES.md](../PROJECT_RULES.md)。
+仓库：https://github.com/luoziming49-ops/ryde-hackathon（public / main）。团队按任务分支、PR 和相互审阅协作。工程规则见 [PROJECT_RULES.md](../PROJECT_RULES.md)。
