@@ -15,7 +15,11 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 
-from .adapters.official_ticket import is_official_ticket, normalize_official_ticket
+from .adapters.official_ticket import (
+    is_official_ticket,
+    normalize_official_ticket,
+    validate_official_ticket,
+)
 from .agents.orchestrator import DisputeOrchestrator
 from .core.config import load_dotenv
 from .core.llm import get_llm
@@ -118,6 +122,10 @@ def get_dispute(case_id: str) -> dict:
 def resolve_dispute(payload: dict = Body(...)) -> dict:
     # 1. Organiser's official ticket format.
     if is_official_ticket(payload):
+        try:
+            validate_official_ticket(payload)
+        except ValidationError as exc:
+            raise HTTPException(status_code=422, detail=jsonable_encoder(exc.errors())) from exc
         dispute = normalize_official_ticket(payload)
         return app.state.orchestrator.resolve(dispute)
 

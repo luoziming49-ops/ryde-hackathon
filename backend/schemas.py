@@ -14,13 +14,19 @@ same way.
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class _Base(BaseModel):
     model_config = ConfigDict(extra="allow", populate_by_name=True)
+
+
+# A monetary amount: non-negative and finite. ``None`` (missing / null) is
+# allowed and surfaces as an evidence gap downstream — never a silent 0.0.
+# Negative, NaN and ±Infinity are rejected (HTTP 422 at the API boundary).
+Money = Annotated[Optional[float], Field(ge=0, allow_inf_nan=False)]
 
 
 class Stop(_Base):
@@ -47,15 +53,15 @@ class Trip(_Base):
 
 class Fare(_Base):
     currency: Optional[str] = None
-    base_fare: Optional[float] = None
-    cancellation_fee: Optional[float] = None
+    base_fare: Money = None
+    cancellation_fee: Money = None
     surge_multiplier: Optional[float] = None
-    total_charged: Optional[float] = None
-    optimal_total_estimate: Optional[float] = None
-    distance_fare_actual: Optional[float] = None
-    distance_fare_optimal: Optional[float] = None
-    time_fare_actual: Optional[float] = None
-    time_fare_optimal: Optional[float] = None
+    total_charged: Money = None
+    optimal_total_estimate: Money = None
+    distance_fare_actual: Money = None
+    distance_fare_optimal: Money = None
+    time_fare_actual: Money = None
+    time_fare_optimal: Money = None
     promo_code: Optional[str] = None
 
 

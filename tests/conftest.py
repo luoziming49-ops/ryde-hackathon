@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
 import pytest
+
+# Force deterministic mode in the test process: never hit a real LLM endpoint.
+# (Set before ``backend.main`` is imported so ``load_dotenv`` / ``get_llm``
+# observe empty keys.)
+os.environ["OPENAI_API_KEY"] = ""
+os.environ["LLM_API_KEY"] = ""
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:

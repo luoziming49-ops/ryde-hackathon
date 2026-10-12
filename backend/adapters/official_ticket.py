@@ -16,6 +16,10 @@ import math
 from datetime import datetime
 from typing import Any, Optional
 
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+from ..schemas import Money
+
 # Official dispute_type -> internal category.
 TYPE_MAP: dict[str, str] = {
     "no_show_charge": "no_show",
@@ -23,6 +27,44 @@ TYPE_MAP: dict[str, str] = {
 
 # Arrival is within this distance of the pickup (metres) per NS-001.1/NS-001.2.
 ARRIVAL_RADIUS_M = 150.0
+
+
+class OfficialTripData(BaseModel):
+    """``trip_data`` section: an object with a non-negative, finite money field."""
+
+    model_config = ConfigDict(extra="allow")
+
+    cancellation_fee: Money = None
+
+
+class OfficialTicket(BaseModel):
+    """Shape validation for the organiser's official dispute-ticket format.
+
+    Structural rules (reject a malformed ticket with a clear 422 instead of a
+    500): ``dispute_ticket`` / ``trip_data`` / the two profiles must be
+    objects; ``chat_logs`` / ``app_events`` / ``gps_telemetry`` must be lists
+    of objects. Money fields are additionally constrained to be non-negative
+    and finite (see ``Money``). Unknown extra keys are preserved.
+    """
+
+    model_config = ConfigDict(extra="allow")
+
+    dispute_ticket: dict
+    trip_data: OfficialTripData = Field(default_factory=OfficialTripData)
+    rider_profile: dict = Field(default_factory=dict)
+    driver_profile: dict = Field(default_factory=dict)
+    chat_logs: list[dict] = Field(default_factory=list)
+    app_events: list[dict] = Field(default_factory=list)
+    gps_telemetry: list[dict] = Field(default_factory=list)
+    cancellation_policy: dict = Field(default_factory=dict)
+
+
+def validate_official_ticket(payload: dict) -> None:
+    """Validate ``payload`` as an official ticket, raising ``ValidationError``.
+
+    Callers turn the raised ``ValidationError`` into an HTTP 422.
+    """
+    OfficialTicket.model_validate(payload)
 
 
 def is_official_ticket(payload: dict) -> bool:

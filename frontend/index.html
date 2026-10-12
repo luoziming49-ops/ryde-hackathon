@@ -284,6 +284,11 @@ async function selectDispute(id) {
 
 function esc(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+// Null-safe display helpers: "not provided" for missing, "0.00" for real zeros.
+const NOT_PROVIDED = 'not provided';
+function fmtMoney(v) { return (v == null) ? NOT_PROVIDED : Number(v).toFixed(2); }
+function fmt(v) { return (v == null) ? NOT_PROVIDED : v; }
+
 function renderEvidence() {
   // Bug #10: tab listeners are bound ONCE at startup (see init()), not on every render.
   renderEvidenceTab('gps');
@@ -293,12 +298,15 @@ function renderEvidenceTab(tab) {
   const d = selectedData;
   const p = $('#evidencePanel');
   if (tab === 'gps') {
+    const t = d.trip || {};
+    const pk = t.pickup || {};
+    const dp = t.dropoff || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Pickup</span><span class="v">${esc(d.trip.pickup.name)}</span></div>
-      <div class="row"><span class="k">Dropoff</span><span class="v">${esc(d.trip.dropoff.name)}</span></div>
-      <div class="row"><span class="k">Distance</span><span class="v">${d.trip.actual_distance_km} km (optimal ${d.trip.optimal_distance_km} km)</span></div>
-      <div class="row"><span class="k">Duration</span><span class="v">${d.trip.actual_duration_min} min (est. ${d.trip.estimated_duration_min} min)</span></div>
-      <div class="row"><span class="k">Traffic detected</span><span class="v">${d.trip.traffic_detected ? 'Yes' : 'No'}</span></div>
+      <div class="row"><span class="k">Pickup</span><span class="v">${esc(pk.name ?? NOT_PROVIDED)}</span></div>
+      <div class="row"><span class="k">Dropoff</span><span class="v">${esc(dp.name ?? NOT_PROVIDED)}</span></div>
+      <div class="row"><span class="k">Distance</span><span class="v">${fmt(t.actual_distance_km)} km (optimal ${fmt(t.optimal_distance_km)} km)</span></div>
+      <div class="row"><span class="k">Duration</span><span class="v">${fmt(t.actual_duration_min)} min (est. ${fmt(t.estimated_duration_min)} min)</span></div>
+      <div class="row"><span class="k">Traffic detected</span><span class="v">${t.traffic_detected ? 'Yes' : 'No'}</span></div>
       <div class="map-wrap" style="margin-top:12px;">${routeMap(d)}</div>
       <div class="legend">
         <span><span style="width:12px;height:3px;background:#34d399;display:inline-block;"></span> Optimal route</span>
@@ -313,14 +321,14 @@ function renderEvidenceTab(tab) {
       </div>`).join('');
     p.innerHTML = `<div class="evt active"><div class="chat">${msgs || '<div class="empty">No chat log.</div>'}</div></div>`;
   } else if (tab === 'fare') {
-    const f = d.fare;
+    const f = d.fare || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Base fare</span><span class="v">${f.base_fare.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${f.distance_fare_actual.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${f.distance_fare_optimal.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Surge</span><span class="v">${f.surge_multiplier}×</span></div>
-      <div class="row"><span class="k">Total charged</span><span class="v">${f.total_charged.toFixed(2)} ${f.currency}</span></div>
-      <div class="row"><span class="k">Cancellation fee</span><span class="v">${f.cancellation_fee.toFixed(2)}</span></div>
+      <div class="row"><span class="k">Base fare</span><span class="v">${fmtMoney(f.base_fare)}</span></div>
+      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${fmtMoney(f.distance_fare_actual)}</span></div>
+      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${fmtMoney(f.distance_fare_optimal)}</span></div>
+      <div class="row"><span class="k">Surge</span><span class="v">${f.surge_multiplier == null ? NOT_PROVIDED : f.surge_multiplier + '×'}</span></div>
+      <div class="row"><span class="k">Total charged</span><span class="v">${fmtMoney(f.total_charged)} ${f.currency || ''}</span></div>
+      <div class="row"><span class="k">Cancellation fee</span><span class="v">${fmtMoney(f.cancellation_fee)}</span></div>
     </div>`;
   } else if (tab === 'history') {
     const r = d.rider, dr = d.driver;
@@ -337,9 +345,13 @@ function renderEvidenceTab(tab) {
 
 function routeMap(d) {
   const norm = arr => (arr || []).map(p => Array.isArray(p) ? p : [p.lat, p.lng]);
-  const opt = norm(d.gps.optimal_route);
-  const act = norm(d.gps.actual_route);
-  const stops = (d.trip.unexpected_stops || []).map(s => [s.lat, s.lng]);
+  const gps = d.gps || {};
+  const trip = d.trip || {};
+  const opt = norm(gps.optimal_route);
+  const act = norm(gps.actual_route);
+  const stops = (trip.unexpected_stops || [])
+    .filter(s => s && s.lat != null && s.lng != null)
+    .map(s => [s.lat, s.lng]);
   const pts = [...opt, ...act, ...stops];
   if (!pts.length) return '<div class="empty">No GPS route available.</div>';
   const lats = pts.map(p=>p[0]), lngs = pts.map(p=>p[1]);
@@ -354,8 +366,10 @@ function routeMap(d) {
   let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:#0d1428;border:1px solid var(--border);border-radius:10px;">`;
   svg += `<path d="${path(opt)}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4 3"/>`;
   svg += `<path d="${path(act)}" fill="none" stroke="#f87171" stroke-width="2.5"/>`;
-  svg += `<circle cx="${X(d.trip.pickup.lng)}" cy="${Y(d.trip.pickup.lat)}" r="4" fill="#4f8cff"/>`;
-  svg += `<circle cx="${X(d.trip.dropoff.lng)}" cy="${Y(d.trip.dropoff.lat)}" r="4" fill="#fff"/>`;
+  const pk = trip.pickup || {};
+  const dp = trip.dropoff || {};
+  if (pk.lat != null && pk.lng != null) svg += `<circle cx="${X(pk.lng)}" cy="${Y(pk.lat)}" r="4" fill="#4f8cff"/>`;
+  if (dp.lat != null && dp.lng != null) svg += `<circle cx="${X(dp.lng)}" cy="${Y(dp.lat)}" r="4" fill="#fff"/>`;
   stops.forEach(s => { svg += `<circle cx="${X(s[1])}" cy="${Y(s[0])}" r="5" fill="#f5b942" stroke="#0b0f1a" stroke-width="2"/>`; });
   svg += `</svg>`;
   return svg;
@@ -367,13 +381,25 @@ $('#resolveBtn').addEventListener('click', async () => {
   $('#pipeline').innerHTML = '<div class="empty">Dispatching agents…</div>';
   $('#ruling').innerHTML = '<div class="empty">Deliberating…</div>';
   try {
-    const res = await fetch('/api/resolve', {
+    const resp = await fetch('/api/resolve', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ case_id: selected })
-    }).then(r=>r.json());
+    });
+    if (!resp.ok) {
+      let msg = `Request failed (${resp.status})`;
+      try {
+        const err = await resp.json();
+        msg = (typeof err.detail === 'string') ? err.detail : JSON.stringify(err.detail || err);
+      } catch (_) { /* non-JSON error body */ }
+      $('#pipeline').innerHTML = `<div class="empty">Error: ${esc(msg)}</div>`;
+      $('#ruling').innerHTML = '<div class="empty">Ruling unavailable.</div>';
+      return;
+    }
+    const res = await resp.json();
     animateTrace(res.trace, () => renderRuling(res));
   } catch(e) {
     $('#pipeline').innerHTML = `<div class="empty">Error: ${esc(e.message)}</div>`;
+    $('#ruling').innerHTML = '<div class="empty">Ruling unavailable.</div>';
   } finally {
     btn.disabled = false; btn.textContent = '⚡ Resolve Dispute';
   }
