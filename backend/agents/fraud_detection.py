@@ -44,7 +44,7 @@ class FraudDetectionAgent(BaseAgent):
             flags.append("Driver has a high dispute rate.")
         if evidence.category == "route_deviation" and evidence.deviation_ratio is not None and evidence.deviation_ratio > 0.5:
             flags.append("Extreme route deviation — possible detour abuse.")
-        if evidence.category == "no_show" and evidence.driver_arrived is False and evidence.cancellation_fee > 0:
+        if evidence.category == "no_show" and evidence.driver_arrived is False and (evidence.cancellation_fee or 0.0) > 0:
             flags.append("Cancellation fee charged despite driver never arriving — possible fee abuse.")
 
         # Adapter-supplied per-party flags (e.g. official-ticket fraud signals).

@@ -118,8 +118,10 @@ class RiderAdvocateAgent(AdvocateAgent):
                     f"Driver never arrived — closest approach was {e.driver_arrival_distance_m:.0f} m from pickup."
                 )
             wait_str = f"{e.driver_wait_min:.0f} min" if e.driver_wait_min is not None else "an unknown duration"
-            points.append(f"Driver waited {wait_str} and was {e.driver_late_min:.0f} min late.")
-            points.append(f"Rider was charged a {format_money(e.cancellation_fee)} cancellation fee.")
+            late_str = f"{e.driver_late_min:.0f} min" if e.driver_late_min is not None else "an unknown duration"
+            points.append(f"Driver waited {wait_str} and was {late_str} late.")
+            fee_str = format_money(e.cancellation_fee) if e.cancellation_fee is not None else "a (undocumented) cancellation fee"
+            points.append(f"Rider was charged {fee_str}.")
         return points
 
     def _desired_outcome(self, dispute: dict, e: EvidenceAnalysis) -> str:

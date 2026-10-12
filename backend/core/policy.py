@@ -55,6 +55,17 @@ class PolicyEngine:
                 missing_fields=list(evidence.gaps),
             )
 
+        # Conflicting evidence escalates rather than silently picking one source.
+        if evidence.conflicts:
+            return PolicyDecision(
+                action=ESCALATE,
+                amount=0.0,
+                confidence=0.5,
+                matched_policy_ids=[],
+                explanation="Conflicting evidence: " + "; ".join(evidence.conflicts),
+                escalate=True,
+            )
+
         if evidence.category == "route_deviation":
             return self._decide_route_deviation(evidence)
         if evidence.category == "no_show":
@@ -176,18 +187,19 @@ class PolicyEngine:
         # for this case only; the global config is never mutated.
         free_wait = e.free_wait_min if e.free_wait_min is not None else 5.0
 
-        if arrived is None or wait is None:
+        if arrived is None:
             # Defensive: should have been caught by the gaps check, but never crash.
             return PolicyDecision(
                 action=INSUFFICIENT_EVIDENCE,
                 amount=0.0,
                 confidence=0.0,
                 matched_policy_ids=ids,
-                explanation="Insufficient evidence to decide no-show; missing arrival or wait data.",
+                explanation="Insufficient evidence to decide no-show; missing arrival data.",
                 escalate=True,
                 missing_fields=list(e.gaps),
             )
 
+        # The driver never arrived: wait/lateness are irrelevant (fix 2).
         if not arrived:
             return PolicyDecision(
                 action=FULL_REFUND,
@@ -195,6 +207,18 @@ class PolicyEngine:
                 confidence=0.95,
                 matched_policy_ids=ids + ["NS-001.2"],
                 explanation="Driver never arrived within 150 m of pickup; cancellation fee fully refunded.",
+            )
+
+        if wait is None or late is None:
+            # Defensive: should have been caught by the gaps check, but never crash.
+            return PolicyDecision(
+                action=INSUFFICIENT_EVIDENCE,
+                amount=0.0,
+                confidence=0.0,
+                matched_policy_ids=ids,
+                explanation="Insufficient evidence to decide no-show; missing wait or lateness data.",
+                escalate=True,
+                missing_fields=list(e.gaps),
             )
 
         if late > 10:

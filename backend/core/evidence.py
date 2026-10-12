@@ -33,8 +33,8 @@ class EvidenceAnalysis:
     # Fare
     excess_distance_fare: float = 0.0
     surge_refund: float = 0.0
-    base_fare: float = 0.0
-    cancellation_fee: float = 0.0
+    base_fare: Optional[float] = None
+    cancellation_fee: Optional[float] = None
     total_charged: float = 0.0
     optimal_total_estimate: float = 0.0
     # Behavioural
@@ -48,6 +48,7 @@ class EvidenceAnalysis:
     driver_stop_mentions: int = 0
     # Evidence completeness
     gaps: list[str] = field(default_factory=list)
+    conflicts: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -64,8 +65,8 @@ def analyze_evidence(dispute: dict) -> EvidenceAnalysis:
 
     analysis = EvidenceAnalysis(
         category=category,
-        base_fare=_to_float(fare.get("base_fare")) or 0.0,
-        cancellation_fee=_to_float(fare.get("cancellation_fee")) or 0.0,
+        base_fare=_to_float(fare.get("base_fare")),
+        cancellation_fee=_to_float(fare.get("cancellation_fee")),
         total_charged=_to_float(fare.get("total_charged")) or 0.0,
         optimal_total_estimate=_to_float(fare.get("optimal_total_estimate")) or 0.0,
         rider_dispute_history=_to_int(rider.get("dispute_history")),
@@ -238,9 +239,22 @@ def _analyze_route_deviation(a: EvidenceAnalysis, trip: dict, fare: dict, gps: d
     a.duration_delta_min = (act_dur - est_dur) if (act_dur is not None and est_dur is not None) else None
 
     # Fare deltas.
-    dist_actual = _to_float(fare.get("distance_fare_actual")) or 0.0
-    dist_optimal = _to_float(fare.get("distance_fare_optimal")) or 0.0
-    a.excess_distance_fare = round(max(0.0, dist_actual - dist_optimal), 2)
+    dist_actual = _to_float(fare.get("distance_fare_actual"))
+    dist_optimal = _to_float(fare.get("distance_fare_optimal"))
+
+    # Money fields the route-deviation rule needs: a null/missing value is an
+    # evidence gap, never a silent 0.0 (a genuine 0 is still valid).
+    if a.base_fare is None:
+        a.gaps.append("fare.base_fare")
+    if dist_actual is None:
+        a.gaps.append("fare.distance_fare_actual")
+    if dist_optimal is None:
+        a.gaps.append("fare.distance_fare_optimal")
+
+    if dist_actual is not None and dist_optimal is not None:
+        a.excess_distance_fare = round(max(0.0, dist_actual - dist_optimal), 2)
+    else:
+        a.excess_distance_fare = 0.0  # not used: gaps force escalation first
 
     # A non-numeric surge multiplier is an evidence gap, never a silent 1.0.
     surge_raw = fare.get("surge_multiplier")
@@ -274,6 +288,16 @@ def _analyze_no_show(a: EvidenceAnalysis, trip: dict, fare: dict, gps: dict) -> 
     arrived_flag = arrival.get("arrived")
     wait = _to_float(arrival.get("wait_time_min"))
     late = _to_float(arrival.get("late_min"))
+    conflict = arrival.get("conflict")
+
+    # The cancellation_fee is the decisive money field for no-show refunds: a
+    # null/missing value is an evidence gap, never a silent 0.0.
+    if a.cancellation_fee is None:
+        a.gaps.append("fare.cancellation_fee")
+
+    # An arrival-time conflict escalates instead of silently picking a source.
+    if conflict:
+        a.conflicts.append(str(conflict))
 
     # An explicit "arrived" boolean (from the official-ticket adapter) wins;
     # otherwise arrival is derived from the closest-approach distance.
@@ -289,13 +313,23 @@ def _analyze_no_show(a: EvidenceAnalysis, trip: dict, fare: dict, gps: dict) -> 
         a.driver_arrival_distance_m = None
         a.driver_arrived = None
 
+    # Wait time is decisive only when the driver actually arrived (or arrival is
+    # unknown); when the driver never arrived it is irrelevant (fix 2).
     if wait is None:
-        a.gaps.append("gps.driver_arrival.wait_time_min")
         a.driver_wait_min = None
+        if a.driver_arrived is not False:
+            a.gaps.append("gps.driver_arrival.wait_time_min")
     else:
         a.driver_wait_min = wait
 
-    a.driver_late_min = late if late is not None else 0.0
+    # Lateness is unknown (not 0) when missing; it is a gap only when the
+    # decision depends on it (i.e. the driver arrived) — fix 3.
+    if late is None:
+        a.driver_late_min = None
+        if a.driver_arrived is True:
+            a.gaps.append("gps.driver_arrival.late_min")
+    else:
+        a.driver_late_min = late
 
     if a.driver_arrived is None:
         a.notes.append("Driver arrival status could not be determined (missing GPS arrival data).")
@@ -307,4 +341,5 @@ def _analyze_no_show(a: EvidenceAnalysis, trip: dict, fare: dict, gps: dict) -> 
             "(did NOT arrive)."
         )
     wait_str = f"{a.driver_wait_min:.0f} min" if a.driver_wait_min is not None else "unknown"
-    a.notes.append(f"Driver waited {wait_str} and was {a.driver_late_min:.0f} min late.")
+    late_str = f"{a.driver_late_min:.0f} min" if a.driver_late_min is not None else "unknown"
+    a.notes.append(f"Driver waited {wait_str} and was {late_str} late.")

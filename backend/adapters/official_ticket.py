@@ -12,6 +12,7 @@ clear reason) rather than crashing, and missing sections fall back to defaults.
 
 from __future__ import annotations
 
+import math
 from datetime import datetime
 from typing import Any, Optional
 
@@ -19,6 +20,9 @@ from typing import Any, Optional
 TYPE_MAP: dict[str, str] = {
     "no_show_charge": "no_show",
 }
+
+# Arrival is within this distance of the pickup (metres) per NS-001.1/NS-001.2.
+ARRIVAL_RADIUS_M = 150.0
 
 
 def is_official_ticket(payload: dict) -> bool:
@@ -57,8 +61,9 @@ def normalize_official_ticket(ticket: dict) -> dict:
         },
         "fare": {
             "currency": "SGD",
-            "cancellation_fee": _to_float(trip.get("cancellation_fee")) or 0.0,
-            "base_fare": 0.0,
+            # Leave a missing/null cancellation_fee missing: the evidence engine
+            # turns it into an evidence gap, it is never silently 0.0.
+            "cancellation_fee": _to_float(trip.get("cancellation_fee")),
         },
         "chat_log": [_normalize_chat(c) for c in chats],
         "raw_app_events": events,
@@ -66,16 +71,7 @@ def normalize_official_ticket(ticket: dict) -> dict:
     }
 
     if category == "no_show":
-        arrived, arrival_time = _derive_arrival(events, gps)
-        wait_min = _wait_minutes(trip, arrival_time)
-        late_min = _late_minutes(trip, arrival_time)
-        normalized["gps"] = {
-            "driver_arrival": {
-                "arrived": arrived,
-                "wait_time_min": wait_min,
-                "late_min": late_min,
-            }
-        }
+        normalized["gps"] = {"driver_arrival": _derive_no_show_gps(trip, events, gps)}
     else:
         # Unknown / unsupported type: the policy engine escalates it with a
         # clear reason (category is surfaced in the explanation). No crash.
@@ -138,28 +134,120 @@ def _normalize_chat(entry: dict) -> dict:
     }
 
 
-def _derive_arrival(events: list[dict], telemetry: list[dict]) -> tuple[Optional[bool], Optional[datetime]]:
-    """Driver arrival from ``app_events``, else from ``gps_telemetry`` status."""
+def _derive_no_show_gps(trip: dict, events: list[dict], telemetry: list[dict]) -> dict:
+    """Build the internal ``gps.driver_arrival`` dict for a no-show ticket.
+
+    One resolved arrival time is used for both wait and lateness (fix 3).
+    """
+    arrived, closest = _derive_arrival(trip, events, telemetry)
+    arrival_time, conflict = _resolve_arrival_time(trip, events, telemetry)
+    wait_min = _wait_minutes(trip, arrival_time)
+    late_min = _late_minutes(trip, arrival_time)
+    result: dict[str, Any] = {
+        "arrived": arrived,
+        "wait_time_min": wait_min,
+        "late_min": late_min,
+    }
+    if closest is not None:
+        result["closest_distance_to_pickup_m"] = closest
+    if conflict:
+        result["conflict"] = conflict
+    return result
+
+
+def _event_arrival_time(events: list[dict], telemetry: list[dict]) -> Optional[datetime]:
+    """The arrival timestamp from a ``driver_arrived`` event or telemetry status."""
     for e in events:
         if e.get("event_type") == "driver_arrived":
-            return True, _parse_dt(e.get("timestamp"))
+            return _parse_dt(e.get("timestamp"))
     for p in telemetry:
         if p.get("status") in ("arrived", "waiting"):
-            return True, _parse_dt(p.get("timestamp"))
+            return _parse_dt(p.get("timestamp"))
+    return None
+
+
+def _derive_arrival(trip: dict, events: list[dict], telemetry: list[dict]) -> tuple[Optional[bool], Optional[float]]:
+    """Return ``(arrived, closest_distance_to_pickup_m)``.
+
+    ``arrived`` is ``True``/``False``/``None`` (``None`` = unknown).
+    """
+    # 1. Explicit arrival via an app event or telemetry status.
+    for e in events:
+        if e.get("event_type") == "driver_arrived":
+            return True, None
+    for p in telemetry:
+        if p.get("status") in ("arrived", "waiting"):
+            return True, None
+
+    # 2. No explicit arrival: derive from the closest telemetry approach.
+    pickup = trip.get("pickup_location") or {}
+    pickup_lat = _to_float(pickup.get("lat"))
+    pickup_lng = _to_float(pickup.get("lng"))
+    cancellation = _parse_dt(trip.get("cancellation_time"))
+
+    if telemetry:
+        closest: Optional[float] = None
+        latest_ts: Optional[datetime] = None
+        for p in telemetry:
+            ts = _parse_dt(p.get("timestamp"))
+            if ts is not None and (latest_ts is None or ts > latest_ts):
+                latest_ts = ts
+            d = _haversine(pickup_lat, pickup_lng, _to_float(p.get("lat")), _to_float(p.get("lng")))
+            if d is not None and (closest is None or d < closest):
+                closest = d
+        if closest is not None:
+            if closest <= ARRIVAL_RADIUS_M:
+                return True, closest
+            # Closest > 150 m. Conclusive only if telemetry covers up to the
+            # cancellation moment (otherwise the driver might have arrived after
+            # the last tracked point).
+            if cancellation is None or latest_ts is None or latest_ts >= cancellation:
+                return False, closest
+            return None, None
+
+    # 3. No telemetry and no explicit arrival event -> unknown (gap).
     return None, None
 
 
+def _resolve_arrival_time(trip: dict, events: list[dict], telemetry: list[dict]) -> tuple[Optional[datetime], Optional[str]]:
+    """Resolve a single arrival time for wait + lateness.
+
+    Returns ``(arrival_time, conflict_note)``. A conflict is recorded when
+    ``trip_data.driver_arrival_time`` and the app-event arrival timestamp differ
+    by more than 2 minutes, instead of silently picking one.
+    """
+    trip_arrival = _parse_dt(trip.get("driver_arrival_time"))
+    event_arrival = _event_arrival_time(events, telemetry)
+
+    if trip_arrival is not None and event_arrival is not None:
+        diff_min = abs((trip_arrival - event_arrival).total_seconds()) / 60.0
+        if diff_min > 2.0:
+            conflict = (
+                f"arrival time conflict: trip_data {trip_arrival.isoformat()} "
+                f"vs app_events {event_arrival.isoformat()}"
+            )
+            return event_arrival, conflict
+
+    resolved = event_arrival if event_arrival is not None else trip_arrival
+    if resolved is None:
+        resolved = _parse_dt(trip.get("driver_wait_start"))
+    return resolved, None
+
+
 def _wait_minutes(trip: dict, arrival_time: Optional[datetime]) -> Optional[float]:
-    wait_start = _parse_dt(trip.get("driver_wait_start")) or _parse_dt(trip.get("driver_arrival_time"))
+    """Wait time = cancellation_time − (single resolved) arrival time."""
+    wait_start = arrival_time
+    if wait_start is None:
+        wait_start = _parse_dt(trip.get("driver_wait_start")) or _parse_dt(trip.get("driver_arrival_time"))
     cancellation = _parse_dt(trip.get("cancellation_time"))
     return _minutes_between(cancellation, wait_start)
 
 
-def _late_minutes(trip: dict, arrival_time: Optional[datetime]) -> float:
+def _late_minutes(trip: dict, arrival_time: Optional[datetime]) -> Optional[float]:
     scheduled = _parse_dt(trip.get("scheduled_time"))
     delta = _minutes_between(arrival_time, scheduled)
     if delta is None:
-        return 0.0
+        return None  # unknown (missing scheduled_time / arrival), NOT 0
     return max(0.0, delta)
 
 
@@ -181,6 +269,18 @@ def _minutes_between(later: Optional[datetime], earlier: Optional[datetime]) -> 
     if later is None or earlier is None:
         return None
     return (later - earlier).total_seconds() / 60.0
+
+
+def _haversine(lat1: Optional[float], lng1: Optional[float], lat2: Optional[float], lng2: Optional[float]) -> Optional[float]:
+    """Great-circle distance in metres, or ``None`` if any coordinate is missing."""
+    if None in (lat1, lng1, lat2, lng2):
+        return None
+    r = 6371000.0  # Earth radius, metres
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlmb = math.radians(lng2 - lng1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dlmb / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(a))
 
 
 def _to_float(value: Any) -> Optional[float]:
