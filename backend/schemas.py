@@ -14,7 +14,7 @@ same way.
 
 from __future__ import annotations
 
-from typing import Annotated, Any, Optional
+from typing import Annotated, Any, Literal, Optional
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
 
@@ -27,6 +27,7 @@ def _not_boolean(value: Any) -> Any:
 
 Money = Annotated[float, BeforeValidator(_not_boolean), Field(ge=0, allow_inf_nan=False)]
 Count = Annotated[int, BeforeValidator(_not_boolean), Field(ge=0)]
+RouteConsent = Literal["agreed", "not_agreed", "unknown"]
 
 
 class _Base(BaseModel):
@@ -84,6 +85,8 @@ class Party(_Base):
     name: Optional[str] = None
     claim: Optional[str] = None
     response: Optional[str] = None
+    # A party's report, including oral agreement; never independent verification.
+    route_consent: RouteConsent = "unknown"
     dispute_history: Optional[int] = None
     trips_completed: Optional[int] = None
     account_age_days: Optional[int] = None
@@ -189,6 +192,7 @@ class OfficialProfile(_Base):
     rider_id: Optional[str] = None
     driver_id: Optional[str] = None
     name: Optional[str] = None
+    route_consent: RouteConsent = "unknown"
     account_age_days: Optional[Count] = None
     total_trips: Optional[Count] = None
     avg_rating: Optional[Money] = None

@@ -13,17 +13,21 @@ def finish(client, run_id):
     ('success', 'ok', 1), ('rider_rejected', 'rejected', 2),
     ('retry_success', 'ok', 2), ('provider_error', 'error', 1),
 ])
-def test_simulation_pipeline_runs_without_network(client, monkeypatch, scenario, expected_status, attempts):
+@pytest.mark.parametrize("case_id,action,amount", [
+    ("RYDE-2026-0001", "insufficient_evidence", None),
+    ("DEMO-ORAL-NOT-AGREED", "partial_refund", 7.87),
+])
+def test_simulation_pipeline_runs_without_network(client, monkeypatch, scenario, expected_status, attempts, case_id, action, amount):
     monkeypatch.setenv('OPENAI_API_KEY', 'must-never-leave-process')
     monkeypatch.setattr('backend.core.llm.requests.post', lambda *a, **k: pytest.fail('Network forbidden'))
-    response = client.post('/api/runs', json={'case_id': 'RYDE-2026-0001', 'scenario': scenario})
+    response = client.post('/api/runs', json={'case_id': case_id, 'scenario': scenario})
     assert response.status_code == 202
     run_id = response.json()['run_id']
     snapshot = finish(client, run_id)
     assert snapshot['status'] == 'completed'
     result = snapshot['result']
     assert result['run_id'] == run_id
-    assert result['ruling']['amount'] == 7.87
+    assert (result['ruling']['action'], result['ruling']['amount']) == (action, amount)
     assert result['execution'] == {'mode': 'simulation', 'scenario': scenario}
     assert result['agent_results']['rider']['status'] == expected_status
     assert result['agent_results']['rider']['attempts'] == attempts

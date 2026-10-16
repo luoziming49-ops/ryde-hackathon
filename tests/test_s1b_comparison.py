@@ -75,6 +75,8 @@ def _never_arrived_ticket() -> dict:
 def test_null_base_fare_on_route_deviation_escalates(disputes, policies, config):
     case = copy.deepcopy(next(d for d in disputes if d["case_id"] == "RYDE-2026-0001"))
     case["fare"]["base_fare"] = None
+    for party in ("rider", "driver"):
+        case[party]["route_consent"] = "not_agreed"
     decision = apply_policy(analyze_evidence(case), policies, config)
     assert decision.action == INSUFFICIENT_EVIDENCE
     assert decision.escalate is True
@@ -93,7 +95,7 @@ def test_null_cancellation_fee_on_no_show_escalates(disputes, policies, config):
 def test_null_distance_fare_on_route_deviation_escalates(policies, config):
     dispute = {
         "category": "route_deviation",
-        "trip": {"optimal_distance_km": 10.0, "actual_distance_km": 12.0},
+        "trip": {"optimal_distance_km": 10.0, "actual_distance_km": 12.0, "traffic_detected": False},
         "fare": {
             "base_fare": 3.0,
             "distance_fare_actual": None,
@@ -102,8 +104,8 @@ def test_null_distance_fare_on_route_deviation_escalates(policies, config):
         },
         "gps": {},
         "chat_log": [],
-        "rider": {},
-        "driver": {},
+        "rider": {"route_consent": "not_agreed"},
+        "driver": {"route_consent": "not_agreed"},
     }
     decision = apply_policy(analyze_evidence(dispute), policies, config)
     assert decision.action == INSUFFICIENT_EVIDENCE

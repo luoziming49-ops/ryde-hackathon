@@ -351,6 +351,92 @@ async function main() {
     await liveTest(scenario);
   } else if (scenario.startsWith('simulation_')) {
     await simulationTest(scenario);
+  } else if (scenario === 'consent_input_statements') {
+    setCase({category: 'route_deviation', rider: {route_consent: 'agreed'}, driver: {route_consent: 'not_agreed'}});
+    run("renderEvidenceTab('gps')");
+    assert.match(panel(), /Route consent/i);
+    assert.equal(rowValue(panel(), 'Rider statement'), 'Agreed');
+    assert.equal(rowValue(panel(), 'Driver statement'), 'Did not agree');
+    assert.match(panel(), /not independently verified/i);
+    assert.doesNotMatch(panel(), /Statements consistent|consent verified/i);
+  } else if (scenario === 'consent_missing_statements') {
+    setCase({category: 'route_deviation', rider: {}, driver: {route_consent: '<img src=x>'}});
+    run("renderEvidenceTab('gps')");
+    assert.equal(rowValue(panel(), 'Rider statement'), 'Unknown');
+    assert.equal(rowValue(panel(), 'Driver statement'), 'Unknown');
+    assert.doesNotMatch(panel(), /<img|undefined|NaN/);
+  } else if (scenario === 'consent_original_text') {
+    setCase({category: 'route_deviation', rider: {claim: 'I agreed to the route <or did I?>'},
+      driver: {response: 'Rider said "yes" <img src=x onerror="alert(1)">'}});
+    run("renderEvidenceTab('gps')");
+    assert.match(panel(), /I agreed to the route &lt;or did I\?&gt;/);
+    assert.match(panel(), /Rider said &quot;yes&quot; &lt;img/);
+    assert.equal(rowValue(panel(), 'Rider statement'), 'Unknown', 'free text must not infer structured consent');
+    assert.equal(rowValue(panel(), 'Driver statement'), 'Unknown', 'free text must not infer structured consent');
+    assert.doesNotMatch(panel(), /<img|<or did/);
+  } else if (scenario.startsWith('consent_result_')) {
+    const fixtures = {
+      consent_result_consistent_agreed: ['agreed', 'agreed', 'consistent', 'agreed', 'Statements consistent', 'Agreed', 'Agreed'],
+      consent_result_consistent_not_agreed: ['not_agreed', 'not_agreed', 'consistent', 'not_agreed', 'Statements consistent', 'Did not agree', 'Did not agree'],
+      consent_result_conflicting: ['agreed', 'not_agreed', 'conflicting', null, 'Statements conflicting', 'Agreed', 'Did not agree'],
+      consent_result_unconfirmed: ['unknown', 'agreed', 'unconfirmed', null, 'Statements unconfirmed', 'Unknown', 'Agreed'],
+      consent_result_legacy: [undefined, undefined, undefined, undefined, 'Statements unconfirmed', 'Unknown', 'Unknown'],
+    };
+    const [rider, driver, state, consistent, label, riderLabel, driverLabel] = fixtures[scenario];
+    setCase({category: 'route_deviation', rider: {route_consent: 'not_agreed'}, driver: {route_consent: 'not_agreed'}});
+    const response = rulingResponse({evidence: {category: 'route_deviation', rider_route_consent: rider,
+      driver_route_consent: driver, consent_report_state: state, consent_consistent_value: consistent}});
+    renderResponse(response);
+    const markup = element('#ruling').innerHTML;
+    assert.match(markup, new RegExp(label));
+    assert.equal(rowValue(markup, 'Rider statement'), riderLabel);
+    assert.equal(rowValue(markup, 'Driver statement'), driverLabel);
+    assert.match(markup, /not independently verified/i);
+    assert.doesNotMatch(markup, /consent verified|agreement verified/i);
+  } else if (scenario === 'review_questions_escape') {
+    const response = rulingResponse({evidence: {category: 'route_deviation', rider_route_consent: '<img src=rider>',
+      driver_route_consent: '<script>driver</script>', consent_report_state: '<svg onload=alert(1)>',
+      consent_consistent_value: '<img src=consistent>'}});
+    response.ruling.review_questions = ['Did the rider agree to <this route>?', '<img src=x onerror="alert(1)">'];
+    renderResponse(response);
+    const markup = element('#ruling').innerHTML;
+    assert.match(markup, /Questions to verify/i);
+    assert.match(markup, /Did the rider agree to &lt;this route&gt;\?/);
+    assert.match(markup, /&lt;img src=x onerror=&quot;alert\(1\)&quot;&gt;/);
+    assert.match(markup, /Statements unconfirmed/);
+    assert.doesNotMatch(markup, /<img|<script|<svg onload/);
+  } else if (scenario === 'review_questions_absent') {
+    for (const value of [undefined, null, [], 'not an array']) {
+      const response = rulingResponse();
+      response.ruling.review_questions = value;
+      renderResponse(response);
+      assert.doesNotMatch(element('#ruling').innerHTML, /Questions to verify|undefined|NaN/);
+      assert.match(element('#ruling').innerHTML, /Partial Refund/);
+    }
+  } else if (scenario === 'review_flag_no_dispatch') {
+    const response = rulingResponse();
+    Object.assign(response.ruling, {action: 'insufficient_evidence', amount: null, confidence: null, escalated: true,
+      review_questions: ['Confirm the route consent with both parties.']});
+    renderResponse(response);
+    const markup = element('#ruling').innerHTML;
+    assert.match(markup, /Flagged for human review/i);
+    assert.match(markup, /no support case has been dispatched/i);
+    assert.match(markup, /Confirm the route consent with both parties/);
+    assert.doesNotMatch(markup, /SGD 0\.00|class="amount"|Escalated to human review/);
+  } else if (scenario === 'consent_no_show') {
+    setCase({category: 'no_show', rider: {route_consent: 'agreed'}, driver: {route_consent: 'agreed'}});
+    run("renderEvidenceTab('gps')");
+    assert.doesNotMatch(panel(), /Route consent|Rider statement|Driver statement/);
+    renderResponse(rulingResponse({evidence: {category: 'no_show', consent_report_state: 'unconfirmed'}}));
+    assert.doesNotMatch(element('#ruling').innerHTML, /Route consent|Statements unconfirmed/);
+  } else if (scenario === 'gps_input_provenance') {
+    setCase({category: 'route_deviation', trip: {actual_distance_km: 12, optimal_distance_km: 10, traffic_detected: true},
+      gps: {actual_route: [[1.30, 103.8], [1.31, 103.81]]}});
+    run("renderEvidenceTab('gps')");
+    assert.match(panel(), /Route sketch from supplied coordinates/i);
+    assert.match(panel(), /Distance and traffic are case-file inputs, not map-verified/i);
+    assert.equal(rowValue(panel(), 'Distance'), '12 km (optimal 10 km)');
+    assert.equal(rowValue(panel(), 'Traffic detected'), 'Yes');
   } else if (scenario === 'official_tabs') {
     setCase(input);
     for (const tab of ['gps', 'chat', 'fare', 'history']) {

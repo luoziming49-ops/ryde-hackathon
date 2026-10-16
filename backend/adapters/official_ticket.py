@@ -117,6 +117,7 @@ def _party(profile: dict, rider_id_key: str) -> dict:
     party: dict[str, Any] = {
         "id": profile.get(rider_id_key),
         "name": profile.get("name"),
+        "route_consent": profile.get("route_consent", "unknown"),
         "dispute_history": _dispute_history_int(profile),
         "trips_completed": _to_int(profile.get("total_trips")),
         "account_age_days": _to_int(profile.get("account_age_days")),

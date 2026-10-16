@@ -1,9 +1,8 @@
-"""Judge Agent (core).
+"""Judge Agent for the hackathon demo.
 
-Impartial arbitrator: weighs both advocates' cases, applies company policy,
-considers fraud signals and precedent, and issues a final ruling (refund /
-compensation / no action) with a confidence score and a natural-language
-explanation. Falls back to human escalation when confidence is low.
+Applies the local demonstration rules and escalation checks, then selects
+catalog evidence for a controlled explanation. Party reports remain reports;
+the model neither verifies oral consent nor controls the monetary calculation.
 """
 
 from __future__ import annotations
@@ -94,7 +93,7 @@ class JudgeAgent(BaseAgent):
             escalate = True
             action = ESCALATE
             adjustment_notes.append(
-                f"Confidence {confidence:.2f} below threshold {ESCALATION_THRESHOLD}; escalating to human review."
+                f"Confidence {confidence:.2f} below threshold {ESCALATION_THRESHOLD}; flagged for human review. No support case has been dispatched."
             )
         else:
             escalate = False
@@ -111,6 +110,7 @@ class JudgeAgent(BaseAgent):
             "escalated": escalate,
             "matched_policy_ids": decision.matched_policy_ids,
             "missing_fields": decision.missing_fields,
+            "review_questions": list(decision.review_questions),
             "reasoning_source": "verified_template",
             "adjustment_notes": adjustment_notes,
         }
@@ -149,7 +149,7 @@ class JudgeAgent(BaseAgent):
 
     def _verdict_line(self, ruling: dict) -> str:
         if ruling["escalated"]:
-            return f"Escalating to human review ({ruling['action']})."
+            return f"Flagged for human review ({ruling['action']}). No support case has been dispatched."
         action = ruling["action"].replace("_", " ").title()
         if ruling["amount"]:
             return f"Ruling: {action} of {format_money(ruling['amount'])} (confidence {self._fmt_conf(ruling['confidence'])})."
@@ -157,7 +157,7 @@ class JudgeAgent(BaseAgent):
 
     def _verified_reasoning(self, ruling, decision, selected, evidence) -> str:
         if ruling["escalated"]:
-            text = f"Escalated to human review ({ruling['action']}). No automatic payment has been applied."
+            text = f"Flagged for human review ({ruling['action']}). No support case has been dispatched. No automatic payment has been applied."
             if ruling["missing_fields"]:
                 text += " Missing or conflicting evidence: " + ", ".join(ruling["missing_fields"]) + "."
             elif decision.action == ruling["action"] and evidence.category in ("route_deviation", "no_show"):

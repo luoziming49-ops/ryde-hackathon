@@ -16,11 +16,13 @@ def test_list_disputes(client):
     r = client.get("/api/disputes")
     assert r.status_code == 200
     body = r.json()
-    # 3 internal sample cases + 1 official sample.
-    assert len(body) == 4
+    # 3 original internal cases + 3 explicit synthetic consent variants + 1 official.
+    assert len(body) == 7
     by_id = {d["case_id"]: d for d in body}
     assert by_id["RYDE-2026-0001"]["source"] == "internal"
     assert by_id["DISP-002"]["source"] == "official"
+    for case_id in ["DEMO-ORAL-AGREED", "DEMO-ORAL-CONFLICT", "DEMO-ORAL-NOT-AGREED"]:
+        assert by_id[case_id]["source"] == "internal"
 
 
 def test_get_dispute(client):
@@ -90,8 +92,10 @@ def test_api_resolve_case_0001(client):
     r = client.post("/api/resolve", json={"case_id": "RYDE-2026-0001"})
     assert r.status_code == 200
     ruling = r.json()["ruling"]
-    assert ruling["action"] == "partial_refund"
-    assert ruling["amount"] == 7.87
+    assert ruling["action"] == "insufficient_evidence"
+    assert ruling["amount"] is None
+    assert ruling["escalated"] is True
+    assert ruling["review_questions"]
 
 
 def test_api_resolve_case_0002(client):

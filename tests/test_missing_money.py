@@ -8,6 +8,10 @@ import pytest
 def inline(sample_case, case_id):
     body = deepcopy(sample_case(case_id))
     body.pop("case_id")
+    # Isolate missing money from the separate consent review precondition.
+    if body["category"] == "route_deviation":
+        for party in ("rider", "driver"):
+            body[party]["route_consent"] = "not_agreed"
     return body
 
 

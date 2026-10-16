@@ -1,6 +1,6 @@
 """Policy & Precedent Agent (stretch goal).
 
-Maintains a lightweight knowledge base of company policies and past rulings and
+Maintains a lightweight knowledge base of local demo policies and sample rulings and
 retrieves the most relevant entries for the Judge to promote ruling
 consistency. This is a deterministic keyword/overlap retriever so it runs
 without an embedding model; it can be swapped for a vector RAG store.

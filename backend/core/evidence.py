@@ -23,8 +23,13 @@ class EvidenceAnalysis:
     excess_distance_km: Optional[float] = None
     has_unexpected_stop: bool = False
     unexpected_stop_min: float = 0.0
-    traffic_detected: bool = False
+    traffic_detected: Optional[bool] = None
     duration_delta_min: Optional[float] = None
+    # Compare structured party reports; neither GPS nor text establishes consent.
+    rider_route_consent: str = "unknown"
+    driver_route_consent: str = "unknown"
+    consent_report_state: str = "unconfirmed"
+    consent_consistent_value: Optional[str] = None
     # No-show
     driver_arrival_distance_m: Optional[float] = None
     driver_wait_min: Optional[float] = None
@@ -74,6 +79,15 @@ def analyze_evidence(dispute: dict) -> EvidenceAnalysis:
         driver_dispute_history=_to_int(driver.get("dispute_history")),
         gaps=list(dispute.get("normalization_gaps", [])),
     )
+    analysis.rider_route_consent = rider.get("route_consent", "unknown")
+    analysis.driver_route_consent = driver.get("route_consent", "unknown")
+    reports = (analysis.rider_route_consent, analysis.driver_route_consent)
+    if all(value in ("agreed", "not_agreed") for value in reports):
+        if reports[0] == reports[1]:
+            analysis.consent_report_state = "consistent"
+            analysis.consent_consistent_value = reports[0]
+        else:
+            analysis.consent_report_state = "conflicting"
 
     # Contact attempts from chat log. "system" senders never count; a message
     # with no explicit type is treated as a "message".
@@ -88,8 +102,8 @@ def analyze_evidence(dispute: dict) -> EvidenceAnalysis:
         1 for m in chat if m.get("from") == "driver" and m.get("type") == "call"
     )
 
-    # Did the driver proactively disclose an unexpected stop *before* the rider
-    # first queried it? Computed from the chat log, never assumed.
+    # A matching disclosure message in the supplied chat log is not rider consent.
+    # False means no matching record was found; oral communication is unknown.
     analysis.driver_stop_mentions = _count_driver_stop_mentions(chat)
     analysis.driver_disclosed_stop = _driver_proactively_disclosed_stop(chat)
 
@@ -236,7 +250,7 @@ def _analyze_route_deviation(a: EvidenceAnalysis, trip: dict, fare: dict, gps: d
         a.excess_distance_km = None
         a.deviation_ratio = None
 
-    a.traffic_detected = bool(trip.get("traffic_detected", False))
+    a.traffic_detected = trip.get("traffic_detected") if isinstance(trip.get("traffic_detected"), bool) else None
 
     stops = trip.get("unexpected_stops", []) or []
     if stops:
@@ -279,11 +293,13 @@ def _analyze_route_deviation(a: EvidenceAnalysis, trip: dict, fare: dict, gps: d
     else:
         a.notes.append("Route deviation could not be computed (missing distance data).")
     if a.has_unexpected_stop:
-        a.notes.append(f"Unexpected stop of {a.unexpected_stop_min:.1f} min detected in GPS dwell.")
-    if a.traffic_detected:
-        a.notes.append("Live traffic data confirms a valid detour.")
+        a.notes.append(f"A {a.unexpected_stop_min:.1f}-min stop is recorded; GPS does not establish its explanation or consent.")
+    if a.traffic_detected is True:
+        a.notes.append("Traffic is flagged in the supplied trip data; no live traffic service was independently checked.")
+    elif a.traffic_detected is False:
+        a.notes.append("Traffic is not flagged in the supplied trip data; this does not establish rider consent.")
     else:
-        a.notes.append("No traffic justification found for the detour.")
+        a.notes.append("Traffic information was not supplied; a traffic reason has not been ruled out.")
 
 
 def _analyze_no_show(a: EvidenceAnalysis, trip: dict, fare: dict, gps: dict) -> None:

@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ryde Dispute AI — Multi-Agent Autonomous Dispute Resolution</title>
+<title>Ryde Dispute AI — Hackathon Prototype</title>
 <style>
   :root {
     color-scheme: light;
-    --bg: #f5f6f8;
-    --bg-2: #f7f8fa;
+    --bg: #f7f7f9;
+    --bg-2: #f8f8fa;
     --panel: #ffffff;
     --panel-2: #f1f3f6;
     --border: #e2e6ec;
-    --text: #202733;
+    --text: #31373e;
     --muted: #626d7d;
-    --accent: #0868cf;
-    --accent-soft: #edf5ff;
+    --brand: #e93864;
+    --accent: #c72d55;
+    --accent-soft: #fff0f4;
     --accent-2: #24734e;
     --gold: #8d5d12;
     --danger: #b44338;
-    --rider: #286cae;
+    --rider: #a93353;
     --driver: #556782;
-    --judge: #3d5277;
-    --evidence: #286cae;
+    --judge: #60434e;
+    --evidence: #a93353;
     --fraud: #8d5d12;
     --policy: #636487;
     --radius: 18px;
@@ -76,20 +77,21 @@
     margin-bottom: 9px; background: var(--panel); transition: background .16s ease, border-color .16s ease, box-shadow .16s ease;
   }
   .dispute:last-child { margin-bottom: 0; }
-  .dispute:hover { background: var(--bg-2); border-color: #b9c6d8; }
-  .dispute.active { border-color: #5e9de3; background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(8, 104, 207, .12); }
+  .dispute:hover { background: var(--bg-2); border-color: #d4bdc4; }
+  .dispute.active { border-color: var(--brand); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(233, 56, 100, .08); }
   .dispute .tag { display: inline-flex; font-size: 10px; line-height: 1.4; padding: 3px 7px; border-radius: 5px; background: var(--panel-2); color: #4b5c72; font-weight: 600; text-transform: capitalize; }
-  .dispute.active .tag { background: #dcecff; color: #285c93; }
+  .dispute.active .tag { background: #fce0e8; color: #a12d4d; }
   .dispute h3 { font-size: 13px; font-weight: 650; margin: 7px 0 4px; letter-spacing: -.015em; }
   .dispute p { font-size: 12px; line-height: 1.5; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card .case-note { margin: -6px 0 0; padding: 0 20px 18px; }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px; justify-content: center;
     background: var(--accent); color: #fff; border: 1px solid transparent;
-    padding: 11px 17px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;
+    padding: 11px 17px; min-height: 44px; border-radius: 999px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;
     transition: background .16s ease, box-shadow .16s ease;
   }
-  .btn:hover { background: #075bb5; box-shadow: 0 2px 5px rgba(8, 104, 207, .13); }
+  .btn:hover { background: #ad2448; box-shadow: 0 2px 5px rgba(199, 45, 85, .13); }
   .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
   .btn.ghost { background: var(--panel); border-color: var(--border); color: #445268; }
   .btn.ghost:hover { background: var(--bg-2); border-color: #c5ceda; box-shadow: none; }
@@ -116,16 +118,16 @@
   .legend span { display: inline-flex; align-items: center; gap: 5px; }
 
   /* Run controls and observable events */
-  .simulation-banner { display: flex; gap: 18px; align-items: center; padding: 13px 17px; margin-bottom: 24px; border: 1px solid #dbe6f3; background: #edf3fa; border-radius: 12px; }
-  .simulation-banner strong { display: flex; align-items: center; gap: 7px; color: #315c8f; white-space: nowrap; font-size: 11px; font-weight: 650; }
-  .simulation-banner strong::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #578ac7; }
-  .simulation-banner p { color: #50637c; font-size: 12px; line-height: 1.5; }
+  .simulation-banner { display: flex; gap: 18px; align-items: center; padding: 13px 17px; margin-bottom: 24px; border: 1px solid #f0d9e0; background: #fff2f5; border-radius: 12px; }
+  .simulation-banner strong { display: flex; align-items: center; gap: 7px; color: #a12d4d; white-space: nowrap; font-size: 11px; font-weight: 650; }
+  .simulation-banner strong::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+  .simulation-banner p { color: #70545e; font-size: 12px; line-height: 1.5; }
   .run-controls { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
   .run-controls label { display: block; font-size: 11px; font-weight: 550; color: var(--muted); flex: 1; min-width: 150px; }
   .run-controls select { width: 100%; margin-top: 6px; background: var(--panel); color: var(--text); border: 1px solid #d5dbe4; border-radius: 9px; padding: 10px; font-size: 12px; min-height: 42px; }
-  .run-controls .btn { width: auto; min-height: 42px; }
+  .run-controls .btn { width: auto; min-height: 44px; }
   .run-controls [hidden] { display: none; }
-  .run-status { padding: 14px 0 2px; color: #475e79; font-size: 12px; overflow-wrap: anywhere; }
+  .run-status { padding: 14px 0 2px; color: #65545b; font-size: 12px; overflow-wrap: anywhere; }
   .run-status.warn { color: var(--gold); }
   .agent-results { margin-top: 12px; padding: 13px 15px; background: var(--bg-2); border: 1px solid #e9edf2; border-radius: 11px; text-align: left; }
   .agent-results > .hint { margin-top: 0; }
@@ -146,11 +148,11 @@
   .step .agent-name { font-size: 12px; font-weight: 650; }
   .step .msg-body { font-size: 12px; color: var(--text); margin-top: 4px; line-height: 1.65; }
   .step .role { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
-  .agent-evidence, .agent-rider { background: #e7f0fb; color: #286cae; }
+  .agent-evidence, .agent-rider { background: #fcebf0; color: var(--rider); }
   .agent-fraud { background: #f6efdf; color: var(--gold); }
   .agent-policy { background: #efeff6; color: var(--policy); }
   .agent-driver { background: #edf0f5; color: var(--driver); }
-  .agent-judge { background: #e9edf5; color: var(--judge); }
+  .agent-judge { background: #f0eaf0; color: var(--judge); }
 
   /* Claims and guarded ruling */
   .claim-group { padding: 18px 20px; border-top: 1px solid var(--border); }
@@ -172,10 +174,22 @@
   .reason { text-align: left; background: var(--bg-2); border: 1px solid #e9edf2; border-radius: 11px; padding: 15px; font-size: 12px; line-height: 1.7; color: var(--text); margin-top: 10px; }
   .reason .lbl { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
   .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
-  .pill { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: #2863a5; border: 1px solid #d8e7f9; overflow-wrap: anywhere; }
+  .pill { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: #a12d4d; border: 1px solid #efd1da; overflow-wrap: anywhere; }
   button.pill { cursor: pointer; font: inherit; font-size: 10px; text-align: left; }
-  button.pill:hover { background: #dfedff; border-color: #a9caef; }
+  button.pill:hover { background: #fce0e8; border-color: #d991a4; }
   .escalate { background: #fcf5e9; color: var(--gold); border: 1px solid #ebd9b5; padding: 13px; border-radius: 10px; margin-top: 12px; font-size: 12px; font-weight: 600; }
+  .escalate .hint { color: inherit; font-weight: 400; margin-top: 4px; }
+  .consent-summary { padding: 14px; margin-top: 14px; border: 1px solid var(--border); background: var(--bg-2); border-radius: 11px; text-align: left; font-size: 12px; }
+  .consent-summary h3 { font-size: 12px; font-weight: 650; margin-bottom: 8px; }
+  .consent-summary .row { display: flex; justify-content: space-between; gap: 14px; padding: 6px 0; }
+  .consent-summary .k { color: var(--muted); }
+  .consent-summary .v { font-weight: 550; text-align: right; }
+  .statement-text { padding: 0 0 9px; color: var(--muted); font-size: 11px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .consent-state { display: inline-block; padding: 3px 7px; border-radius: 5px; background: #e9edf2; color: #526173; font-size: 11px; font-weight: 600; margin-bottom: 7px; }
+  .consent-state.conflicting { background: #f8edd5; color: #805411; }
+  .consent-summary .hint { margin-top: 7px; }
+  .review-questions ul { padding-left: 18px; }
+  .review-questions li + li { margin-top: 6px; }
   .empty { color: var(--muted); font-size: 12px; line-height: 1.65; text-align: center; padding: 32px 18px; }
   .hint { font-size: 11px; line-height: 1.6; color: var(--muted); margin-top: 10px; }
   .claim, .step, .reason, .evt .v { overflow-wrap: anywhere; }
@@ -229,7 +243,7 @@
     <div class="logo">R</div>
     <div>
       <h1>Ryde Dispute AI</h1>
-      <p>Evidence-led dispute resolution</p>
+      <p>Hackathon prototype · not an official Ryde product</p>
     </div>
   </div>
   <div class="badge" id="llmBadge" title="Service overview; each run has separate agent results below."><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
@@ -247,6 +261,7 @@
       <div class="card">
         <h2><span class="section-index" aria-hidden="true">01</span>Choose a sample case</h2>
         <div class="body" id="disputeList"><div class="empty">Loading cases…</div></div>
+        <p class="hint case-note">Sample cases only · no case entry or uploads.</p>
       </div>
 
       <div class="card">
@@ -506,6 +521,23 @@ function tripMeasure(actual, reference, unit, label) {
   return `${provided(actual, ` ${unit}`)} (${label} ${provided(reference, ` ${unit}`)})`;
 }
 
+function routeConsentHtml(evidence, showComparison = false) {
+  const statement = value => value === 'agreed' ? 'Agreed' : value === 'not_agreed' ? 'Did not agree' : 'Unknown';
+  const sourceText = value => typeof value === 'string' && value.trim() ? `<p class="statement-text">${esc(value)}</p>` : '';
+  const state = ['consistent', 'conflicting', 'unconfirmed'].includes(evidence?.consent_report_state)
+    ? evidence.consent_report_state : 'unconfirmed';
+  const labels = {consistent: 'Statements consistent', conflicting: 'Statements conflicting', unconfirmed: 'Statements unconfirmed'};
+  const matching = state === 'consistent' && ['agreed', 'not_agreed'].includes(evidence?.consent_consistent_value)
+    ? `<p class="hint">Both report: ${esc(statement(evidence.consent_consistent_value))}.</p>` : '';
+  return `<section class="consent-summary"><h3>Route consent</h3>
+    ${showComparison ? `<div class="consent-state ${state}">${esc(labels[state])}</div>` : ''}
+    <div class="row"><span class="k">Rider statement</span><span class="v">${esc(statement(evidence?.rider_route_consent))}</span></div>
+    ${sourceText(evidence?.rider_statement_text)}
+    <div class="row"><span class="k">Driver statement</span><span class="v">${esc(statement(evidence?.driver_route_consent))}</span></div>
+    ${sourceText(evidence?.driver_statement_text)}
+    ${showComparison ? matching : ''}<p class="hint">Party statements · not independently verified.</p></section>`;
+}
+
 function renderEvidence() {
   // Bug #10: tab listeners are bound ONCE at startup (see init()), not on every render.
   renderEvidenceTab('gps');
@@ -524,10 +556,13 @@ function renderEvidenceTab(tab) {
       <div class="row"><span class="k">Traffic detected</span><span class="v">${trip.traffic_detected == null ? 'Not provided' : trip.traffic_detected ? 'Yes' : 'No'}</span></div>
       <div class="map-wrap" style="margin-top:12px;">${routeMap(d)}</div>
       <div class="legend">
-        <span><span style="width:12px;height:3px;background:#287863;display:inline-block;"></span> Optimal route</span>
-        <span><span style="width:12px;height:3px;background:#2474ce;display:inline-block;"></span> Actual route</span>
+        <span><span style="width:12px;height:3px;background:#596879;display:inline-block;"></span> Optimal route</span>
+        <span><span style="width:12px;height:3px;background:#c72d55;display:inline-block;"></span> Actual route</span>
         <span><span style="width:8px;height:8px;border-radius:50%;background:#a16a14;display:inline-block;"></span> Stop</span>
       </div>
+      <p class="hint">Route sketch from supplied coordinates. Distance and traffic are case-file inputs, not map-verified.</p>
+      ${d.category === 'route_deviation' ? routeConsentHtml({rider_route_consent: d.rider?.route_consent, driver_route_consent: d.driver?.route_consent,
+        rider_statement_text: d.rider?.claim, driver_statement_text: d.driver?.response ?? d.driver?.claim}) : ''}
     </div>`;
   } else if (tab === 'chat') {
     const msgs = (d.chat_log||[]).map(m => `
@@ -578,9 +613,9 @@ function routeMap(d) {
   const Y = lat => H - pad - (lat-minLat)*scale - ((H-2*pad) - spanLat*scale)/2;
   const path = arr => arr.map((p,i)=>`${i?'L':'M'}${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}`).join(' ');
   let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Sample GPS routes: optimal dashed, actual solid" style="background:#f7f9fc;border:1px solid var(--border);border-radius:10px;">`;
-  svg += `<path d="${path(opt)}" fill="none" stroke="#287863" stroke-width="2.5" stroke-dasharray="4 3"/>`;
-  svg += `<path d="${path(act)}" fill="none" stroke="#2474ce" stroke-width="2.5"/>`;
-  if (valid(point(trip.pickup))) svg += `<circle cx="${X(trip.pickup.lng)}" cy="${Y(trip.pickup.lat)}" r="4" fill="#2474ce"/>`;
+  svg += `<path d="${path(opt)}" fill="none" stroke="#596879" stroke-width="2.5" stroke-dasharray="4 3"/>`;
+  svg += `<path d="${path(act)}" fill="none" stroke="#c72d55" stroke-width="2.5"/>`;
+  if (valid(point(trip.pickup))) svg += `<circle cx="${X(trip.pickup.lng)}" cy="${Y(trip.pickup.lat)}" r="4" fill="#c72d55"/>`;
   if (valid(point(trip.dropoff))) svg += `<circle cx="${X(trip.dropoff.lng)}" cy="${Y(trip.dropoff.lat)}" r="4" fill="#394b61"/>`;
   stops.forEach(s => { svg += `<circle cx="${X(s[1])}" cy="${Y(s[0])}" r="5" fill="#a16a14" stroke="#ffffff" stroke-width="2"/>`; });
   svg += `</svg>`;
@@ -759,12 +794,17 @@ function renderRuling(res) {
   const pills = referenceButtons('policy', r.matched_policy_ids);
   const missing = (r.missing_fields || []);
   const missingHtml = missing.length ? `<div class="reason"><div class="lbl">Missing evidence</div>${missing.map(esc).join('<br>')}</div>` : '';
+  const reviewQuestions = Array.isArray(r.review_questions) ? r.review_questions.filter(q => typeof q === 'string' && q.trim()) : [];
+  const reviewHtml = reviewQuestions.length ? `<div class="reason review-questions"><div class="lbl">Questions to verify</div><ul>${reviewQuestions.map(q => `<li>${esc(q)}</li>`).join('')}</ul></div>` : '';
+  const routeCase = (res.evidence?.category || selectedData?.category) === 'route_deviation';
   $('#ruling').innerHTML = `
     <div class="ruling-summary">
       <div class="ruling-confidence">${gaugeHtml}<div class="hint">Rule confidence score<br>Not a calibrated probability</div></div>
       <div class="ruling-decision"><div class="verdict">${esc(actionLabel)}</div>${amountHtml}<div class="pills">${pills}</div></div>
     </div>
-    ${r.escalated ? '<div class="escalate">Escalated to human review</div>' : ''}
+    ${r.escalated ? '<div class="escalate">Flagged for human review<p class="hint">Review flag only · no support case has been dispatched.</p></div>' : ''}
+    ${routeCase ? routeConsentHtml(res.evidence, true) : ''}
+    ${reviewHtml}
     ${missingHtml}
     <div class="reason"><div class="lbl">${r.reasoning_source === 'verified_template' ? 'Verified template · checked evidence selection' : 'Ruling explanation · source not provided'}</div>${esc(r.reasoning)}</div>
     ${guardHtml(r.guard)}
@@ -838,7 +878,7 @@ function architectureSvg(health) {
   const llm = {ok: 'LLM online', configured: 'LLM configured · not yet called',
     fallback: 'Fallback · last call failed', no_key: 'Deterministic · no API key'}[health?.state] || 'Status unavailable';
   const model = health?.model == null ? '' : `<tspan x="450" dy="12">${esc(health.model)}</tspan>`;
-  const t = 'fill="#202733" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle"';
+  const t = 'fill="#31373e" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle"';
   const s = 'fill="#626d7d" font-family="sans-serif" font-size="11" text-anchor="middle"';
   const box = (x,y,w,h,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="11" fill="#ffffff" stroke="${extra||'#dce2ea'}" stroke-width="${extra?2.2:1.5}"/>`;
   const ln = (d,color='#718399',dash='') => `<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" ${dash?`stroke-dasharray="${dash}"`:''} marker-end="url(#arw)"/>`;
@@ -851,10 +891,10 @@ function architectureSvg(health) {
   ${box(30,410,210,60,'#aab8c9')}<text ${t} x="135" y="435">Fraud &amp; Bad-Faith</text><text ${s} x="135" y="454">risk scoring</text>
   ${box(30,490,210,56,'#aab8c9')}<text ${t} x="135" y="513">Policy &amp; Precedent</text><text ${s} x="135" y="530">Local policy / precedent rules</text>
 
-  ${box(340,150,220,70,'#5b8fc8')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
-  ${box(340,300,220,70,'#5b8fc8')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
+  ${box(340,150,220,70,'#c72d55')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
+  ${box(340,300,220,70,'#c72d55')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
 
-  ${box(680,190,200,140,'#5b8fc8')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
+  ${box(680,190,200,140,'#c72d55')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
 
   ${box(680,410,200,80)}<text ${t} x="780" y="438">Ruling Output</text><text ${s} x="780" y="458">refund / compensation /</text><text ${s} x="780" y="474">no action + reasoning</text>
 

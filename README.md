@@ -20,14 +20,25 @@ OPENAI_API_KEY= LLM_API_KEY= .venv/bin/python -m uvicorn backend.main:app --host
 
 Open [the local workbench](http://127.0.0.1:8766). Select a case and click **Run simulation**. No API key is required. This mode uses a local simulation provider through the real backend and never sends model requests. The environment overrides above also disable Live API availability, even if a local `.env` exists.
 
-Choose four scenarios: all agents succeed; rider references rejected; invalid draft repaired; provider failure. Compare the individual agent status and attempt count, open evidence/policy citations, then download the audit JSON. Samples and demo policies are explicitly labelled. Real-model smoke results and limitations are in the [Live API report](docs/reports/WB02-LIVE.md); real evidence authenticity has not been evaluated.
+Choose four provider scenarios: all agents succeed; rider references rejected; invalid draft repaired; provider failure. Compare the individual agent status and attempt count, open evidence/policy citations, then download the audit JSON. Samples and demo policies are explicitly labelled. Real-model smoke results and limitations are in the [Live API report](docs/reports/WB02-LIVE.md); real evidence authenticity has not been evaluated.
 
 | Sample | Expected recommendation |
 |---|---|
-| RYDE-2026-0001 · route deviation | Partial refund · SGD 7.87 |
+| RYDE-2026-0001 · route deviation | Manual review · route consent unconfirmed; amount unavailable |
 | RYDE-2026-0002 · no show | Full refund · SGD 5.00 |
 | RYDE-2026-0003 · no show | No action · SGD 0.00 |
 | DISP-002 · organiser-format example | No action · SGD 0.00 |
+| DEMO-ORAL-AGREED · synthetic | Both parties report agreement; no separate stop dispute |
+| DEMO-ORAL-CONFLICT · synthetic | Conflicting statements; manual review, no automatic amount |
+| DEMO-ORAL-NOT-AGREED · synthetic | Both parties report no agreement; rule refund SGD 7.87 |
+
+## Consent and evidence limits
+
+Both parties can supply `route_consent` as `agreed`, `not_agreed` or `unknown` through the structured case API. The system compares these statements as consistent, conflicting or unconfirmed. Agreement between statements is not independent verification; GPS and missing chat never establish oral consent. Where unresolved consent would change responsibility or the refund, the recommendation is held for manual review with no automatic amount and explicit follow-up questions. Sufficient objective evidence in unrelated cases can still produce a recommendation.
+
+The UI selects predefined samples; it has no case upload or manual-entry form and no persistent new-case list. `/api/resolve` accepts structured cases. The route picture is a schematic of supplied coordinates, and deviation uses supplied baseline and actual distances. Traffic flags are inputs, with no map-provider or historical traffic verification. Manual review is a status flag only: there is no customer-support dispatch integration.
+
+The three `DEMO-ORAL-*` records are explicitly synthetic variants; the original supplied case texts are unchanged. Under the new demo policy, original case 0001 no longer automatically refunds SGD 7.87 because relevant oral agreement remains unconfirmed. Historical reports describe the earlier rules. The interface follows [official Ryde visual references](docs/sources/2026-10-16-ryde-brand.md), while remaining a clearly labelled hackathon prototype.
 
 ## Run with DeepSeek
 

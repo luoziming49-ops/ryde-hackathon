@@ -25,8 +25,16 @@
     },
     "trip": {
       "id": "TRP-55091",
-      "pickup": { "name": "Marina Bay Sands", "lat": 1.2834, "lng": 103.8607 },
-      "dropoff": { "name": "Changi Airport T1", "lat": 1.3644, "lng": 103.9915 },
+      "pickup": {
+        "name": "Marina Bay Sands",
+        "lat": 1.2834,
+        "lng": 103.8607
+      },
+      "dropoff": {
+        "name": "Changi Airport T1",
+        "lat": 1.3644,
+        "lng": 103.9915
+      },
       "scheduled_pickup": "2026-09-20T08:30:00+08:00",
       "actual_pickup": "2026-09-20T08:31:00+08:00",
       "actual_dropoff": "2026-09-20T09:12:00+08:00",
@@ -36,33 +44,71 @@
       "actual_distance_km": 28.4,
       "traffic_detected": false,
       "unexpected_stops": [
-        { "lat": 1.3155, "lng": 103.9050, "dwell_min": 6.2, "label": "Unexpected stop (no traffic)" }
+        {
+          "lat": 1.3155,
+          "lng": 103.905,
+          "dwell_min": 6.2,
+          "label": "Unexpected stop (no traffic)"
+        }
       ]
     },
     "gps": {
       "optimal_route": [
-        { "lat": 1.2834, "lng": 103.8607 },
-        { "lat": 1.3050, "lng": 103.9000 },
-        { "lat": 1.3300, "lng": 103.9450 },
-        { "lat": 1.3644, "lng": 103.9915 }
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.305,
+          "lng": 103.9
+        },
+        {
+          "lat": 1.33,
+          "lng": 103.945
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
       ],
       "actual_route": [
-        { "lat": 1.2834, "lng": 103.8607 },
-        { "lat": 1.2980, "lng": 103.8900 },
-        { "lat": 1.3155, "lng": 103.9050 },
-        { "lat": 1.3180, "lng": 103.9080 },
-        { "lat": 1.3400, "lng": 103.9550 },
-        { "lat": 1.3520, "lng": 103.9800 },
-        { "lat": 1.3644, "lng": 103.9915 }
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.298,
+          "lng": 103.89
+        },
+        {
+          "lat": 1.3155,
+          "lng": 103.905
+        },
+        {
+          "lat": 1.318,
+          "lng": 103.908
+        },
+        {
+          "lat": 1.34,
+          "lng": 103.955
+        },
+        {
+          "lat": 1.352,
+          "lng": 103.98
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
       ]
     },
     "fare": {
       "currency": "SGD",
-      "base_fare": 3.00,
-      "distance_fare_actual": 16.20,
-      "distance_fare_optimal": 11.30,
-      "time_fare_actual": 8.20,
-      "time_fare_optimal": 5.20,
+      "base_fare": 3.0,
+      "distance_fare_actual": 16.2,
+      "distance_fare_optimal": 11.3,
+      "time_fare_actual": 8.2,
+      "time_fare_optimal": 5.2,
       "surge_multiplier": 1.3,
       "promo_code": null,
       "total_charged": 35.62,
@@ -70,11 +116,31 @@
       "cancellation_fee": 0
     },
     "chat_log": [
-      { "ts": "2026-09-20T08:40:00+08:00", "from": "rider", "text": "Why are we going this way? This doesn't look like the usual route." },
-      { "ts": "2026-09-20T08:40:30+08:00", "from": "driver", "text": "Avoiding traffic on ECP, this is faster." },
-      { "ts": "2026-09-20T08:48:00+08:00", "from": "rider", "text": "We've stopped. Everything ok?" },
-      { "ts": "2026-09-20T08:54:30+08:00", "from": "driver", "text": "Quick break, sorry." },
-      { "ts": "2026-09-20T09:13:00+08:00", "from": "rider", "text": "This fare is way higher than usual for this trip." }
+      {
+        "ts": "2026-09-20T08:40:00+08:00",
+        "from": "rider",
+        "text": "Why are we going this way? This doesn't look like the usual route."
+      },
+      {
+        "ts": "2026-09-20T08:40:30+08:00",
+        "from": "driver",
+        "text": "Avoiding traffic on ECP, this is faster."
+      },
+      {
+        "ts": "2026-09-20T08:48:00+08:00",
+        "from": "rider",
+        "text": "We've stopped. Everything ok?"
+      },
+      {
+        "ts": "2026-09-20T08:54:30+08:00",
+        "from": "driver",
+        "text": "Quick break, sorry."
+      },
+      {
+        "ts": "2026-09-20T09:13:00+08:00",
+        "from": "rider",
+        "text": "This fare is way higher than usual for this trip."
+      }
     ]
   },
   {
@@ -103,8 +169,16 @@
     },
     "trip": {
       "id": "TRP-55102",
-      "pickup": { "name": "ION Orchard (Taxi Stand)", "lat": 1.3040, "lng": 103.8318 },
-      "dropoff": { "name": "Woodlands MRT", "lat": 1.4360, "lng": 103.7865 },
+      "pickup": {
+        "name": "ION Orchard (Taxi Stand)",
+        "lat": 1.304,
+        "lng": 103.8318
+      },
+      "dropoff": {
+        "name": "Woodlands MRT",
+        "lat": 1.436,
+        "lng": 103.7865
+      },
       "scheduled_pickup": "2026-09-20T18:15:00+08:00",
       "actual_pickup": null,
       "actual_dropoff": null,
@@ -137,14 +211,34 @@
       "promo_code": null,
       "total_charged": 0,
       "optimal_total_estimate": 0,
-      "cancellation_fee": 5.00
+      "cancellation_fee": 5.0
     },
     "chat_log": [
-      { "ts": "2026-09-20T18:14:00+08:00", "from": "driver", "text": "I'm on the way." },
-      { "ts": "2026-09-20T18:19:00+08:00", "from": "rider", "text": "I'm at the taxi stand. Are you here?" },
-      { "ts": "2026-09-20T18:21:00+08:00", "from": "driver", "text": "Almost there, 2 min." },
-      { "ts": "2026-09-20T18:25:00+08:00", "from": "rider", "text": "I've been waiting 10 minutes, I don't see you." },
-      { "ts": "2026-09-20T18:26:00+08:00", "from": "driver", "text": "I am at the location. Cancelling as no-show." }
+      {
+        "ts": "2026-09-20T18:14:00+08:00",
+        "from": "driver",
+        "text": "I'm on the way."
+      },
+      {
+        "ts": "2026-09-20T18:19:00+08:00",
+        "from": "rider",
+        "text": "I'm at the taxi stand. Are you here?"
+      },
+      {
+        "ts": "2026-09-20T18:21:00+08:00",
+        "from": "driver",
+        "text": "Almost there, 2 min."
+      },
+      {
+        "ts": "2026-09-20T18:25:00+08:00",
+        "from": "rider",
+        "text": "I've been waiting 10 minutes, I don't see you."
+      },
+      {
+        "ts": "2026-09-20T18:26:00+08:00",
+        "from": "driver",
+        "text": "I am at the location. Cancelling as no-show."
+      }
     ]
   },
   {
@@ -173,8 +267,16 @@
     },
     "trip": {
       "id": "TRP-55113",
-      "pickup": { "name": "Clarke Quay Central", "lat": 1.2886, "lng": 103.8466 },
-      "dropoff": { "name": "Tampines Mall", "lat": 1.3536, "lng": 103.9440 },
+      "pickup": {
+        "name": "Clarke Quay Central",
+        "lat": 1.2886,
+        "lng": 103.8466
+      },
+      "dropoff": {
+        "name": "Tampines Mall",
+        "lat": 1.3536,
+        "lng": 103.944
+      },
       "scheduled_pickup": "2026-09-20T21:45:00+08:00",
       "actual_pickup": null,
       "actual_dropoff": null,
@@ -207,12 +309,366 @@
       "promo_code": null,
       "total_charged": 0,
       "optimal_total_estimate": 0,
-      "cancellation_fee": 5.00
+      "cancellation_fee": 5.0
     },
     "chat_log": [
-      { "ts": "2026-09-20T21:44:00+08:00", "from": "driver", "text": "I'm arriving at Clarke Quay Central." },
-      { "ts": "2026-09-20T21:46:00+08:00", "from": "driver", "text": "I'm at the pickup point, where are you?" },
-      { "ts": "2026-09-20T21:52:00+08:00", "from": "driver", "text": "No response, cancelling as no-show." }
+      {
+        "ts": "2026-09-20T21:44:00+08:00",
+        "from": "driver",
+        "text": "I'm arriving at Clarke Quay Central."
+      },
+      {
+        "ts": "2026-09-20T21:46:00+08:00",
+        "from": "driver",
+        "text": "I'm at the pickup point, where are you?"
+      },
+      {
+        "ts": "2026-09-20T21:52:00+08:00",
+        "from": "driver",
+        "text": "No response, cancelling as no-show."
+      }
     ]
+  },
+  {
+    "case_id": "DEMO-ORAL-AGREED",
+    "category": "route_deviation",
+    "filed_at": "2026-09-20T09:14:22+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "DEMO-RIDER",
+      "name": "Sample rider",
+      "account_age_days": 412,
+      "trips_completed": 187,
+      "dispute_history": 0,
+      "avg_rating": 4.9,
+      "claim": "Synthetic example: I requested and verbally agreed to this longer route. I have no separate stop or fare complaint.",
+      "route_consent": "agreed"
+    },
+    "driver": {
+      "id": "DEMO-DRIVER",
+      "name": "Sample driver",
+      "account_age_days": 720,
+      "trips_completed": 3410,
+      "dispute_history": 0,
+      "avg_rating": 4.7,
+      "response": "Synthetic example: The rider verbally agreed to this route change. There were no additional stops.",
+      "route_consent": "agreed"
+    },
+    "trip": {
+      "id": "DEMO-ORAL-AGREED-TRIP",
+      "pickup": {
+        "name": "Marina Bay Sands",
+        "lat": 1.2834,
+        "lng": 103.8607
+      },
+      "dropoff": {
+        "name": "Changi Airport T1",
+        "lat": 1.3644,
+        "lng": 103.9915
+      },
+      "scheduled_pickup": "2026-09-20T08:30:00+08:00",
+      "actual_pickup": "2026-09-20T08:31:00+08:00",
+      "actual_dropoff": "2026-09-20T09:12:00+08:00",
+      "actual_duration_min": 41,
+      "estimated_duration_min": 26,
+      "optimal_distance_km": 19.8,
+      "actual_distance_km": 28.4,
+      "traffic_detected": false,
+      "unexpected_stops": []
+    },
+    "gps": {
+      "optimal_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.305,
+          "lng": 103.9
+        },
+        {
+          "lat": 1.33,
+          "lng": 103.945
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ],
+      "actual_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.298,
+          "lng": 103.89
+        },
+        {
+          "lat": 1.3155,
+          "lng": 103.905
+        },
+        {
+          "lat": 1.318,
+          "lng": 103.908
+        },
+        {
+          "lat": 1.34,
+          "lng": 103.955
+        },
+        {
+          "lat": 1.352,
+          "lng": 103.98
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ]
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 3.0,
+      "distance_fare_actual": 16.2,
+      "distance_fare_optimal": 11.3,
+      "time_fare_actual": 8.2,
+      "time_fare_optimal": 5.2,
+      "surge_multiplier": 1.3,
+      "promo_code": null,
+      "total_charged": 35.62,
+      "optimal_total_estimate": 25.35,
+      "cancellation_fee": 0
+    },
+    "chat_log": [],
+    "scenario_note": "Synthetic oral-consent variant; supplied coordinates and trip fields are not independently verified."
+  },
+  {
+    "case_id": "DEMO-ORAL-CONFLICT",
+    "category": "route_deviation",
+    "filed_at": "2026-09-20T09:14:22+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "DEMO-RIDER",
+      "name": "Sample rider",
+      "account_age_days": 412,
+      "trips_completed": 187,
+      "dispute_history": 0,
+      "avg_rating": 4.9,
+      "claim": "Synthetic example: I did not agree to the route change.",
+      "route_consent": "not_agreed"
+    },
+    "driver": {
+      "id": "DEMO-DRIVER",
+      "name": "Sample driver",
+      "account_age_days": 720,
+      "trips_completed": 3410,
+      "dispute_history": 0,
+      "avg_rating": 4.7,
+      "response": "Synthetic example: I believe the rider verbally agreed to this route change.",
+      "route_consent": "agreed"
+    },
+    "trip": {
+      "id": "DEMO-ORAL-CONFLICT-TRIP",
+      "pickup": {
+        "name": "Marina Bay Sands",
+        "lat": 1.2834,
+        "lng": 103.8607
+      },
+      "dropoff": {
+        "name": "Changi Airport T1",
+        "lat": 1.3644,
+        "lng": 103.9915
+      },
+      "scheduled_pickup": "2026-09-20T08:30:00+08:00",
+      "actual_pickup": "2026-09-20T08:31:00+08:00",
+      "actual_dropoff": "2026-09-20T09:12:00+08:00",
+      "actual_duration_min": 41,
+      "estimated_duration_min": 26,
+      "optimal_distance_km": 19.8,
+      "actual_distance_km": 28.4,
+      "traffic_detected": false,
+      "unexpected_stops": []
+    },
+    "gps": {
+      "optimal_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.305,
+          "lng": 103.9
+        },
+        {
+          "lat": 1.33,
+          "lng": 103.945
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ],
+      "actual_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.298,
+          "lng": 103.89
+        },
+        {
+          "lat": 1.3155,
+          "lng": 103.905
+        },
+        {
+          "lat": 1.318,
+          "lng": 103.908
+        },
+        {
+          "lat": 1.34,
+          "lng": 103.955
+        },
+        {
+          "lat": 1.352,
+          "lng": 103.98
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ]
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 3.0,
+      "distance_fare_actual": 16.2,
+      "distance_fare_optimal": 11.3,
+      "time_fare_actual": 8.2,
+      "time_fare_optimal": 5.2,
+      "surge_multiplier": 1.3,
+      "promo_code": null,
+      "total_charged": 35.62,
+      "optimal_total_estimate": 25.35,
+      "cancellation_fee": 0
+    },
+    "chat_log": [],
+    "scenario_note": "Synthetic oral-consent variant; supplied coordinates and trip fields are not independently verified."
+  },
+  {
+    "case_id": "DEMO-ORAL-NOT-AGREED",
+    "category": "route_deviation",
+    "filed_at": "2026-09-20T09:14:22+08:00",
+    "priority": "standard",
+    "status": "pending",
+    "rider": {
+      "id": "DEMO-RIDER",
+      "name": "Sample rider",
+      "account_age_days": 412,
+      "trips_completed": 187,
+      "dispute_history": 0,
+      "avg_rating": 4.9,
+      "claim": "Synthetic example: I did not agree to this longer route.",
+      "route_consent": "not_agreed"
+    },
+    "driver": {
+      "id": "DEMO-DRIVER",
+      "name": "Sample driver",
+      "account_age_days": 720,
+      "trips_completed": 3410,
+      "dispute_history": 0,
+      "avg_rating": 4.7,
+      "response": "Synthetic example: I chose this longer route without the rider agreeing to the change.",
+      "route_consent": "not_agreed"
+    },
+    "trip": {
+      "id": "DEMO-ORAL-NOT-AGREED-TRIP",
+      "pickup": {
+        "name": "Marina Bay Sands",
+        "lat": 1.2834,
+        "lng": 103.8607
+      },
+      "dropoff": {
+        "name": "Changi Airport T1",
+        "lat": 1.3644,
+        "lng": 103.9915
+      },
+      "scheduled_pickup": "2026-09-20T08:30:00+08:00",
+      "actual_pickup": "2026-09-20T08:31:00+08:00",
+      "actual_dropoff": "2026-09-20T09:12:00+08:00",
+      "actual_duration_min": 41,
+      "estimated_duration_min": 26,
+      "optimal_distance_km": 19.8,
+      "actual_distance_km": 28.4,
+      "traffic_detected": false,
+      "unexpected_stops": []
+    },
+    "gps": {
+      "optimal_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.305,
+          "lng": 103.9
+        },
+        {
+          "lat": 1.33,
+          "lng": 103.945
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ],
+      "actual_route": [
+        {
+          "lat": 1.2834,
+          "lng": 103.8607
+        },
+        {
+          "lat": 1.298,
+          "lng": 103.89
+        },
+        {
+          "lat": 1.3155,
+          "lng": 103.905
+        },
+        {
+          "lat": 1.318,
+          "lng": 103.908
+        },
+        {
+          "lat": 1.34,
+          "lng": 103.955
+        },
+        {
+          "lat": 1.352,
+          "lng": 103.98
+        },
+        {
+          "lat": 1.3644,
+          "lng": 103.9915
+        }
+      ]
+    },
+    "fare": {
+      "currency": "SGD",
+      "base_fare": 3.0,
+      "distance_fare_actual": 16.2,
+      "distance_fare_optimal": 11.3,
+      "time_fare_actual": 8.2,
+      "time_fare_optimal": 5.2,
+      "surge_multiplier": 1.3,
+      "promo_code": null,
+      "total_charged": 35.62,
+      "optimal_total_estimate": 25.35,
+      "cancellation_fee": 0
+    },
+    "chat_log": [],
+    "scenario_note": "Synthetic oral-consent variant; supplied coordinates and trip fields are not independently verified."
   }
 ]
