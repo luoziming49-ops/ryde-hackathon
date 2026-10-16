@@ -1,10 +1,10 @@
 # 当前状态
 
-修订：25 · CP-025 · 2026-10-16（Asia/Singapore）· 同步：complete
+修订：26 · CP-026 · 2026-10-16（Asia/Singapore）· 同步：complete
 
 ## 当前方向
 
-Digital Native / Ryde争议处理工作台。分支融合、Ryde风格、中英切换和卡片全文已完成。最终材料复核通过，脚本两处漏写的运行步骤已补；检查结论见[要求清单](REQUIREMENTS.md)。点击案件卡片原地展开陈述，无额外入口；重复点击已加载案件保留结果和运行。卡片验收见[任务](tasks/CASE-FULLTEXT.md)，源码以[GitHub main](https://github.com/luoziming49-ops/ryde-hackathon)交付。
+Digital Native / Ryde争议处理工作台。分支融合、Ryde风格、中英切换和卡片全文已完成。最终材料复核通过，脚本漏步已补；3张WorkBuddy截图已原样整理为独立证明包，实际采用见[记录](submission/WORKBUDDY-USAGE.md)。检查结论见[要求清单](REQUIREMENTS.md)。点击案件卡片原地展开陈述，无额外入口；重复点击已加载案件保留结果和运行。卡片验收见[任务](tasks/CASE-FULLTEXT.md)，源码以[GitHub main](https://github.com/luoziming49-ops/ryde-hackathon)交付。
 
 ## 当前成果
 
@@ -16,6 +16,6 @@ Digital Native / Ryde争议处理工作台。分支融合、Ryde风格、中英�
 
 ## 提交缺口与交接
 
-今天23:59（GMT+8）截止，见[要求](REQUIREMENTS.md)。至少3张真实CodeBuddy/WorkBuddy对话及采用记录、团队资料、后续上传限制、正式回执待补；提示词不是证明。视频、公网部署选做，扩展模型实测需另定范围。
+今天23:59（GMT+8）截止，见[要求](REQUIREMENTS.md)。3张WorkBuddy对话及采用记录已整理，证明包须单独上传；原始对话不在公开源码ZIP中。团队资料、后续上传限制、正式回执待补。视频、公网部署选做，扩展模型实测需另定范围。
 
-保留原分支和历史，不强推或改保护。发布后核对完整树，从main生成ZIP，最终commit/tree/SHA256写包外使用说明；两处共享记录修订25同步。[TASKS](TASKS.md)仅列待办，完成项归[LOG](archive/LOG.md)。complete仅指记录同步，不是已提交比赛。
+保留原分支和历史，不强推或改保护。发布后核对完整树，从main生成ZIP，最终commit/tree/SHA256写包外使用说明；两处共享记录修订26同步。[TASKS](TASKS.md)仅列待办，完成项归[LOG](archive/LOG.md)。complete仅指记录同步，不是已提交比赛。
