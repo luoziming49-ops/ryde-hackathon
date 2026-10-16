@@ -1,6 +1,6 @@
 # 表单可粘贴文案
 
-2026-10-16准备稿。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
+2026-10-16终稿文案。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
 
 ## Project name
 
@@ -22,7 +22,7 @@ Ryde — Multi-Agent Autonomous Dispute Resolution System
 
 Ride-hailing disputes leave support reviewers reconciling two accounts across trip records, chat, fees and policy. Ryde Dispute AI brings these inputs into one inspectable workbench for route-deviation and no-show disputes. The prototype is designed for support staff who need to understand both parties' positions and explain a consistent recommendation.
 
-A Rider Advocate and a Driver Advocate build evidence-linked positions. A Judge uses both positions and verified derived evidence to explain the outcome. Deterministic code computes distances, waiting thresholds, applicable policy, final action and refund amounts. Models select supplied evidence; they do not control the amount or execute payments. Missing or conflicting evidence can trigger human review.
+The problem framing comes from the organiser's Ryde challenge and supplied ticket format. Local deterministic helpers collect evidence, flag review risks and match demo policy and precedent records. A Rider Advocate and a Driver Advocate build evidence-linked positions. A Judge uses both positions and verified derived evidence to explain the outcome. Deterministic code computes distances, waiting thresholds, applicable policy, final action and refund amounts. Models select supplied evidence; they do not control the amount or execute payments. Missing or conflicting evidence can trigger human review.
 
 The application uses FastAPI, Pydantic, Python orchestration and native browser JavaScript. Versioned role prompts keep instructions separate from untrusted case data. Each agent's structured response is checked against the evidence catalog and applicable policy. Invalid content receives at most one repair attempt before a visible deterministic fallback; transport failures fall back without a repair call. The workbench shows execution events, individual agent outcomes, attempts, evidence and policy inspection, and a downloadable audit record.
 
@@ -32,9 +32,9 @@ The intended business value is faster evidence review, clearer explanations for 
 
 ## Source code URL
 
-https://github.com/luoziming49-ops/ryde-hackathon/tree/feat/mvp-simulation-workbench
+https://github.com/luoziming49-ops/ryde-hackathon
 
-此链接指向本轮成果分支；发布核验结果由[收尾报告](../reports/SUBMISSION-FINAL.md)记录。若表单只接受仓库根链接，确保根README清楚指向已核验的成果分支/提交；不要把旧默认分支当成最新成果。
+源码以默认main交付；合并与验证记录见[终稿报告](../reports/FINAL-RELEASE.md)。
 
 ## Demo / video URL（选做）
 

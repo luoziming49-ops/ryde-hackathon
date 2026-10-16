@@ -31,8 +31,8 @@
 |---|---|---|---|
 | D01 | 工作原型与现场/实时流程演示 | p39；覆盖至少两类争议 | 本地模拟原型已验收，现场讲述待彩排 |
 | D02 | 多代理架构图 | p39 | [架构PNG](submission/architecture.png)与[SVG原稿](submission/architecture.svg)已导出检查 |
-| D03 | 完整源码 GitHub 仓库 | p39；公开性未在该条明确 | [完整成果分支](https://github.com/luoziming49-ops/ryde-hackathon/tree/feat/mvp-simulation-workbench)已发布并核验文件树；main仍为旧版 |
-| D04 | 项目名称与短介绍 | p40；短介绍少于 10 个词 | [提交文案](submission/README.md)，7词短介绍 |
+| D03 | 完整源码 GitHub 仓库 | p39；公开性未在该条明确 | [源码main](https://github.com/luoziming49-ops/ryde-hackathon)为终稿入口；分支取舍与发布核验见[终稿报告](reports/FINAL-RELEASE.md) |
+| D04 | 项目名称与短介绍 | p40；短介绍少于 10 个词 | [提交文案](submission/FORM-COPY.md)，7词短介绍 |
 | D05 | 项目描述 | p40；场景/用户/价值、痛点依据、业务/技术架构、提示词作用、量化或明确业务影响 | [英文表单文案](submission/FORM-COPY.md)已整理；业务收益为待测目标 |
 | D06 | CodeBuddy/WorkBuddy 开发对话与使用证明 | p40；至少 3 张真实聊天截图，缺少使用证明不进入评分 | 项目目录未找到；用户其他位置是否有素材待核实 |
 | D07 | 封面图 | p40；16:9，推荐 380×216；尺寸冲突待提交入口核实 | [1920×1080 PNG](submission/cover.png)、[380×216留边版](submission/cover-380x216.png)和[SVG](submission/cover.svg)已检查；最终上传限制待核实 |

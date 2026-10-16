@@ -15,10 +15,10 @@ Python 3.12 is the verified runtime. From the repository root:
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-dev.txt
-OPENAI_API_KEY= LLM_API_KEY= .venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8765
+OPENAI_API_KEY= LLM_API_KEY= .venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8766
 ```
 
-Open [the local workbench](http://127.0.0.1:8765). Select a case and click **Run simulation**. No API key is required. This mode uses a local simulation provider through the real backend and never sends model requests. The environment overrides above also disable Live API availability, even if a local `.env` exists.
+Open [the local workbench](http://127.0.0.1:8766). Select a case and click **Run simulation**. No API key is required. This mode uses a local simulation provider through the real backend and never sends model requests. The environment overrides above also disable Live API availability, even if a local `.env` exists.
 
 Choose four scenarios: all agents succeed; rider references rejected; invalid draft repaired; provider failure. Compare the individual agent status and attempt count, open evidence/policy citations, then download the audit JSON. Samples and demo policies are explicitly labelled. Real-model smoke results and limitations are in the [Live API report](docs/reports/WB02-LIVE.md); real evidence authenticity has not been evaluated.
 
@@ -34,7 +34,7 @@ Choose four scenarios: all agents succeed; rider references rejected; invalid dr
 Copy `.env.example` to a local `.env`, enter your own `LLM_API_KEY`, and set `LLM_LIVE_ENABLED=true`. Keep the confirmed official destination, model, thinking and JSON settings from the example. `.env` is ignored by Git; never put its contents in screenshots or shared documents. Remove conflicting `OPENAI_*` environment overrides, which take priority. Restart the server after configuration changes:
 
 ```bash
-.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8765
+.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8766
 ```
 
 The page still starts in **Simulation**. Select a sample, change **Run mode** to **Live API**, and click **Run live API**. Three real agents select evidence, with at most one retry per agent and six requests per run. A transport failure stops further outbound requests in that run. Per-agent usage and rejected drafts remain visible; a fallback is never labelled model success. Audit exports record the execution mode. Live models still use sample evidence and demo policies, with no payment execution.
@@ -73,7 +73,7 @@ Start with the [submission pack](docs/submission/README.md), [demo script](docs/
 
 ## Submission materials
 
-The complete implementation is on [`feat/mvp-simulation-workbench`](https://github.com/luoziming49-ops/ryde-hackathon/tree/feat/mvp-simulation-workbench). Use that branch when reviewing or downloading this submission; the default branch may contain an earlier prototype.
+The final delivery targets [`main`](https://github.com/luoziming49-ops/ryde-hackathon). Branch selection, validation and the integration record are documented in the [final release report](docs/reports/FINAL-RELEASE.md). PR #5 carries the reviewed integration into the default branch.
 
 Start with the [submission package](docs/submission/README.md): English form copy, a six-minute walkthrough, PNG cover and architecture diagram, and prompts for small, genuine WorkBuddy review tasks. Those prompts are not evidence of completed tool use. Real conversation screenshots and the official form receipt remain to be supplied.
 
