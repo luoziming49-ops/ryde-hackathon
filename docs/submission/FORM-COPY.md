@@ -58,14 +58,17 @@ https://github.com/luoziming49-ops/ryde-hackathon
 
 个人联系方式直接填写官方表单，不必提交到公开仓库。
 
-## CodeBuddy / WorkBuddy 使用说明（实际完成后填写）
+## CodeBuddy / WorkBuddy 使用说明
 
-当前没有可据此填写的真实使用证明。先执行[辅助任务](WORKBUDDY-PROMPTS.md)，然后按实际情况填写：
+Tool used: WorkBuddy.
 
-- Tool used: [实际工具名]
-- Tasks completed: [实际完成的辅助任务；未做的删除]
-- Output used: [具体采用到哪个文件/段落；未采用则写明原因]
-- Evidence: [至少3张真实对话截图对应的文件名]
-- Contribution scope: Auxiliary review and submission preparation. [根据实际使用修订；不要扩大为核心系统开发]
+WorkBuddy was used for an early input-robustness task discussion, demo-checklist drafting, and static UI screenshot review. Three supplied screenshots show the requests and portions of its responses. We incorporated the visible pre-demo checks into our demo script. The static UI review and historical robustness report are retained as review/conversation records; they are not independent proof of current test results, complete browser validation, or authorship of the entire system.
 
-辅助任务及截图不构成资格已获认可的保证；最终适用性以主办方规则和评审为准。官方材料要求见[REQUIREMENTS](../REQUIREMENTS.md)。
+Contribution scope: input-robustness task assistance and submission preparation.
+
+Evidence files:
+- workbuddy-01-input-robustness.png
+- workbuddy-02-demo-checklist.png
+- workbuddy-03-ui-review.png
+
+三张原图与采用说明已整理为本地独立证明包 `WorkBuddy-Usage-Evidence-2026-10-16.zip`，不包含在公开源码ZIP内，需另行上传。详细可见范围、未取得的完整清单和采用边界见[使用记录](WORKBUDDY-USAGE.md)。官方要求及尚未核验的上传限制见[REQUIREMENTS](../REQUIREMENTS.md)，不把截图齐备写成赛事资格已获认可。
