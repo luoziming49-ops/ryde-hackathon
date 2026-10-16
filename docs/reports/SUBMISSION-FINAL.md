@@ -62,7 +62,7 @@ PASS gps-departure-interrupts-wait
 25/25 passed; 0 failed. SIMULATION ONLY.
 ```
 
-已有前端行为测试47项通过（1.39s）；不修改断言来迁就UI。git diff --check退出0、无输出。
+已有前端行为测试47项通过（1.39s）；最后一处架构文案校正后复跑为47 passed in 1.26s。不修改断言来迁就UI。git diff --check退出0、无输出。
 
 PNG导出实际输出：
 
@@ -82,4 +82,29 @@ cover-380x216.png PNG 380x216; aspect ratio preserved with padding
 
 ## GitHub发布核验
 
-进行中。目标成果分支feat/mvp-simulation-workbench；推送后核对远端HEAD并登记，不自动合并队友PR或更新默认分支。
+已通过已连接的GitHub API发布[成果分支](https://github.com/luoziming49-ops/ryde-hackathon/tree/feat/mvp-simulation-workbench)，并创建[草稿PR #5](https://github.com/luoziming49-ops/ryde-hackathon/pull/5)。默认分支及队友PR #3不变。
+
+本机直接执行 `GIT_TERMINAL_PROMPT=0 git push -u origin feat/mvp-simulation-workbench` 失败，实际输出：
+
+```text
+fatal: could not read Username for 'https://github.com': terminal prompts disabled
+```
+
+因此使用已连接、已获用户发布授权的GitHub工具上传文件对象并创建快照。原始开发历史保留本地，没有伪称普通git push成功。第一份远端实施快照646d110b450f45f1ea492663d6ea47fc5cd57094对应本地775a189；两者完整文件树相同，为84365e1a63d246c4ca3a30f3f1a48d0158b92645。136个文本文件、29个二进制文件均纳入，二进制对象逐一匹配Git内容哈希。
+
+发布后实际执行 `git fetch origin`、`git rev-parse origin/feat/mvp-simulation-workbench`、`git diff --exit-code HEAD origin/feat/mvp-simulation-workbench`、`git rev-parse 'origin/feat/mvp-simulation-workbench^{tree}'`；输出：
+
+```text
+From https://github.com/luoziming49-ops/ryde-hackathon
+ * [new branch]      feat/mvp-simulation-workbench -> origin/feat/mvp-simulation-workbench
+646d110b450f45f1ea492663d6ea47fc5cd57094
+84365e1a63d246c4ca3a30f3f1a48d0158b92645
+```
+
+文件差异命令退出0、无差异。后续仅补本次核验记录与修订19，并用相同文件树核验方式发布。评委应使用成果分支URL；默认main仍为早期版本。本地与远端因快照发布拥有不同提交历史，不能直接强推或把普通push当成已配置完成。
+
+## 最后材料检查
+
+18份共享文件同步，91个本地链接核对无新增断链；原有缺失背景原件仍只存在父目录，不随源码发布。源码不跟踪.env或私钥文件。上传格式的最终限制、真实使用截图和赛事回执仍未完成。
+
+浏览器权限的官方管理入口为Settings → Browser → Agent permissions，见[官方Browser文档](https://learn.chatgpt.com/docs/browser)。需要移除该站点保存的拒绝后再授权；不能把执行环境完全访问当作该浏览器规则已经解除。
