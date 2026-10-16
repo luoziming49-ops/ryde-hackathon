@@ -26,7 +26,7 @@ class Element {
   addEventListener(type, handler) { this.listeners[type] = handler; }
   appendChild(child) { this.children.push(child); }
   querySelector() { return null; }
-  querySelectorAll() { return []; }
+  querySelectorAll(selector) { return this === element('#disputeList') && selector === '.dispute' ? disputeCards() : []; }
 }
 
 const elements = new Map();
@@ -51,7 +51,29 @@ for (const match of html.slice(0, html.indexOf('<script>')).matchAll(/<([a-z][\w
   el.textContent = decodeHtmlText(html.slice(contentStart, html.indexOf('</' + tag, contentStart)).replace(/<[^>]*>/g, '').trim());
   staticElements.push(el);
 }
+// Parse the production-rendered card buttons so clicks use their real listeners.
+let cardsMarkup = null, renderedCards = [];
+function disputeCards() {
+  const markup = element('#disputeList').innerHTML;
+  if (markup !== cardsMarkup) {
+    renderedCards.forEach(card => {card.isConnected = false;});
+    renderedCards = [];
+    for (const [, rawAttributes, body] of markup.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)) {
+      const attributes = Object.fromEntries([...rawAttributes.matchAll(/([\w:-]+)="([^"]*)"/g)].map(match => [match[1], decodeHtmlText(match[2])]));
+      if (!attributes.class?.split(/\s+/).includes('dispute')) continue;
+      const card = new Element(); card.tagName = 'BUTTON'; card.attributes = attributes;
+      card.className = attributes.class; card.dataset.id = attributes['data-id']; card.innerHTML = body;
+      const paragraph = new Element(); paragraph.tagName = 'P'; paragraph.innerHTML = body.match(/<p>([\s\S]*?)<\/p>/)?.[1] || '';
+      paragraph.textContent = decodeHtmlText(paragraph.innerHTML.replace(/<[^>]*>/g, ''));
+      card.querySelector = selector => selector === 'p' ? paragraph : null;
+      renderedCards.push(card);
+    }
+    cardsMarkup = markup;
+  }
+  return renderedCards;
+}
 const staticQueryAll = selector => {
+  if (selector === '.dispute') return disputeCards();
   if (selector === '#evtTabs button') return staticElements.filter(el => el.dataset.tab);
   const attribute = selector.match(/^\[([\w-]+)(?:="([^"]*)")?\]$/);
   if (attribute) return staticElements.filter(el => el.getAttribute(attribute[1]) != null && (attribute[2] === undefined || el.getAttribute(attribute[1]) === attribute[2]));
@@ -714,8 +736,93 @@ async function languageTest(name) {
   } else throw new Error('Unknown language test ' + name);
 }
 
+async function fulltextTest(name) {
+  const claim = 'Original long claim. '.repeat(25) + '\n保留这段完整陈述 <img src=original> END-OF-CLAIM';
+  const listing = [{case_id: 'fulltext-one', category: 'route_deviation', rider_claim: claim},
+    {case_id: 'fulltext-two', category: 'no_show', rider_claim: 'Second original claim'}];
+  const loaded = id => ({case_id: id, category: id === 'fulltext-one' ? 'route_deviation' : 'no_show',
+    rider: {claim: listing.find(row => row.case_id === id).rider_claim}, driver: {}, trip: {}});
+  const ok = data => ({ok: true, json: async () => data});
+  context.cardListing = listing; run('disputes = cardListing; renderDisputes()');
+  let calls = [];
+  context.fetch = async (url, options) => {calls.push({url, options}); return ok(loaded(url.split('/').at(-1)));};
+  const card = id => disputeCards().find(node => node.dataset.id === id);
+  const expectExpanded = id => {
+    for (const node of disputeCards()) {
+      assert.equal(node.classList.contains('active'), node.dataset.id === id);
+      assert.equal(node.getAttribute('aria-expanded'), String(node.dataset.id === id));
+      assert.equal(node.tagName, 'BUTTON'); assert.equal(node.getAttribute('type'), 'button');
+    }
+  };
+  if (name === 'case_fulltext_selection') {
+    expectExpanded(null);
+    await card('fulltext-one').click(); expectExpanded('fulltext-one');
+    assert.equal(run('selectedData.case_id'), 'fulltext-one');
+    assert.equal(card('fulltext-one').querySelector('p').textContent, claim, 'The complete source text must remain in the selected card');
+    assert.match(card('fulltext-one').innerHTML, /&lt;img src=original&gt; END-OF-CLAIM/);
+    assert.doesNotMatch(card('fulltext-one').innerHTML, /<img/);
+    await card('fulltext-two').click(); expectExpanded('fulltext-two');
+    assert.equal(calls.length, 2);
+  } else if (name === 'case_fulltext_language') {
+    await card('fulltext-one').click();
+    for (const language of ['zh', 'en']) {
+      run(`setLanguage('${language}')`); expectExpanded('fulltext-one');
+      assert.ok(card('fulltext-one').querySelector('p').textContent.endsWith(claim));
+      assert.doesNotMatch(card('fulltext-one').innerHTML, /<img/);
+      assert.equal(run('selected'), 'fulltext-one');
+      assert.equal(run('JSON.stringify(disputes)'), JSON.stringify(listing));
+    }
+    assert.equal(calls.length, 1, 'Translating the expanded card must not reload it');
+  } else if (name === 'case_fulltext_reselect_loaded') {
+    await card('fulltext-one').click();
+    renderResponse(rulingResponse()); element('#downloadBtn').disabled = false;
+    const before = run('JSON.stringify([currentResult, runEvents, requestGeneration])');
+    const controller = run('activeController'); const count = calls.length;
+    await card('fulltext-one').click();
+    assert.equal(calls.length, count, 'Reselecting the loaded card must not fetch');
+    assert.equal(run('JSON.stringify([currentResult, runEvents, requestGeneration])'), before);
+    assert.equal(run('activeController'), controller); assert.equal(controller.signal.aborted, false);
+    assert.equal(element('#downloadBtn').disabled, false);
+    // Exercise a real in-flight run, rather than setting the busy flag in the fixture.
+    let release; const pending = new Promise(resolve => {release = resolve;});
+    context.fetch = async (url, options) => {
+      calls.push({url, options});
+      if (url === '/api/runs') return pending;
+      if (url.startsWith('/api/runs/card-run?')) return ok({run_id: 'card-run', status: 'completed', events: [], next_seq: 0,
+        result: rulingResponse({execution: {mode: 'simulation'}})});
+      if (url === '/api/health') return ok({state: 'no_key'});
+      return ok(loaded(url.split('/').at(-1)));
+    };
+    const work = element('#resolveBtn').click();
+    const runningController = run('activeController'); const generation = run('requestGeneration'); const runningCalls = calls.length;
+    try {
+      assert.equal(run('runInProgress'), true);
+      await card('fulltext-one').click();
+      assert.equal(calls.length, runningCalls); assert.equal(run('requestGeneration'), generation);
+      assert.equal(run('activeController'), runningController); assert.equal(runningController.signal.aborted, false);
+      assert.equal(run('runInProgress'), true);
+    } finally {
+      release(ok({run_id: 'card-run', status: 'running'})); await work;
+    }
+    assert.equal(run('currentResult.ruling.amount'), 7.87);
+  } else if (name === 'case_fulltext_retry_failure') {
+    let attempts = 0;
+    context.fetch = async () => ++attempts === 1
+      ? {ok: false, status: 503, json: async () => ({detail: 'Temporary case failure'})}
+      : ok(loaded('fulltext-one'));
+    await card('fulltext-one').click();
+    assert.equal(run('selected'), 'fulltext-one'); assert.equal(run('selectedData'), null);
+    assert.match(element('#runStatus').textContent, /retry/i);
+    await card('fulltext-one').click();
+    assert.equal(attempts, 2); assert.equal(run('selectedData.case_id'), 'fulltext-one');
+    assert.equal(element('#resolveBtn').disabled, false);
+  } else throw new Error('Unknown card test ' + name);
+}
+
 async function main() {
-  if (scenario.startsWith('i18n_')) {
+  if (scenario.startsWith('case_fulltext_')) {
+    await fulltextTest(scenario);
+  } else if (scenario.startsWith('i18n_')) {
     await languageTest(scenario);
   } else if (scenario.startsWith('live_')) {
     await liveTest(scenario);

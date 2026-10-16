@@ -32,6 +32,8 @@ Choose four provider scenarios: all agents succeed; rider references rejected; i
 | DEMO-ORAL-CONFLICT · synthetic | Conflicting statements; manual review, no automatic amount |
 | DEMO-ORAL-NOT-AGREED · synthetic | Both parties report no agreement; rule refund SGD 7.87 |
 
+Click a sample case card to select it and expand its full statement in place. Other cards keep a compact preview. Clicking the already loaded case again preserves its current result or run.
+
 ## Interface language
 
 Use the **中文 / English** selector in the header. A saved choice takes priority; otherwise, a Chinese browser locale starts in Chinese and other locales start in English. The page remembers the choice when browser storage is available. Switching only changes presentation: it does not rerun a case, call a model, change the amount, or change Simulation / Live API mode.

@@ -89,6 +89,7 @@
   .dispute.active .tag { background: #fce0e8; color: #a12d4d; }
   .dispute h3 { font-size: 13px; font-weight: 650; margin: 7px 0 4px; letter-spacing: -.015em; }
   .dispute p { font-size: 12px; line-height: 1.5; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .dispute.active p { display: block; -webkit-line-clamp: unset; overflow: visible; white-space: pre-wrap; overflow-wrap: anywhere; }
   .card .case-note { margin: -6px 0 0; padding: 0 20px 18px; }
 
   .btn {
@@ -878,7 +879,7 @@ function renderDisputes() {
   const wrap = $('#disputeList');
   panelMessages.delete('#disputeList');
   wrap.innerHTML = disputes.map(d => `
-    <button type="button" class="dispute${d.case_id === selected ? ' active' : ''}" data-id="${esc(d.case_id)}">
+    <button type="button" class="dispute${d.case_id === selected ? ' active' : ''}" data-id="${esc(d.case_id)}" aria-expanded="${d.case_id === selected}">
       <span class="tag ${esc(d.category)}">${systemHtml(String(d.category || 'unknown').replaceAll('_',' '))}</span>
       <h3>${esc(d.case_id)}</h3>
       <p>${sourceHtml(d.rider_claim)}</p>
@@ -887,11 +888,16 @@ function renderDisputes() {
 }
 
 async function selectDispute(id) {
+  if (id === selected && selectedData) return;
   const token = invalidateRequests();
   selected = id;
   selectedData = null;
   resetResults();
-  $$('.dispute').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+  $$('.dispute').forEach(el => {
+    const active = el.dataset.id === id;
+    el.classList.toggle('active', active);
+    el.setAttribute('aria-expanded', String(active));
+  });
   renderModeControls();
   showStatus('Loading sample case…');
   placeholder('#evidencePanel', 'Loading evidence…');

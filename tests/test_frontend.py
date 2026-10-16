@@ -64,6 +64,7 @@ def test_official_case_all_evidence_tabs():
     "i18n_live_running_no_side_effects", "i18n_completed_status", "i18n_error_status",
     "i18n_loading_case", "i18n_architecture_modal", "i18n_startup_error_status",
     "i18n_event_roles", "i18n_duplicate_reference_focus", "i18n_original_reason_disclosure",
+    "case_fulltext_selection", "case_fulltext_language", "case_fulltext_reselect_loaded", "case_fulltext_retry_failure",
 ])
 def test_frontend_behavior(scenario):
     run_behavior(scenario)
