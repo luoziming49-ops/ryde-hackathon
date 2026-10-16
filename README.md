@@ -73,7 +73,7 @@ Start with the [submission pack](docs/submission/README.md), [demo script](docs/
 
 ## Submission materials
 
-The final delivery targets [`main`](https://github.com/luoziming49-ops/ryde-hackathon). Branch selection, validation and the integration record are documented in the [final release report](docs/reports/FINAL-RELEASE.md). PR #5 carries the reviewed integration into the default branch.
+The final implementation is available on [`main`](https://github.com/luoziming49-ops/ryde-hackathon). Branch selection, validation and the integration record are documented in the [final release report](docs/reports/FINAL-RELEASE.md). PR #5 merged the reviewed integration into the default branch.
 
 Start with the [submission package](docs/submission/README.md): English form copy, a six-minute walkthrough, PNG cover and architecture diagram, and prompts for small, genuine WorkBuddy review tasks. Those prompts are not evidence of completed tool use. Real conversation screenshots and the official form receipt remain to be supplied.
 
