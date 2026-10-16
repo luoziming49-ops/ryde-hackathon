@@ -35,7 +35,7 @@ OPENAI_API_KEY= LLM_API_KEY= LLM_LIVE_ENABLED=false .venv/bin/python -m pytest -
 ........................................................................ [ 79%]
 ........................................................................ [ 99%]
 ..                                                                       [100%]
-362 passed in 1.97s
+362 passed in 1.93s
 ```
 
 ```bash
@@ -97,4 +97,30 @@ git diff --check与git diff --exit-code 267d581 -- backend frontend tests均退�
 
 ## 发布回执
 
-本地整合完成，GitHub合并结果待服务端回读；记录同步期间STATUS保持updating。
+远端整合提交：d9e8a8ff202cbacac0989aa2da7d64fcfe3692e0。其父提交为2b29f82（成果快照）、51c901f（S1）、545cb3e（结构计划）、8ff121c（公开/保护记录）。本机本轮合并为e753172，因GitHub对象发布方式不同而提交SHA不同，完整文件树相同。
+
+PR #5通过正常GitHub合并接口合入main；实际返回：
+
+```json
+{"sha":"3746227d0b2473535612d38fb8c5b518705fbe68","merged":true,"message":"Pull Request successfully merged"}
+```
+
+随后实际执行：
+
+```bash
+git fetch origin
+git diff --exit-code HEAD origin/main
+git show -s --format='%H%n%T%n%P' origin/main
+```
+
+完整文件差异退出0、无输出。主线输出：
+
+```text
+3746227d0b2473535612d38fb8c5b518705fbe68
+b95d2807f9b205fec343c439fa93ae2c215cee21
+36d127da432309bec93cc9929f10ec8102dbd482 d9e8a8ff202cbacac0989aa2da7d64fcfe3692e0
+```
+
+三个来源分支对整合提交的git merge-base --is-ancestor均退出0。GitHub PR回读：#1、#3、#4、#5均为closed / merged=true；未删除其分支。
+
+本机main已从origin/main建立跟踪，原开发分支与本轮release分支保留。后续仅追加修订20及本次已验证发布回执；最终交付ZIP从远端main生成，使用说明记录实际最终commit与SHA256。记录同步完成不表示工具证明、浏览器验收或赛事提交完成。
