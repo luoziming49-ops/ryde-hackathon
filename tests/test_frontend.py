@@ -52,6 +52,11 @@ def test_official_case_all_evidence_tabs():
     "live_unknown_agents", "live_guard_rejected", "live_wrong_mode",
     "live_stale_post", "live_stale_poll", "live_stale_health", "live_switch_loading_case",
     "live_usage", "live_failure_retry", "live_startup_health_failure", "live_stale_simulation",
+    "consent_input_statements", "consent_missing_statements", "consent_original_text",
+    "consent_result_consistent_agreed", "consent_result_consistent_not_agreed",
+    "consent_result_conflicting", "consent_result_unconfirmed", "consent_result_legacy",
+    "review_questions_escape", "review_questions_absent", "review_flag_no_dispatch",
+    "consent_no_show", "gps_input_provenance",
 ])
 def test_frontend_behavior(scenario):
     run_behavior(scenario)

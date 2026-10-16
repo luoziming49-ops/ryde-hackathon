@@ -67,8 +67,9 @@ responsible AI & ethics · overall impression.
 ## Definition of done
 
 - `pytest -q` passes and the output is pasted in the REPORT.
-- The three original sample cases keep their canonical outcomes:
-  `RYDE-2026-0001` → partial_refund SGD 7.87,
+- The sample cases follow the current consent-aware demo policy:
+  `RYDE-2026-0001` → manual review / amount null after the user-authorized consent policy supplement (historical rule result was SGD 7.87);
+  `DEMO-ORAL-NOT-AGREED` → partial_refund SGD 7.87 for an explicitly synthetic, mutually reported no-consent case,
   `RYDE-2026-0002` → full_refund SGD 5.00,
   `RYDE-2026-0003` → no_action.
 - The app still runs with no LLM key, and `/api/health` + the UI badge report LLM status

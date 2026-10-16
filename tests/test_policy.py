@@ -16,6 +16,7 @@ from backend.core.policy import (
 
 
 def _route_decision(optimal, actual, policies, config, *, traffic=False, stops=None):
+    # Explicit synthetic reports isolate the route thresholds and fare formula.
     dispute = {
         "category": "route_deviation",
         "trip": {
@@ -32,8 +33,8 @@ def _route_decision(optimal, actual, policies, config, *, traffic=False, stops=N
         },
         "gps": {},
         "chat_log": [],
-        "rider": {},
-        "driver": {},
+        "rider": {"route_consent": "not_agreed"},
+        "driver": {"route_consent": "not_agreed"},
     }
     return apply_policy(analyze_evidence(dispute), policies, config)
 
@@ -146,12 +147,13 @@ def test_traffic_above_tolerance_escalates(policies, config):
     assert "Conflicting evidence" in decision.explanation
 
 
-def test_traffic_with_stop_still_applies_stop_clause(policies, config):
+def test_traffic_does_not_resolve_an_additional_stop(policies, config):
     decision = _route_decision(
         100.0, 110.0, policies, config, traffic=True, stops=[{"dwell_min": 5.0}]
     )
-    assert decision.action == PARTIAL_REFUND
-    assert "RD-001.4" in decision.matched_policy_ids
+    assert decision.action == INSUFFICIENT_EVIDENCE
+    assert decision.escalate is True
+    assert any("stop" in question for question in decision.review_questions)
 
 
 def test_traffic_tolerance_is_configurable(policies):
@@ -167,12 +169,12 @@ def test_traffic_tolerance_is_configurable(policies):
 @pytest.mark.parametrize(
     "case_id,expected_action,expected_amount",
     [
-        ("RYDE-2026-0001", PARTIAL_REFUND, 7.87),
+        ("RYDE-2026-0001", INSUFFICIENT_EVIDENCE, 0.0),
         ("RYDE-2026-0002", FULL_REFUND, 5.00),
         ("RYDE-2026-0003", NO_ACTION, 0.0),
     ],
 )
-def test_original_cases_unchanged(case_id, expected_action, expected_amount, disputes, policies, config):
+def test_original_cases_follow_current_policy(case_id, expected_action, expected_amount, disputes, policies, config):
     case = next(d for d in disputes if d["case_id"] == case_id)
     decision = apply_policy(analyze_evidence(case), policies, config)
     assert decision.action == expected_action

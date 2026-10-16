@@ -1,0 +1,142 @@
+Backend agent final full regression (no paid calls):
+........................................................................ [ 17%]
+........................................................................ [ 34%]
+........................................................................ [ 51%]
+........................................................................ [ 69%]
+........................................................................ [ 86%]
+........................................................                 [100%]
+416 passed in 2.23s
+
+Frozen offline evaluation:
+PASS RYDE-2026-0001-success
+PASS RYDE-2026-0001-rider_rejected
+PASS RYDE-2026-0001-retry_success
+PASS RYDE-2026-0001-provider_error
+PASS RYDE-2026-0002-success
+PASS RYDE-2026-0002-rider_rejected
+PASS RYDE-2026-0002-retry_success
+PASS RYDE-2026-0002-provider_error
+PASS RYDE-2026-0003-success
+PASS RYDE-2026-0003-rider_rejected
+PASS RYDE-2026-0003-retry_success
+PASS RYDE-2026-0003-provider_error
+PASS DISP-002-success
+PASS DISP-002-rider_rejected
+PASS DISP-002-retry_success
+PASS DISP-002-provider_error
+PASS missing-base-fare
+PASS missing-refund-fee
+PASS unknown-arrival
+PASS missing-lateness
+PASS conflicting-arrival-clocks
+PASS policy-missing
+PASS invalid-nonfinite-fare
+PASS untrusted-party-instruction
+PASS gps-departure-interrupts-wait
+PASS DEMO-ORAL-AGREED-success
+PASS DEMO-ORAL-CONFLICT-success
+PASS DEMO-ORAL-NOT-AGREED-success
+PASS DEMO-ORAL-NOT-AGREED-rider_rejected
+PASS DEMO-ORAL-NOT-AGREED-retry_success
+PASS DEMO-ORAL-NOT-AGREED-provider_error
+PASS agreed-route-extra-stop
+PASS medium-deviation-stop-context
+PASS unknown-traffic-affects-route-refund
+PASS small-deviation-no-extra-issue
+PASS no-show-objective-refund-no-chat
+36/36 passed; 0 failed. SIMULATION ONLY.
+
+Review wording RED before correction:
+.................................FFF..............F.....                 [100%]
+=================================== FAILURES ===================================
+_ test_review_flag_api_does_not_claim_support_dispatch[request_body0-insufficient_evidence] _
+
+client = <starlette.testclient.TestClient object at 0x10879e060>
+request_body = {'case_id': 'RYDE-2026-0001'}, action = 'insufficient_evidence'
+
+    @pytest.mark.parametrize("request_body,action", [
+        ({"case_id": "RYDE-2026-0001"}, "insufficient_evidence"),
+        ({"category": "safety_incident", "rider": {}, "driver": {}}, "escalate"),
+    ])
+    def test_review_flag_api_does_not_claim_support_dispatch(client, request_body, action):
+        response = client.post("/api/resolve", json=request_body)
+        assert response.status_code == 200
+        result = response.json()
+        ruling = result["ruling"]
+        assert ruling["action"] == action and ruling["escalated"] is True
+        assert ruling["amount"] is None
+        rule_trace = next(message["content"] for message in result["trace"]
+                          if message["agent"] == "Judge" and message["role"] == "rule")
+        for text in (ruling["reasoning"], rule_trace):
+>           assert "Flagged for human review" in text
+E           AssertionError: assert 'Flagged for human review' in 'Escalated to human review (insufficient_evidence). No automatic payment has been applied. Missing or conflicting evid...irmed; comparing reports does not independently verify consent. Recorded cancellation fee: 0. Overall confidence: n/a.'
+
+tests/test_consent_review.py:168: AssertionError
+_ test_review_flag_api_does_not_claim_support_dispatch[request_body1-escalate] _
+
+client = <starlette.testclient.TestClient object at 0x108809f40>
+request_body = {'category': 'safety_incident', 'rider': {}, 'driver': {}}
+action = 'escalate'
+
+    @pytest.mark.parametrize("request_body,action", [
+        ({"case_id": "RYDE-2026-0001"}, "insufficient_evidence"),
+        ({"category": "safety_incident", "rider": {}, "driver": {}}, "escalate"),
+    ])
+    def test_review_flag_api_does_not_claim_support_dispatch(client, request_body, action):
+        response = client.post("/api/resolve", json=request_body)
+        assert response.status_code == 200
+        result = response.json()
+        ruling = result["ruling"]
+        assert ruling["action"] == action and ruling["escalated"] is True
+        assert ruling["amount"] is None
+        rule_trace = next(message["content"] for message in result["trace"]
+                          if message["agent"] == "Judge" and message["role"] == "rule")
+        for text in (ruling["reasoning"], rule_trace):
+>           assert "Flagged for human review" in text
+E           AssertionError: assert 'Flagged for human review' in 'Escalated to human review (escalate). No automatic payment has been applied. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Overall confidence: 100%.'
+
+tests/test_consent_review.py:168: AssertionError
+__________ test_review_flag_run_event_does_not_claim_support_dispatch __________
+
+client = <starlette.testclient.TestClient object at 0x1088094c0>
+
+    def test_review_flag_run_event_does_not_claim_support_dispatch(client):
+        response = client.post("/api/runs", json={"case_id": "RYDE-2026-0001"})
+        assert response.status_code == 202
+        run_id = response.json()["run_id"]
+        client.app.state.runs.wait(run_id, timeout=3)
+        snapshot = client.get("/api/runs/" + run_id).json()
+        assert snapshot["status"] == "completed"
+        event = next(event for event in snapshot["events"]
+                     if event["actor"] == "Judge" and event["kind"] == "rule")
+>       assert "Flagged for human review" in event["output_summary"]
+E       AssertionError: assert 'Flagged for human review' in 'Escalating to human review (insufficient_evidence).'
+
+tests/test_consent_review.py:182: AssertionError
+______________ test_escalated_refund_is_not_announced_as_applied _______________
+
+client = <starlette.testclient.TestClient object at 0x1088a7ec0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1088a74d0>
+
+    def test_escalated_refund_is_not_announced_as_applied(client, monkeypatch):
+        monkeypatch.setattr("backend.agents.judge.ESCALATION_THRESHOLD", 0.99)
+        body = client.get("/api/disputes/RYDE-2026-0001").json()
+        body.pop("case_id")
+        for party in ("rider", "driver"):
+            body[party]["route_consent"] = "not_agreed"
+        result = client.post("/api/resolve", json=body).json()
+        ruling = result["ruling"]
+        assert ruling["action"] == "escalate" and ruling["amount"] is None
+        assert "No automatic payment" in ruling["reasoning"]
+        assert "was applied" not in ruling["reasoning"]
+        assert "7.87" not in ruling["reasoning"]
+>       assert "Flagged for human review" in ruling["reasoning"]
+E       AssertionError: assert 'Flagged for human review' in 'Escalated to human review (escalate). No automatic payment has been applied. Selected evidence: Dispute evidence has ...stent; comparing reports does not independently verify consent. Recorded cancellation fee: 0. Overall confidence: 96%.'
+
+tests/test_grounded_pipeline.py:151: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_consent_review.py::test_review_flag_api_does_not_claim_support_dispatch[request_body0-insufficient_evidence]
+FAILED tests/test_consent_review.py::test_review_flag_api_does_not_claim_support_dispatch[request_body1-escalate]
+FAILED tests/test_consent_review.py::test_review_flag_run_event_does_not_claim_support_dispatch
+FAILED tests/test_grounded_pipeline.py::test_escalated_refund_is_not_announced_as_applied
+4 failed, 52 passed in 0.33s

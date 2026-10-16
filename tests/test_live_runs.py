@@ -35,7 +35,7 @@ def test_live_run_preserves_sample_label_and_real_mode(monkeypatch):
     with TestClient(app) as client:
         health=client.get('/api/health').json()
         assert health['live_enabled'] is True and health['live_model']=='test-model'
-        response=client.post('/api/live-runs',json={'case_id':'RYDE-2026-0001'})
+        response=client.post('/api/live-runs',json={'case_id':'DEMO-ORAL-NOT-AGREED'})
         assert response.status_code==202
         rid=response.json()['run_id'];app.state.runs.wait(rid,timeout=3)
         snapshot=client.get('/api/runs/'+rid).json();result=snapshot['result']

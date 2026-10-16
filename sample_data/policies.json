@@ -1,8 +1,8 @@
 {
   "company": "Ryde",
-  "version": "2026.09",
+  "version": "2026.10-consent-demo",
   "config": {
-    "traffic_tolerance": 0.30
+    "traffic_tolerance": 0.3
   },
   "policies": [
     {
@@ -28,7 +28,7 @@
         },
         {
           "id": "RD-001.5",
-          "text": "A valid traffic detour (confirmed by live traffic data) reduces the assessed deviation severity and may void the refund if the detour is reasonable."
+          "text": "For this demonstration, a traffic flag in the supplied trip record may void a reasonable route refund within the configured tolerance. The prototype does not independently verify live traffic."
         },
         {
           "id": "RD-001.6",
@@ -37,6 +37,10 @@
         {
           "id": "RD-001.7",
           "text": "Excess TIME fare attributable to a route deviation is not separately refunded; only the excess distance fare (and its proportional surge) is refunded under RD-001.3 or RD-001.4."
+        },
+        {
+          "id": "RD-001.8",
+          "text": "Demo route-context rule: GPS, disclosure messages and missing chat do not prove consent. Compare each party's explicit route-agreement report without treating consistency as independent verification. Below 5% with no additional recorded stop, or traffic within tolerance with no stop, consent is not decisive. Matching reports of agreement permit a no-refund recommendation for the route change only; matching reports of no agreement permit the applicable distance refund when traffic is explicitly not flagged. If missing or conflicting consent, unknown traffic, or an unresolved stop can change entitlement or amount, require human review and withhold the automatic amount. Route agreement never establishes stop agreement. A >=15% route refund supported by matching no-agreement reports and no traffic flag does not rely on the stop clause."
         }
       ]
     },
@@ -116,5 +120,6 @@
         }
       ]
     }
-  ]
+  ],
+  "scope": "Hackathon demonstration policy; not an official Ryde production policy."
 }

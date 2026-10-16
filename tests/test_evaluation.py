@@ -18,7 +18,9 @@ def test_wrong_golden_expectation_is_reported_not_rewritten(tmp_path):
     import json
     path = tmp_path/'bad.json'
     path.write_text(json.dumps({'cases': [{'id': 'bad-golden', 'case_id': 'RYDE-2026-0001',
-        'scenario': 'success', 'expected': {'action': 'full_refund', 'amount': 999}}]}))
+        'scenario': 'success',
+        'set_paths': {'rider.route_consent': 'not_agreed', 'driver.route_consent': 'not_agreed'},
+        'expected': {'action': 'full_refund', 'amount': 999}}]}))
     report = evaluate(path)
     assert report['failed'] == 1
     assert report['results'][0]['expected']['amount'] == 999

@@ -1,6 +1,6 @@
 # 表单可粘贴文案
 
-2026-10-16终稿文案。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
+2026-10-16口头同意规则补充稿。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
 
 ## Project name
 
@@ -8,7 +8,7 @@ Ryde Dispute AI
 
 ## Short introduction
 
-Evidence-backed dispute resolution with transparent multi-agent review.
+Evidence-led dispute review with transparent multi-agent reasoning.
 
 按空格计7词，少于10词。
 
@@ -20,21 +20,23 @@ Ryde — Multi-Agent Autonomous Dispute Resolution System
 
 ## Project description
 
-Ride-hailing disputes leave support reviewers reconciling two accounts across trip records, chat, fees and policy. Ryde Dispute AI brings these inputs into one inspectable workbench for route-deviation and no-show disputes. The prototype is designed for support staff who need to understand both parties' positions and explain a consistent recommendation.
+Ryde Dispute AI is an unofficial hackathon prototype for support reviewers handling route-deviation and no-show disputes. The problem framing comes from the organiser's Ryde challenge and supplied ticket format. It brings both parties' accounts, supplied records and demonstration policies into one inspectable review.
 
-The problem framing comes from the organiser's Ryde challenge and supplied ticket format. Local deterministic helpers collect evidence, flag review risks and match demo policy and precedent records. A Rider Advocate and a Driver Advocate build evidence-linked positions. A Judge uses both positions and verified derived evidence to explain the outcome. Deterministic code computes distances, waiting thresholds, applicable policy, final action and refund amounts. Models select supplied evidence; they do not control the amount or execute payments. Missing or conflicting evidence can trigger human review.
+A Rider Advocate and a Driver Advocate build evidence-linked positions, then a Judge uses both positions and derived evidence to explain a rule-constrained recommendation. Local deterministic helpers collect evidence, flag risks and match demo policy and precedent records. Code controls final actions and amounts; models select evidence and never execute payments.
 
-The application uses FastAPI, Pydantic, Python orchestration and native browser JavaScript. Versioned role prompts keep instructions separate from untrusted case data. Each agent's structured response is checked against the evidence catalog and applicable policy. Invalid content receives at most one repair attempt before a visible deterministic fallback; transport failures fall back without a repair call. The workbench shows execution events, individual agent outcomes, attempts, evidence and policy inspection, and a downloadable audit record.
+The system distinguishes consistent, conflicting and unconfirmed accounts. GPS can support route analysis but cannot establish oral consent, and missing chat does not establish that no conversation occurred. Even when both parties report oral agreement, that remains reported evidence rather than independent verification. If responsibility depends on consent and a key fact remains conflicting or unknown, the recommendation is marked for manual review and the amount remains undetermined. This is a review flag, with no support-team dispatch or case handoff integration.
 
-Simulation mode runs repeatable local scenarios through the actual agent and validation pipeline. An explicit Live API mode connects the same three roles to DeepSeek and reports provider token usage. Bounded live checks include accepted outputs, rejected references and fallback; they do not establish production accuracy. The agents run in a fixed sequence, with no claim of autonomous negotiation.
+The browser UI uses four baseline cases and three explicitly synthetic consent variants; these variants are not additional real-world cases. A structured /api/resolve endpoint accepts case data, but there is no upload or new-case entry screen and no persistent new-case storage. The route plot illustrates supplied coordinates. Deviation percentages use provided mileage; routes and traffic fields are not independently checked against a mapping service.
 
-The intended business value is faster evidence review, clearer explanations for riders and drivers, and a reproducible support record. The demo covers two dispute categories and four baseline cases, with additional offline checks for missing evidence and failure handling. Evidence and policies are demonstration inputs; there is no connection to live Ryde data or payment systems. Review-time savings, real-world accuracy and customer outcomes remain to be measured on representative data. Run records are held in local process memory, so production persistence and account isolation remain future work.
+FastAPI, Pydantic, Python orchestration and native browser JavaScript support a fixed sequence of three roles. Versioned prompts separate instructions from untrusted case data. Structured outputs are checked against the evidence catalog and applicable policy. Validation failures receive at most one repair attempt before visible fallback; transport failures fall back without a repair call. The workbench exposes events, per-agent outcomes, attempts, citation inspection and audit JSON. Run records are held in local process memory.
+
+Simulation exercises the actual agent and validation pipeline. Explicit Live API mode connects the same roles to DeepSeek and reports provider usage. Earlier bounded live checks demonstrated that connection and its failure paths; they do not validate the latest oral-consent logic or establish production accuracy. The intended value is clearer evidence review and explanations. Review-time savings, accuracy and customer outcomes remain unmeasured on representative data. All evidence and policies are demonstration inputs, with no live Ryde data connection, automated dispatch or payment execution.
 
 ## Source code URL
 
 https://github.com/luoziming49-ops/ryde-hackathon
 
-源码以默认main交付；合并与验证记录见[终稿报告](../reports/FINAL-RELEASE.md)。
+源码以默认main交付；既有整合记录见[终稿报告](../reports/FINAL-RELEASE.md)，本轮口头同意补充的验证与发布状态见[当前状态](../STATUS.md)。
 
 ## Demo / video URL（选做）
 

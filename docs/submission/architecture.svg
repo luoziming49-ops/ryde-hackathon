@@ -1,51 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
-  <title id="title">Ryde Dispute AI — implementation architecture</title>
-  <desc id="desc">Sample case tools produce evidence and deterministic policy context. Rider, Driver and Judge execute in fixed order; the Judge receives both positions. Each role uses simulation or explicit DeepSeek transport followed by JSON and reference validation, at most one repair and a visible fallback. Code controls final action and amount. Actual tool and agent events enter a bounded in-memory run store for the workbench and audit export. No payment is executed.</desc>
-  <defs>
-    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L11 6L1 11" fill="none" stroke="#0066cc" stroke-width="2"/></marker>
-  </defs>
-  <rect width="1920" height="1080" fill="#f5f5f7"/>
+  <title id="title">Ryde Dispute AI — evidence, consent and review boundaries</title>
+  <desc id="desc">Unofficial hackathon prototype. Preset UI cases and structured API inputs produce evidence and consent context. Accounts may agree, conflict or remain unconfirmed; oral reports are not independently verified. Rider, Driver and Judge execute in fixed order with structured validation and fallback. Unresolved decisive consent facts produce a manual-review flag and null amount, without support dispatch or payments. The route plot is schematic; mileage and traffic come from inputs. Records are bounded in-memory.</desc>
+  <defs><marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L11 6L1 11" fill="none" stroke="#C72D55" stroke-width="2"/></marker></defs>
+  <rect width="1920" height="1080" fill="#f7f8fa"/>
   <g font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
-    <text x="80" y="100" fill="#1d1d1f" font-size="56" font-weight="700" letter-spacing="-1.8">From evidence to an inspectable recommendation.</text>
-    <text x="80" y="152" fill="#5b5b61" font-size="26">Local prototype · Sample evidence and policy · Fixed agent sequence · No payments</text>
-    <g fill="#ffffff" stroke="#dedee3" stroke-width="2">
-      <rect x="80" y="230" width="350" height="330" rx="24"/>
-      <rect x="490" y="230" width="450" height="330" rx="24"/>
-      <rect x="1000" y="230" width="420" height="330" rx="24"/>
-      <rect x="1480" y="230" width="360" height="330" rx="24"/>
+    <text x="80" y="100" fill="#31373E" font-size="56" font-weight="700" letter-spacing="-1.8">From two accounts to a transparent review.</text>
+    <text x="80" y="152" fill="#606873" font-size="26">Hackathon prototype · Not an official Ryde release · Demonstration evidence and policies</text>
+    <g fill="#ffffff" stroke="#e1e3e7" stroke-width="2">
+      <rect x="80" y="230" width="350" height="330" rx="24"/><rect x="490" y="230" width="450" height="330" rx="24"/><rect x="1000" y="230" width="420" height="330" rx="24"/><rect x="1480" y="230" width="360" height="330" rx="24"/>
     </g>
-    <g fill="#0066cc" font-size="22" font-weight="600">
-      <text x="108" y="278">01 / INPUT</text><text x="518" y="278">02 / SHARED CONTEXT</text><text x="1028" y="278">03 / AGENT REVIEW</text><text x="1508" y="278">04 / OUTPUT</text>
-    </g>
-    <g fill="#1d1d1f" font-size="31" font-weight="600">
-      <text x="108" y="334">Case tools</text><text x="518" y="334">Evidence + policy</text><text x="1028" y="334">Three roles</text><text x="1508" y="334">Recommendation</text>
-    </g>
-    <g fill="#5b5b61" font-size="25">
-      <text x="108" y="391">GPS, trip, chat,</text><text x="108" y="426">fare and parties</text><text x="108" y="481">Whitelisted local reads</text><text x="108" y="516">No external retrieval</text>
-      <text x="518" y="391">Versioned evidence catalog</text><text x="518" y="426">Computed distances + wait time</text><text x="518" y="481">Applicable rules + gaps</text><text x="518" y="516">Code owns action + amount</text>
+    <g fill="#C72D55" font-size="22" font-weight="600"><text x="108" y="278">01 / INPUT</text><text x="518" y="278">02 / SHARED CONTEXT</text><text x="1028" y="278">03 / AGENT REVIEW</text><text x="1508" y="278">04 / OUTPUT</text></g>
+    <g fill="#31373E" font-size="31" font-weight="600"><text x="108" y="334">Case evidence</text><text x="518" y="334">Evidence + consent</text><text x="1028" y="334">Three roles</text><text x="1508" y="334">Guarded outcome</text></g>
+    <g fill="#606873" font-size="24">
+      <text x="108" y="391">Preset UI cases</text><text x="108" y="426">Structured API data</text><text x="108" y="481">No upload / intake UI</text><text x="108" y="516">No new-case persistence</text>
+      <text x="518" y="391">Accounts: consistent</text><text x="518" y="426">conflicting or unconfirmed</text><text x="518" y="481">Reported consent ≠ verified</text><text x="518" y="516">Mileage % from input distances</text>
       <text x="1028" y="391">1  Rider Advocate</text><text x="1028" y="426">2  Driver Advocate</text><text x="1028" y="461">3  Judge reads both positions</text><text x="1028" y="516">Guarded pipeline per role ↓</text>
-      <text x="1508" y="391">Verified explanation</text><text x="1508" y="426">Citations + rule outcome</text><text x="1508" y="481">Human-review flag</text><text x="1508" y="516">No payment execution</text>
+      <text x="1508" y="391">Rule + review flag</text><text x="1508" y="426">Unknown amount stays null</text><text x="1508" y="481">No support-team dispatch</text><text x="1508" y="516">No payment execution</text>
     </g>
-    <g stroke="#0066cc" stroke-width="3" fill="none" marker-end="url(#arrow)">
-      <path d="M438 395H480"/><path d="M948 395H990"/><path d="M1428 395H1470"/>
-    </g>
-    <rect x="490" y="625" width="930" height="228" rx="24" fill="#edf4fc" stroke="#c9dcef" stroke-width="2"/>
-    <path d="M1210 568V615" stroke="#0066cc" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
-    <text x="518" y="671" fill="#0066cc" font-size="22" font-weight="600">WITHIN EACH ROLE · VERSIONED PROMPTS + UNTRUSTED DATA BOUNDARY</text>
-    <text x="518" y="721" fill="#1d1d1f" font-size="26" font-weight="600">Simulation or explicit DeepSeek → JSON + citation / policy checks</text>
-    <text x="518" y="768" fill="#5b5b61" font-size="25">Validation failure → one repair attempt → visible fallback if still invalid</text>
-    <text x="518" y="809" fill="#5b5b61" font-size="25">Transport failure → fallback; accepted content stays within rule constraints</text>
-    <text x="80" y="673" fill="#1d1d1f" font-size="25" font-weight="600">Two modes</text>
-    <text x="80" y="717" fill="#5b5b61" font-size="24">Simulation is the default.</text>
-    <text x="80" y="754" fill="#5b5b61" font-size="24">Live API is explicit.</text>
-    <text x="80" y="791" fill="#5b5b61" font-size="24">No autonomous negotiation.</text>
-    <text x="1480" y="673" fill="#1d1d1f" font-size="25" font-weight="600">Visible in the workbench</text>
-    <text x="1480" y="717" fill="#5b5b61" font-size="24">Agent mode + attempts</text>
-    <text x="1480" y="754" fill="#5b5b61" font-size="24">Evidence + policy inspection</text>
-    <text x="1480" y="791" fill="#5b5b61" font-size="24">Live token usage + fallback</text>
-    <rect x="80" y="908" width="1760" height="112" rx="22" fill="#ffffff" stroke="#dedee3" stroke-width="2"/>
-    <text x="108" y="950" fill="#1d1d1f" font-size="27" font-weight="600">Tool + agent events → RunRecorder → bounded RunStore → workbench + audit JSON</text>
-    <text x="108" y="990" fill="#5b5b61" font-size="24">Single-process memory · 2 concurrent runs · 50 retained runs · Records reset on restart</text>
-    <text x="80" y="1057" fill="#5b5b61" font-size="21">FastAPI · Pydantic · Python orchestration · Native browser JavaScript</text>
+    <g stroke="#C72D55" stroke-width="3" fill="none" marker-end="url(#arrow)"><path d="M438 395H480"/><path d="M948 395H990"/><path d="M1428 395H1470"/></g>
+    <rect x="490" y="625" width="930" height="228" rx="24" fill="#fff0f4" stroke="#edc4cf" stroke-width="2"/>
+    <path d="M1210 568V615" stroke="#C72D55" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
+    <text x="518" y="671" fill="#C72D55" font-size="22" font-weight="600">WITHIN EACH ROLE · VERSIONED PROMPTS + UNTRUSTED DATA BOUNDARY</text>
+    <text x="518" y="721" fill="#31373E" font-size="26" font-weight="600">Simulation or explicit DeepSeek → JSON + citation / policy checks</text>
+    <text x="518" y="768" fill="#606873" font-size="25">Validation failure → one repair attempt → visible fallback if still invalid</text>
+    <text x="518" y="809" fill="#606873" font-size="25">Transport failure → fallback; code controls the final action and amount</text>
+    <text x="80" y="673" fill="#31373E" font-size="25" font-weight="600">Two modes</text><text x="80" y="717" fill="#606873" font-size="24">Simulation is the default.</text><text x="80" y="754" fill="#606873" font-size="24">Live API is explicit.</text><text x="80" y="791" fill="#606873" font-size="24">Fixed role sequence.</text>
+    <text x="1480" y="673" fill="#31373E" font-size="25" font-weight="600">Map boundary</text><text x="1480" y="717" fill="#606873" font-size="24">Route plot is schematic.</text><text x="1480" y="754" fill="#606873" font-size="24">Traffic is supplied data.</text><text x="1480" y="791" fill="#606873" font-size="24">No map verification.</text>
+    <rect x="80" y="908" width="1760" height="112" rx="22" fill="#ffffff" stroke="#e1e3e7" stroke-width="2"/>
+    <text x="108" y="950" fill="#31373E" font-size="27" font-weight="600">Tool + agent events → RunRecorder → bounded RunStore → workbench + audit JSON</text>
+    <text x="108" y="990" fill="#606873" font-size="24">Single-process memory · 2 concurrent runs · 50 retained runs · Records reset on restart</text>
+    <text x="80" y="1057" fill="#606873" font-size="21">FastAPI /api/resolve accepts structured data; it does not provide a new-case entry screen.</text>
   </g>
 </svg>

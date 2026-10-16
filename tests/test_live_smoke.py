@@ -23,13 +23,17 @@ def test_confirmed_destination_is_required_before_any_request(monkeypatch):
         run_smoke('RYDE-2026-0001', LLMConfig(URL, '', 'test-model'), URL)
 
 
-def test_real_success_requires_all_agents_and_expected_ruling(monkeypatch):
+@pytest.mark.parametrize("case_id,action,amount", [
+    ("RYDE-2026-0001", "insufficient_evidence", None),
+    ("DEMO-ORAL-NOT-AGREED", "partial_refund", 7.87),
+])
+def test_real_success_requires_all_agents_and_expected_ruling(monkeypatch, case_id, action, amount):
     fake = SimulationProvider('success')
     monkeypatch.setattr(LLMProvider, '_request', lambda self, *a, **k: fake._request(*a, **k))
-    report = run_smoke('RYDE-2026-0001', config(), URL)
+    report = run_smoke(case_id, config(), URL)
     assert report['passed'] is True
     assert report['http_attempts'] == 3
-    assert report['actual'] == {'action': 'partial_refund', 'amount': 7.87}
+    assert report['actual'] == {'action': action, 'amount': amount}
     assert report['usage_complete'] is False and report['usage'] is None
     assert report['cost'] is None
     assert 'private-fixture-key' not in json.dumps(report)

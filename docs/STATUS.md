@@ -1,10 +1,12 @@
 # 当前状态
 
-修订：20 · CP-020 · 2026-10-16（Asia/Singapore）· 同步：complete
+修订：20 · CP-020 · 2026-10-16（Asia/Singapore）· 同步：updating
+
+当前进行：按用户侧边会话补充授权，完善口头同意/证据不确定性判断并对齐Ryde官方品牌；任务入口见[补充任务](tasks/CONSENT-RYDE.md)。
 
 ## 当前方向
 
-Digital Native / Ryde争议处理工作台。用户已授权自主筛选分支、合并GitHub并交付终稿；产品与提交材料已整合到main，接下来只补真实使用证明、浏览器彩排和正式赛务。不要重做已验收开发。范围见[收尾任务](tasks/SUBMISSION-FINAL.md)。
+Digital Native / Ryde争议处理工作台。用户已授权自主筛选分支、合并GitHub并交付终稿；基线产品与提交材料已整合到main；本轮按新增授权补充证据判断和品牌，既有分支融合不重做。范围见[收尾任务](tasks/SUBMISSION-FINAL.md)。
 
 ## 终稿成果
 

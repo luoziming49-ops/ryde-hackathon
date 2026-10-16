@@ -1,9 +1,9 @@
-"""Deterministic policy engine.
+"""Deterministic engine for the hackathon demonstration policy.
 
-Applies Ryde's company policy to structured evidence and produces a ruling
-recommendation. The Judge Agent treats this as a strong prior, while still
-producing its own natural-language reasoning (and optionally deferring to the
-LLM for the final narrative).
+These local rules, including route-context rule RD-001.8, are not official Ryde
+production policy. The engine computes the recommended action and amount from
+supplied evidence and explicit party reports. The Judge may escalate but cannot
+let model text override the computed amount or turn reports into verified facts.
 """
 
 from __future__ import annotations
@@ -33,6 +33,7 @@ class PolicyDecision:
     explanation: str = ""
     escalate: bool = False
     missing_fields: list[str] = field(default_factory=list)
+    review_questions: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -99,58 +100,79 @@ class PolicyEngine:
                 missing_fields=["trip.optimal_distance_km", "trip.actual_distance_km"],
             )
 
-        # Bug #5: traffic does NOT blindly void a refund.
-        if e.traffic_detected:
-            if e.has_unexpected_stop:
-                return self._route_refund(
-                    e, include_base=True,
-                    confidence=0.93,
-                    matched_policy_ids=ids + ["RD-001.4", "RD-001.6"],
-                    explanation=(
-                        f"Traffic detour present, but an unexplained {e.unexpected_stop_min:.0f}-min stop "
-                        "still triggers the stop clause of RD-001.4."
-                    ),
-                )
+        # Apply uncertainty only when it can change entitlement or amount.
+        # A small deviation without another disputed stop needs no consent finding.
+        if ratio < 0.05 and not e.has_unexpected_stop:
+            return PolicyDecision(
+                action=NO_ACTION, amount=0.0, confidence=0.95,
+                matched_policy_ids=ids + ["RD-001.2", "RD-001.8"],
+                explanation="Deviation below 5% tolerance with no additional recorded stop; no refund. Route agreement need not be established for this rule.",
+            )
+
+        if e.consent_consistent_value == "agreed" and not e.has_unexpected_stop:
+            return PolicyDecision(
+                action=NO_ACTION, amount=0.0, confidence=0.85,
+                matched_policy_ids=ids + ["RD-001.8"],
+                explanation="Under the demo policy, both parties report agreement to this route change and no additional stop is recorded; no route refund is recommended. These are party reports, not independently verified consent.",
+            )
+
+        if e.traffic_detected is True and not e.has_unexpected_stop:
             if ratio > traffic_tolerance:
                 return PolicyDecision(
                     action=ESCALATE,
                     amount=0.0,
                     confidence=0.5,
-                    matched_policy_ids=ids + ["RD-001.5"],
+                    matched_policy_ids=ids + ["RD-001.5", "RD-001.8"],
                     explanation=(
                         f"Conflicting evidence: traffic detour claimed, but deviation "
                         f"{ratio * 100:.0f}% exceeds the {traffic_tolerance * 100:.0f}% tolerance."
                     ),
                     escalate=True,
+                    review_questions=["Does the supplied traffic explanation account for the extent of this detour?"],
                 )
             return PolicyDecision(
                 action=NO_ACTION,
                 amount=0.0,
                 confidence=0.9,
-                matched_policy_ids=ids + ["RD-001.5"],
+                matched_policy_ids=ids + ["RD-001.5", "RD-001.8"],
                 explanation=(
-                    f"Detour justified by live traffic within the {traffic_tolerance * 100:.0f}% tolerance; no refund."
+                    f"The supplied traffic flag and deviation within the {traffic_tolerance * 100:.0f}% tolerance meet the demo traffic rule; no refund. No external traffic service was independently checked."
                 ),
             )
 
-        if ratio < 0.05:
+        questions, missing = [], []
+        if e.consent_report_state != "consistent":
+            missing.append("route_consent (" + e.consent_report_state + " party reports)")
+            questions.append("Did the rider agree to the route change, including any oral discussion? Record each party's account separately and resolve missing or conflicting reports.")
+        # Route agreement does not establish agreement to a stop. For a >=15%
+        # unagreed route, the same refund follows without relying on the stop.
+        stop_is_decisive = e.has_unexpected_stop and not (
+            ratio >= 0.15 and e.consent_consistent_value == "not_agreed" and e.traffic_detected is False
+        )
+        if stop_is_decisive:
+            missing.append("trip.unexpected_stops (explanation and agreement unconfirmed)")
+            questions.append("Was the additional stop explained and agreed to, and did it change the fare? Route agreement alone does not answer this.")
+        if e.traffic_detected is None and e.consent_consistent_value != "agreed":
+            missing.append("trip.traffic_detected")
+            questions.append("What traffic or safety reason supports the detour? No traffic finding was supplied.")
+        if questions:
             return PolicyDecision(
-                action=NO_ACTION,
-                amount=0.0,
-                confidence=0.95,
-                matched_policy_ids=ids + ["RD-001.2"],
-                explanation="Deviation below 5% tolerance; no refund.",
+                action=INSUFFICIENT_EVIDENCE, amount=0.0, confidence=0.0,
+                matched_policy_ids=ids + ["RD-001.8"], escalate=True,
+                explanation="Unresolved route context can change the refund. Party reports, GPS and missing chat do not independently establish consent; human review is required.",
+                missing_fields=missing, review_questions=questions,
             )
 
-        if ratio >= 0.15 or e.has_unexpected_stop:
+        report_basis = " Both parties report that the route change was not agreed; these reports are not independently verified. This is a demo policy recommendation."
+        if ratio >= 0.15:
             return self._route_refund(
                 e, include_base=True,
                 confidence=0.93,
-                matched_policy_ids=ids + ["RD-001.4", "RD-001.6"],
+                matched_policy_ids=ids + ["RD-001.4", "RD-001.6", "RD-001.8"],
                 explanation=(
                     f"Deviation of {ratio * 100:.0f}%"
-                    + (f" plus a {e.unexpected_stop_min:.0f}-min unexplained stop" if e.has_unexpected_stop else "")
                     + " exceeds policy; refunding excess distance fare and 50% base fare."
+                    + report_basis
                 ),
             )
 
@@ -158,8 +180,8 @@ class PolicyEngine:
         return self._route_refund(
             e, include_base=False,
             confidence=0.88,
-            matched_policy_ids=ids + ["RD-001.3", "RD-001.6"],
-            explanation="Deviation between 5% and 15% without justification; refunding excess distance fare.",
+            matched_policy_ids=ids + ["RD-001.3", "RD-001.6", "RD-001.8"],
+            explanation="Deviation between 5% and 15% with no traffic flagged in the supplied data; refunding excess distance fare." + report_basis,
         )
 
     @staticmethod

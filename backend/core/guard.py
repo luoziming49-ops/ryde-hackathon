@@ -55,12 +55,14 @@ def build_evidence_catalog(dispute: dict, evidence: EvidenceAnalysis, *, is_simu
                "Computed route deviation", "%")
         number("analysis.excess_distance_km", evidence.excess_distance_km, "Computed extra distance", " km")
         if evidence.has_unexpected_stop:
-            add("trip.unexpected_stops", True, "An unexpected stop is recorded in the supplied trip data.")
+            add("trip.unexpected_stops", True, "A stop is recorded in the supplied trip data; its explanation and agreement are not established by GPS.")
         traffic = (dispute.get("trip") or {}).get("traffic_detected")
         if isinstance(traffic, bool):
             add("trip.traffic_detected", traffic, "Traffic is flagged in the supplied trip data." if traffic else
                 "Traffic is not flagged in the supplied trip data.")
         number("analysis.excess_distance_fare", evidence.excess_distance_fare, "Computed excess distance fare")
+        add("analysis.consent_report_state", evidence.consent_report_state,
+            f"Structured route-agreement reports are {evidence.consent_report_state}; comparing reports does not independently verify consent.")
     elif evidence.category == "no_show":
         if evidence.driver_arrived is not None and not dispute.get("normalization_gaps"):
             add("analysis.driver_arrived", evidence.driver_arrived,
@@ -82,6 +84,11 @@ def build_evidence_catalog(dispute: dict, evidence: EvidenceAnalysis, *, is_simu
         if value:
             # Keep long/private source text in the case file, not in model output.
             add(f"{party}.{key}", value, f"{party.title()} reports: {str(value)[:3000]}", "reported", "party_statement")
+        consent = (dispute.get(party) or {}).get("route_consent", "unknown")
+        if evidence.category == "route_deviation" and consent in ("agreed", "not_agreed"):
+            add(f"{party}.route_consent", consent,
+                f"{party.title()} reports route agreement: {consent.replace('_', ' ')}. This party report is not independently verified.",
+                "reported", "party_statement")
     return catalog
 
 
