@@ -9,6 +9,7 @@ LLM for the final narrative).
 from __future__ import annotations
 
 from dataclasses import dataclass, field, asdict
+import math
 from typing import Any, Optional
 
 from .evidence import EvidenceAnalysis
@@ -74,14 +75,16 @@ class PolicyEngine:
             amount=0.0,
             confidence=0.5,
             matched_policy_ids=[],
-            explanation="Insufficient structured evidence; escalated for human review.",
+            explanation=(
+                f"Dispute category '{evidence.category}' is not supported by automated "
+                "resolution; escalated for human review."
+            ),
             escalate=True,
         )
 
     def _decide_route_deviation(self, e: EvidenceAnalysis) -> PolicyDecision:
         ratio = e.deviation_ratio  # already rounded to 4 decimals (or None if gapped)
         ids = ["POL-RD-001"]
-        excess = round(e.excess_distance_fare + e.surge_refund, 2)
         traffic_tolerance = float(self.config.get("traffic_tolerance", 0.30))
 
         if ratio is None:
@@ -99,10 +102,8 @@ class PolicyEngine:
         # Bug #5: traffic does NOT blindly void a refund.
         if e.traffic_detected:
             if e.has_unexpected_stop:
-                refund = round(excess + 0.5 * e.base_fare, 2)
-                return PolicyDecision(
-                    action=PARTIAL_REFUND,
-                    amount=refund,
+                return self._route_refund(
+                    e, include_base=True,
                     confidence=0.93,
                     matched_policy_ids=ids + ["RD-001.4", "RD-001.6"],
                     explanation=(
@@ -142,10 +143,8 @@ class PolicyEngine:
             )
 
         if ratio >= 0.15 or e.has_unexpected_stop:
-            refund = round(excess + 0.5 * e.base_fare, 2)
-            return PolicyDecision(
-                action=PARTIAL_REFUND,
-                amount=refund,
+            return self._route_refund(
+                e, include_base=True,
                 confidence=0.93,
                 matched_policy_ids=ids + ["RD-001.4", "RD-001.6"],
                 explanation=(
@@ -156,12 +155,45 @@ class PolicyEngine:
             )
 
         # 5%–15%
-        return PolicyDecision(
-            action=PARTIAL_REFUND,
-            amount=excess,
+        return self._route_refund(
+            e, include_base=False,
             confidence=0.88,
             matched_policy_ids=ids + ["RD-001.3", "RD-001.6"],
             explanation="Deviation between 5% and 15% without justification; refunding excess distance fare.",
+        )
+
+    @staticmethod
+    def _missing_money(fields: list[str], ids: list[str]) -> PolicyDecision:
+        return PolicyDecision(
+            action=INSUFFICIENT_EVIDENCE, amount=0.0, confidence=0.0,
+            matched_policy_ids=ids, escalate=True, missing_fields=fields,
+            explanation="Insufficient evidence — missing: " + ", ".join(fields),
+        )
+
+    def _route_refund(
+        self, e: EvidenceAnalysis, *, include_base: bool, confidence: float,
+        matched_policy_ids: list[str], explanation: str,
+    ) -> PolicyDecision:
+        missing = list(e.missing_fares)
+        if e.excess_distance_fare is None and not missing:
+            missing.extend(["fare.distance_fare_actual", "fare.distance_fare_optimal"])
+        if include_base and e.base_fare is None:
+            missing.append("fare.base_fare")
+        if missing:
+            return self._missing_money(missing, matched_policy_ids)
+        amount = e.excess_distance_fare + e.surge_refund
+        if include_base:
+            amount += 0.5 * e.base_fare
+        if not math.isfinite(amount):
+            return PolicyDecision(
+                action=INSUFFICIENT_EVIDENCE, amount=0.0, confidence=0.0,
+                matched_policy_ids=matched_policy_ids, escalate=True,
+                explanation="Fare inputs overflow the refund calculation; human review required.",
+                missing_fields=["fare (refund calculation overflow)"],
+            )
+        return PolicyDecision(
+            action=PARTIAL_REFUND, amount=round(amount, 2), confidence=confidence,
+            matched_policy_ids=matched_policy_ids, explanation=explanation,
         )
 
     def _decide_no_show(self, e: EvidenceAnalysis) -> PolicyDecision:
@@ -169,18 +201,24 @@ class PolicyEngine:
         arrived = e.driver_arrived
         wait = e.driver_wait_min
         late = e.driver_late_min
+        # Per-ticket free-wait threshold overrides the global default (5 min)
+        # for this case only; the global config is never mutated.
+        free_wait = e.free_wait_min if e.free_wait_min is not None else 5.0
 
-        if arrived is None or wait is None:
+        if arrived is None or (arrived and (wait is None or (late is None and wait >= free_wait))):
             # Defensive: should have been caught by the gaps check, but never crash.
             return PolicyDecision(
                 action=INSUFFICIENT_EVIDENCE,
                 amount=0.0,
                 confidence=0.0,
                 matched_policy_ids=ids,
-                explanation="Insufficient evidence to decide no-show; missing arrival or wait data.",
+                explanation="Insufficient evidence to decide no-show; missing arrival, wait or lateness data.",
                 escalate=True,
-                missing_fields=list(e.gaps),
+                missing_fields=list(e.gaps) or ['gps.driver_arrival.late_min'],
             )
+
+        if (not arrived or (late is not None and late > 10) or wait < free_wait) and e.cancellation_fee is None:
+            return self._missing_money(["fare.cancellation_fee"], ids)
 
         if not arrived:
             return PolicyDecision(
@@ -191,7 +229,7 @@ class PolicyEngine:
                 explanation="Driver never arrived within 150 m of pickup; cancellation fee fully refunded.",
             )
 
-        if late > 10:
+        if late is not None and late > 10:
             return PolicyDecision(
                 action=FULL_REFUND,
                 amount=e.cancellation_fee,
@@ -200,13 +238,15 @@ class PolicyEngine:
                 explanation="Driver arrived more than 10 minutes late; fee waived.",
             )
 
-        if wait < 5:
+        if wait < free_wait:
             return PolicyDecision(
                 action=FULL_REFUND,
                 amount=e.cancellation_fee,
                 confidence=0.88,
                 matched_policy_ids=ids + ["NS-001.4"],
-                explanation="Driver waited less than 5 minutes before cancelling; fee refunded.",
+                explanation=(
+                    f"Driver waited less than {free_wait:.0f} minutes before cancelling; fee refunded."
+                ),
             )
 
         # Bug #4: NS-001.5 requires documented driver contact attempts.
@@ -226,9 +266,16 @@ class PolicyEngine:
             amount=0.0,
             confidence=0.92,
             matched_policy_ids=ids + ["NS-001.5"],
-            explanation="Driver arrived on time and waited at least 5 minutes; no-show fee upheld.",
+            explanation=f"Driver arrived within the permitted lateness and waited at least {free_wait:g} minutes; no-show fee upheld.",
         )
 
 
 def apply_policy(evidence: EvidenceAnalysis, policies: list[dict], config: Optional[dict] = None) -> PolicyDecision:
-    return PolicyEngine(policies, config).decide(evidence)
+    decision = PolicyEngine(policies, config).decide(evidence)
+    available = {p['id'] for p in policies if p.get('category') == evidence.category}
+    available.update(c['id'] for p in policies if p.get('category') == evidence.category
+                     for c in p.get('clauses', []) if c.get('text'))
+    if not set(decision.matched_policy_ids).issubset(available):
+        return PolicyDecision(action=ESCALATE, amount=0.0, confidence=0.0, escalate=True,
+                              explanation='Applicable policy is unavailable; human review required.')
+    return decision

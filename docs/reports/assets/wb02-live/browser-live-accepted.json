@@ -1,0 +1,81 @@
+{
+  "mode": "live",
+  "evidence_mode": "sample",
+  "payment_executed": false,
+  "case_id": "RYDE-2026-0003",
+  "run_id": "616cb7dc56504dfb88aa80de04858445",
+  "agents": {
+    "rider": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "rider@1.0.0",
+      "latency_ms": 2092,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2105,
+        "completion_tokens": 317,
+        "total_tokens": 2422
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "driver": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "driver@1.0.1",
+      "latency_ms": 2037,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2204,
+        "completion_tokens": 337,
+        "total_tokens": 2541
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "judge": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "judge@1.0.0",
+      "latency_ms": 2114,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2854,
+        "completion_tokens": 355,
+        "total_tokens": 3209
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    }
+  },
+  "usage": {
+    "prompt_tokens": 7163,
+    "completion_tokens": 1009,
+    "total_tokens": 8172
+  },
+  "usage_complete": true,
+  "http_attempts": 3,
+  "actual": {
+    "action": "no_action",
+    "amount": 0.0
+  },
+  "checks": {
+    "all_agents_live": true,
+    "ruling_matches_expected": true,
+    "guard_approved": true
+  },
+  "duration_ms": 6253,
+  "passed": true
+}

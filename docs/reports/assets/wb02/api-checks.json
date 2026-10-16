@@ -1,0 +1,194 @@
+{
+  "date": "2026-10-08",
+  "timezone": "Asia/Singapore",
+  "mode": "no-key, final backend code",
+  "cases": [
+    {
+      "case_id": "RYDE-2026-0001",
+      "http_status": 200,
+      "action": "partial_refund",
+      "amount": 7.87,
+      "confidence": 0.96,
+      "escalated": false,
+      "reasoning_source": "verified_template",
+      "agent_results": {
+        "rider": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "rider@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "driver": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "driver@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "judge": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "judge@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        }
+      },
+      "guard_status": "approved",
+      "policy_version": "policy-v1-fd9f830bdf470471",
+      "catalog_count": 10
+    },
+    {
+      "case_id": "RYDE-2026-0002",
+      "http_status": 200,
+      "action": "full_refund",
+      "amount": 5.0,
+      "confidence": 0.98,
+      "escalated": false,
+      "reasoning_source": "verified_template",
+      "agent_results": {
+        "rider": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "rider@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "driver": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "driver@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "judge": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "judge@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        }
+      },
+      "guard_status": "approved",
+      "policy_version": "policy-v1-fd9f830bdf470471",
+      "catalog_count": 10
+    },
+    {
+      "case_id": "RYDE-2026-0003",
+      "http_status": 200,
+      "action": "no_action",
+      "amount": 0.0,
+      "confidence": 0.95,
+      "escalated": false,
+      "reasoning_source": "verified_template",
+      "agent_results": {
+        "rider": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "rider@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "driver": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "driver@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "judge": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "judge@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        }
+      },
+      "guard_status": "approved",
+      "policy_version": "policy-v1-fd9f830bdf470471",
+      "catalog_count": 10
+    },
+    {
+      "case_id": "DISP-002",
+      "http_status": 200,
+      "action": "no_action",
+      "amount": 0.0,
+      "confidence": 0.95,
+      "escalated": false,
+      "reasoning_source": "verified_template",
+      "agent_results": {
+        "rider": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "rider@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "driver": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "driver@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        },
+        "judge": {
+          "mode": "fallback",
+          "status": "no_key",
+          "model": null,
+          "prompt_version": "judge@1.0.0",
+          "latency_ms": 0,
+          "error_code": "no_key",
+          "attempts": 0,
+          "attempt_errors": []
+        }
+      },
+      "guard_status": "approved",
+      "policy_version": "policy-v1-427380cb56919bc0",
+      "catalog_count": 8
+    }
+  ],
+  "homepage_status": 200,
+  "health": {
+    "status": "ok",
+    "llm_configured": false,
+    "state": "no_key",
+    "last_call_ok": null,
+    "last_error": null,
+    "success_count": 0,
+    "fail_count": 0,
+    "model": null
+  }
+}

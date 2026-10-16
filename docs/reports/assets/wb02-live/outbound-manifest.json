@@ -1,0 +1,231 @@
+{
+  "destination": "https://api.deepseek.com/chat/completions",
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "scope": "Four existing demonstration cases; prompts, sample evidence catalog, matched demo policy and role positions. No credentials inside prompts.",
+  "first_case_max_requests": 6,
+  "whole_verification_max_requests": 30,
+  "output_tokens_per_request_limit": 1800,
+  "verification_budget_usd": 1,
+  "actual_model_requests_sent": 0,
+  "cases": [
+    {
+      "case_id": "RYDE-2026-0001",
+      "roles": [
+        {
+          "party": "rider",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.deviation_ratio",
+            "analysis.excess_distance_fare",
+            "analysis.excess_distance_km",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "rider.claim",
+            "trip.traffic_detected",
+            "trip.unexpected_stops"
+          ],
+          "prompt_utf8_bytes": 7008,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "driver",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.deviation_ratio",
+            "analysis.excess_distance_fare",
+            "analysis.excess_distance_km",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "rider.claim",
+            "trip.traffic_detected",
+            "trip.unexpected_stops"
+          ],
+          "prompt_utf8_bytes": 7012,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "judge",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.deviation_ratio",
+            "analysis.excess_distance_fare",
+            "analysis.excess_distance_km",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "rider.claim",
+            "trip.traffic_detected",
+            "trip.unexpected_stops"
+          ],
+          "prompt_utf8_bytes": 10388,
+          "max_output_tokens": 1800
+        }
+      ]
+    },
+    {
+      "case_id": "RYDE-2026-0002",
+      "roles": [
+        {
+          "party": "rider",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6748,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "driver",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6752,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "judge",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 9891,
+          "max_output_tokens": 1800
+        }
+      ]
+    },
+    {
+      "case_id": "RYDE-2026-0003",
+      "roles": [
+        {
+          "party": "rider",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6679,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "driver",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6683,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "judge",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "driver.response",
+            "fare.base_fare",
+            "fare.cancellation_fee",
+            "policy.default_free_wait_min",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 9760,
+          "max_output_tokens": 1800
+        }
+      ]
+    },
+    {
+      "case_id": "DISP-002",
+      "roles": [
+        {
+          "party": "rider",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "cancellation_policy_override.free_wait_time_min",
+            "fare.cancellation_fee",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6299,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "driver",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "cancellation_policy_override.free_wait_time_min",
+            "fare.cancellation_fee",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 6303,
+          "max_output_tokens": 1800
+        },
+        {
+          "party": "judge",
+          "evidence_paths": [
+            "analysis.category",
+            "analysis.driver_arrived",
+            "analysis.driver_contact_attempts",
+            "analysis.driver_late_min",
+            "analysis.driver_wait_min",
+            "cancellation_policy_override.free_wait_time_min",
+            "fare.cancellation_fee",
+            "rider.claim"
+          ],
+          "prompt_utf8_bytes": 9360,
+          "max_output_tokens": 1800
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "RYDE-2026-0003",
+  "role": "driver",
+  "http_attempts": 1,
+  "errors": [],
+  "result": {
+    "mode": "llm",
+    "status": "ok",
+    "model": "deepseek-flash",
+    "prompt_version": "driver@1.0.0",
+    "latency_ms": 2237,
+    "error_code": null,
+    "attempts": 1,
+    "attempt_errors": [],
+    "usage": {
+      "prompt_tokens": 2100,
+      "completion_tokens": 375,
+      "total_tokens": 2475
+    },
+    "usage_complete": true,
+    "is_simulated": false,
+    "scenario": null
+  }
+}

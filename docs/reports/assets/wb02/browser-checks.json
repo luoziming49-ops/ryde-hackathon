@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-08",
+  "timezone": "Asia/Singapore",
+  "browser": "Chrome via CUA extension (real browser)",
+  "source": "http://127.0.0.1:8765",
+  "cases": [
+    {
+      "id": "RYDE-2026-0001",
+      "agents": "This run · per-agent results\nRider AdvocateDeterministic fallback · no API key\nPrompt: rider@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nDriver AdvocateDeterministic fallback · no API key\nPrompt: driver@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nJudgeDeterministic fallback · no API key\nPrompt: judge@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key",
+      "ruling": "96%\nPartial Refund\nSGD 7.87\nPOL-RD-001\nRD-001.4\nRD-001.6\nVERIFIED TEMPLATE · CHECKED EVIDENCE SELECTION\nFinal decision: partial refund. Amount: SGD 7.87. Deviation of 43% plus a 6-min unexplained stop exceeds policy; refunding excess distance fare and 50% base fare. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Computed route deviation: 43.43%. Computed extra distance: 8.6 km. An unexpected stop is recorded in the supplied trip data. Traffic is not flagged in the supplied trip data. Computed excess distance fare: 4.9. Recorded cancellation fee: 0. Recorded base fare: 3. Overall confidence: 96%.\nEVIDENCE REFERENCE CHECKS\nReference checks passed · references and final decision match.\nno_key\nChecked references: 8 · Policy version: policy-v1-fd9f830bdf470471\nRISK ADJUSTMENTS\nConsistent with prior precedent; confidence increased.\nResolved in 4 ms · 26 observable agent steps"
+    },
+    {
+      "id": "RYDE-2026-0002",
+      "agents": "This run · per-agent results\nRider AdvocateDeterministic fallback · no API key\nPrompt: rider@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nDriver AdvocateDeterministic fallback · no API key\nPrompt: driver@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nJudgeDeterministic fallback · no API key\nPrompt: judge@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key",
+      "ruling": "98%\nFull Refund\nSGD 5.00\nPOL-NS-001\nNS-001.2\nVERIFIED TEMPLATE · CHECKED EVIDENCE SELECTION\nFinal decision: full refund. Amount: SGD 5.00. Driver never arrived within 150 m of pickup; cancellation fee fully refunded. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver did not arrive. Computed driver wait: 2 minutes. Computed driver lateness: 8 minutes. Recorded driver contact attempts: 3. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Recorded base fare: 0. Effective free-wait threshold: 5 minutes (default policy). Overall confidence: 98%.\nEVIDENCE REFERENCE CHECKS\nReference checks passed · references and final decision match.\nno_key\nChecked references: 8 · Policy version: policy-v1-fd9f830bdf470471\nRISK ADJUSTMENTS\nFraud flag: Cancellation fee charged despite driver never arriving — possible fee abuse.\nConsistent with prior precedent; confidence increased.\nResolved in 4 ms · 26 observable agent steps"
+    },
+    {
+      "id": "RYDE-2026-0003",
+      "agents": "This run · per-agent results\nRider AdvocateDeterministic fallback · no API key\nPrompt: rider@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nDriver AdvocateDeterministic fallback · no API key\nPrompt: driver@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nJudgeDeterministic fallback · no API key\nPrompt: judge@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key",
+      "ruling": "95%\nNo Action\nSGD 0.00\nPOL-NS-001\nNS-001.5\nVERIFIED TEMPLATE · CHECKED EVIDENCE SELECTION\nFinal decision: no action. Amount: SGD 0.00. Driver arrived within the permitted lateness and waited at least 5 minutes; no-show fee upheld. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 6 minutes. Computed driver lateness: 1 minutes. Recorded driver contact attempts: 3. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Recorded base fare: 0. Effective free-wait threshold: 5 minutes (default policy). Overall confidence: 95%.\nEVIDENCE REFERENCE CHECKS\nReference checks passed · references and final decision match.\nno_key\nChecked references: 8 · Policy version: policy-v1-fd9f830bdf470471\nRISK ADJUSTMENTS\nConsistent with prior precedent; confidence increased.\nResolved in 6 ms · 26 observable agent steps"
+    },
+    {
+      "id": "DISP-002",
+      "agents": "This run · per-agent results\nRider AdvocateDeterministic fallback · no API key\nPrompt: rider@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nDriver AdvocateDeterministic fallback · no API key\nPrompt: driver@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key\nJudgeDeterministic fallback · no API key\nPrompt: judge@1.0.0 · Attempts: 0 · 0 ms · Reason: no_key",
+      "ruling": "95%\nNo Action\nSGD 0.00\nPOL-NS-001\nNS-001.5\nVERIFIED TEMPLATE · CHECKED EVIDENCE SELECTION\nFinal decision: no action. Amount: SGD 0.00. Driver arrived within the permitted lateness and waited at least 5 minutes; no-show fee upheld. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Effective free-wait threshold: 5 minutes (case override). Overall confidence: 95%.\nEVIDENCE REFERENCE CHECKS\nReference checks passed · references and final decision match.\nno_key\nChecked references: 7 · Policy version: policy-v1-427380cb56919bc0\nRISK ADJUSTMENTS\nFraud flag: Rider has a high dispute-filing rate.\nFraud flag: Rider fraud flag: flagged_for_frequent_late_cancellations\nFraud flag: Rider fraud flag: high rate of rejected disputes\nConsistent with prior precedent; confidence increased.\nResolved in 6 ms · 24 observable agent steps"
+    }
+  ],
+  "limitations": [
+    "API keys intentionally empty: no real LLM calls",
+    "Mixed-mode fixture is a simulated UI response only"
+  ],
+  "mixedFixture": {
+    "source": "http://127.0.0.1:8767",
+    "simulated": true,
+    "scope": "Proxy alters health and per-agent/trace metadata only; real backend ruling and evidence remain unchanged. Yellow page banner identifies fixture; no model HTTP calls.",
+    "agents": "This run · per-agent results\nRider AdvocateDeterministic fallback · model draft rejected\nModel: SIMULATED-QA <b>literal</b> · Prompt: rider@1.0.0 · Attempts: 2 · 12 ms · Reason: validation_error · Attempt errors: invalid_json, validation_error\nDriver AdvocateLLM · structured selection accepted\nModel: SIMULATED-QA <b>literal</b> · Prompt: driver@1.0.0 · Attempts: 1 · 12 ms\nJudgeLLM · structured selection accepted\nModel: SIMULATED-QA <b>literal</b> · Prompt: judge@1.0.0 · Attempts: 1 · 12 ms",
+    "ruling": "96%\nPartial Refund\nSGD 7.87\nPOL-RD-001\nRD-001.4\nRD-001.6\nVERIFIED TEMPLATE · CHECKED EVIDENCE SELECTION\nFinal decision: partial refund. Amount: SGD 7.87. Deviation of 43% plus a 6-min unexplained stop exceeds policy; refunding excess distance fare and 50% base fare. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Computed route deviation: 43.43%. Computed extra distance: 8.6 km. An unexpected stop is recorded in the supplied trip data. Traffic is not flagged in the supplied trip data. Computed excess distance fare: 4.9. Recorded cancellation fee: 0. Recorded base fare: 3. Overall confidence: 96%.\nEVIDENCE REFERENCE CHECKS\nReference checks passed · references and final decision match.\nno_key\nChecked references: 8 · Policy version: policy-v1-fd9f830bdf470471\nRISK ADJUSTMENTS\nConsistent with prior precedent; confidence increased.\nResolved in 4 ms · 26 observable agent steps",
+    "modelEscaping": {
+      "injectedBoldElements": 0,
+      "literalTextVisible": true
+    },
+    "health": "Service: LLM online · SIMULATED-QA <b>literal</b>"
+  },
+  "normalConsole": [],
+  "mixedConsole": [],
+  "assertions": {
+    "fourCasesResolved": true,
+    "allThreeNoKeyAndZeroAttempts": true,
+    "allThreePromptVersions": true,
+    "verifiedTemplateAndGuardVisible": true,
+    "mixedModeNotOverridden": true,
+    "mixedAttempt2AndErrorsVisible": true,
+    "modelStringEscaped": true
+  }
+}

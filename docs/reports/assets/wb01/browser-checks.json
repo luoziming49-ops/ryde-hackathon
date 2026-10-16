@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-08",
+  "timezone": "Asia/Singapore",
+  "browser": "Codex IAB (real browser)",
+  "source": "http://127.0.0.1:8765",
+  "scope": "WB01 frontend; existing running backend process, no hot reload",
+  "checks": {
+    "evidenceTabs": {
+      "cases": [
+        "RYDE-2026-0001",
+        "RYDE-2026-0002",
+        "RYDE-2026-0003",
+        "DISP-002"
+      ],
+      "tabs": [
+        "GPS / Trip",
+        "Chat",
+        "Fare",
+        "Parties"
+      ],
+      "allRendered": true
+    },
+    "rulings": [
+      {
+        "case": "RYDE-2026-0001",
+        "action": "Partial Refund",
+        "amount": "SGD 7.87",
+        "confidence": "96%"
+      },
+      {
+        "case": "RYDE-2026-0002",
+        "action": "Full Refund",
+        "amount": "SGD 5.00",
+        "confidence": "98%"
+      },
+      {
+        "case": "RYDE-2026-0003",
+        "action": "No Action",
+        "amount": "SGD 0.00",
+        "confidence": "95%"
+      },
+      {
+        "case": "DISP-002",
+        "action": "No Action",
+        "amount": "SGD 0.00",
+        "confidence": "95%"
+      }
+    ],
+    "missingValues": "DISP-002 missing fare, distance, duration, traffic and GPS route display Not provided; cancellation fee 5.00",
+    "explicitZero": "RYDE-2026-0001 cancellation fee 0.00; 0002/0003 explicit zero fares 0.00",
+    "healthLabel": "Deterministic mode (no API key)",
+    "architectureLabel": "Deterministic · no API key",
+    "replayLabel": "Run replay · recorded agent communication after resolution",
+    "fault503": {
+      "mechanism": "temporary localhost:8766 proxy returned HTTP503 JSON",
+      "error": "Error: QA simulated unavailable",
+      "ruling": "Case could not be resolved. Please try again.",
+      "buttonEnabled": true
+    },
+    "disconnect": {
+      "mechanism": "same test proxy closed resolve connection",
+      "error": "Error: Failed to fetch",
+      "buttonEnabled": true
+    },
+    "retry": {
+      "mechanism": "proxy restored passthrough, click same button without reload",
+      "action": "Partial Refund",
+      "amount": "SGD 7.87",
+      "confidence": "96%",
+      "buttonEnabled": true
+    },
+    "normalConsoleLogs": [],
+    "faultConsoleLogs": []
+  },
+  "screenshots": [
+    "browser-0001-ruling.jpg",
+    "browser-0002-ruling.jpg",
+    "browser-0003-ruling.jpg",
+    "browser-disp002-missing-fare.jpg",
+    "browser-disp002-ruling.jpg",
+    "browser-architecture.jpg",
+    "browser-http503-recovery.jpg",
+    "browser-disconnect-recovery.jpg",
+    "browser-retry-success.jpg"
+  ],
+  "limitations": [
+    "No real LLM call: API keys intentionally empty",
+    "No mobile viewport test required/performed",
+    "Backend process was not restarted for root's concurrent timestamp changes; final backend/API regression remains coordinator's task"
+  ]
+}

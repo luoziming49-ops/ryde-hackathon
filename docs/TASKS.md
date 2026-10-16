@@ -1,12 +1,14 @@
 # 活动任务索引
 
-仅列未完成任务；完成任务移入 [历史](archive/LOG.md)。具体事实、负责人和验收由对应任务包维护。
+仅列未完成任务；当前结论见[STATUS](STATUS.md)，完成记录见[LOG](archive/LOG.md)。
 
-| ID | 阶段 | 状态 | 负责人 | 依赖 | 任务入口 / 产出 |
-|---|---|---|---|---|---|
-| T004 | P0 | 待准备工具环境 | 用户提供，协调助手记录 | T003 已完成 | [资源确认任务包](tasks/T004-resources.md) |
-| T005 | P0 | 待开始 | 未分配 | T004 | 形成可供用户确认的项目简述；按需读 CONTEXT 和相关决定 |
-| T006 | P1 | 待开始 | 未分配 | T005 经用户确认 | 比较方向，选定两类争议、MVP 和验收 |
-| T009 | 构思 | 待讨论确认 | 用户与协调助手 | 用户本轮明确要求；资源未知不阻塞构思 | [框架讨论稿](ideas/2026-09-27-framework.md)，未采纳为正式设计 |
+| ID | 状态 | 负责人 | 依赖与入口 |
+|---|---|---|---|
+| MODEL-QUALITY | 可选扩测：司机提示词更新后小样本通过，稳定性未充分验证 | 协调助手 | [真实API报告](reports/WB02-LIVE.md)；既有接入已完成，后续调用需明确预算 |
+| FINAL-INTEGRATION | updating：审查分支取舍、合并main、终稿与成品入口 | 协调助手 | [当前任务](tasks/SUBMISSION-FINAL.md) |
+| SUBMISSION | UI、材料和GitHub成果分支已完成；浏览器彩排、真实工具截图、表单资料与正式提交待补 | 协调助手协调；用户补真实使用与个人信息 | [收尾报告](reports/SUBMISSION-FINAL.md)、[要求清单](REQUIREMENTS.md)、[草稿PR #5](https://github.com/luoziming49-ops/ryde-hackathon/pull/5) |
+| S1 | S1b按语义整合本地，PR#3仍未合并 | PR作者unknownAndy123；协调助手审查 | [PR#3](https://github.com/luoziming49-ops/ryde-hackathon/pull/3)、[本地验收](reports/WB03-WB04.md)；发布前协调分支，避免覆盖同伴 |
+| T004 | 模型资源已确认；工具使用证明及未核验的上传限制待补 | 用户提供信息，协调助手记录 | [资源任务](tasks/T004-resources.md)；不重问已有API配置 |
+| T011 | 旧配置记录PR待核对 | 协调助手与成员 | [记录](tasks/T011-branch-protection.md)／[PR#1](https://github.com/luoziming49-ops/ryde-hackathon/pull/1) |
 
-未来阶段不预建空任务包。任务启动或交给其他执行者时，按 [流程](WORKFLOW.md#handoff) 建立最小任务包。状态仅作调度索引，不复述整个背景。
+WB01、WB02离线、WB03/WB04模拟验收及WB02-LIVE接入均已完成。不要根据旧任务文件重新启动未选方向或重复可靠性开发。模型稳定性与赛事提交保持独立验收。

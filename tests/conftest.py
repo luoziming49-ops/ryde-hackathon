@@ -40,7 +40,7 @@ def precedents():
     return _load("precedents.json")["precedents"]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def client():
     from fastapi.testclient import TestClient
 
@@ -60,3 +60,14 @@ def sample_case(disputes):
         raise KeyError(case_id)
 
     return _get
+
+
+@pytest.fixture(autouse=True)
+def isolate_provider_environment(monkeypatch):
+    """A developer's local provider settings must never turn tests into live calls."""
+    for name in ('OPENAI_API_KEY', 'LLM_API_KEY'):
+        monkeypatch.setenv(name, '')
+    for name in ('OPENAI_BASE_URL', 'LLM_BASE_URL', 'LLM_MODEL', 'LLM_THINKING',
+                 'LLM_JSON_MODE', 'LLM_CONFIRMED_BASE_URL'):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv('LLM_LIVE_ENABLED', 'false')

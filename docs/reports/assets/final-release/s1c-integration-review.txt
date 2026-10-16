@@ -1,0 +1,70 @@
+S1c integration review — original remote tests against current production implementation
+Timestamp (UTC): 2026-10-16T06:03:35.735425+00:00
+Working directory: /Users/luoziming/Desktop/黑客松/ryde-hackathon
+Current checkout HEAD: 5418492bb836850273fff8ca434b471857d20ad7
+Reviewed current implementation baseline: 267d581
+Remote test source commit: 68b575ade1fd905e333f263102213951da35d8ed
+Source: tests/test_s1c.py; original test bodies executed unchanged in memory.
+Fixture adaptation: each original test receives the current FastAPI TestClient; __file__ resolves the existing sample_data path.
+Isolation: PYTHONDONTWRITEBYTECODE=1, both provider keys empty, live mode false, local dotenv loader disabled before backend.main import.
+No browser control, external network/model calls, repository edits or checkout changes were used.
+
+REPRODUCTION COMMAND
+
+PYTHONDONTWRITEBYTECODE=1 OPENAI_API_KEY='' LLM_API_KEY='' LLM_LIVE_ENABLED=false .venv/bin/python - <<'PY'
+import subprocess
+from pathlib import Path
+import backend.core.config
+# Skip the local .env entirely; the review must remain offline.
+backend.core.config.load_dotenv = lambda *args, **kwargs: {}
+from backend.main import app
+from fastapi.testclient import TestClient
+source = subprocess.check_output(
+    ['git', 'show', '68b575ade1fd905e333f263102213951da35d8ed:tests/test_s1c.py'],
+    text=True,
+)
+namespace = {
+    '__file__': str(Path.cwd() / 'tests/test_s1c.py'),
+    '__name__': 'branch_s1c_readonly_review',
+}
+exec(compile(source, '<S1c original tests from 68b575a>', 'exec'), namespace)
+passed = 0
+failed = 0
+with TestClient(app, raise_server_exceptions=False) as client:
+    for name, function in namespace.items():
+        if name.startswith('test_'):
+            try:
+                function(client)
+                print('PASS ' + name)
+                passed += 1
+            except Exception as error:
+                print('FAIL ' + name + ': ' + type(error).__name__ + ': ' + str(error))
+                failed += 1
+print(f'RESULT: {passed} passed, {failed} failed')
+if failed:
+    raise SystemExit(1)
+PY
+
+RAW OUTPUT
+
+PASS test_official_dispute_ticket_string_422
+PASS test_official_chat_logs_string_422
+PASS test_official_chat_logs_list_of_strings_422
+PASS test_official_profile_not_object_422
+PASS test_official_trip_data_not_object_422
+PASS test_official_app_events_list_of_strings_422
+PASS test_official_valid_ticket_still_200
+PASS test_official_negative_cancellation_fee_422
+PASS test_official_nan_cancellation_fee_422
+PASS test_official_infinity_cancellation_fee_422
+PASS test_official_zero_cancellation_fee_valid
+PASS test_inline_negative_money_422
+PASS test_inline_nan_money_422
+PASS test_inline_infinity_money_422
+PASS test_inline_zero_money_valid
+RESULT: 15 passed, 0 failed
+
+PRODUCTION BASELINE VERIFICATION
+Command: git diff --exit-code 267d581 HEAD -- backend frontend tests
+Exit code: 0
+Output: (empty)

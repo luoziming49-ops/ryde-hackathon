@@ -1,0 +1,84 @@
+{
+  "mode": "live",
+  "evidence_mode": "sample",
+  "payment_executed": false,
+  "case_id": "RYDE-2026-0003",
+  "run_id": "b09e0dd9e5a24684befdee6e445f30f5",
+  "passed": false,
+  "checks": {
+    "all_agents_live": false,
+    "ruling_matches_expected": true,
+    "guard_approved": true
+  },
+  "http_attempts": 4,
+  "agents": {
+    "rider": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "rider@1.0.0",
+      "latency_ms": 2302,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2097,
+        "completion_tokens": 359,
+        "total_tokens": 2456
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "driver": {
+      "mode": "fallback",
+      "status": "rejected",
+      "model": "deepseek-flash",
+      "prompt_version": "driver@1.0.0",
+      "latency_ms": 4445,
+      "error_code": "invalid_output",
+      "attempts": 2,
+      "attempt_errors": [
+        "invalid_output",
+        "invalid_output"
+      ],
+      "usage": {
+        "prompt_tokens": 4222,
+        "completion_tokens": 610,
+        "total_tokens": 4832
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "judge": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "judge@1.0.0",
+      "latency_ms": 1993,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2931,
+        "completion_tokens": 311,
+        "total_tokens": 3242
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    }
+  },
+  "usage": {
+    "prompt_tokens": 9250,
+    "completion_tokens": 1280,
+    "total_tokens": 10530
+  },
+  "usage_complete": true,
+  "actual": {
+    "action": "no_action",
+    "amount": 0.0
+  },
+  "duration_ms": 8747
+}

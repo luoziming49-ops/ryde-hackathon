@@ -1,0 +1,1989 @@
+{
+  "artifact": "Ryde simulation audit",
+  "execution": {
+    "mode": "simulation",
+    "scenario": "success"
+  },
+  "payment_executed": false,
+  "result": {
+    "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+    "execution": {
+      "mode": "simulation",
+      "scenario": "success"
+    },
+    "policy_catalog": [
+      {
+        "id": "POL-NS-001",
+        "text": "No-Show & Cancellation Fee",
+        "version": "policy-v1-427380cb56919bc0",
+        "source": "local_demo_policy",
+        "is_simulated": true,
+        "effective_free_wait_min": 5,
+        "free_wait_source": "case_override"
+      },
+      {
+        "id": "NS-001.5",
+        "text": "If the driver arrived on time and waited at least 5 minutes with documented contact attempts, the no-show fee is upheld against the rider.",
+        "version": "policy-v1-427380cb56919bc0",
+        "source": "local_demo_policy",
+        "is_simulated": true,
+        "effective_free_wait_min": 5,
+        "free_wait_source": "case_override"
+      }
+    ],
+    "case_id": "DISP-002",
+    "category": "no_show",
+    "evidence": {
+      "category": "no_show",
+      "deviation_ratio": null,
+      "excess_distance_km": null,
+      "has_unexpected_stop": false,
+      "unexpected_stop_min": 0,
+      "traffic_detected": false,
+      "duration_delta_min": null,
+      "driver_arrival_distance_m": null,
+      "driver_wait_min": 8,
+      "driver_late_min": 0,
+      "driver_arrived": true,
+      "free_wait_min": 5,
+      "excess_distance_fare": null,
+      "surge_refund": 0,
+      "base_fare": null,
+      "cancellation_fee": 5,
+      "total_charged": null,
+      "optimal_total_estimate": null,
+      "missing_fares": [],
+      "rider_dispute_history": 4,
+      "driver_dispute_history": 1,
+      "rider_contact_attempts": 0,
+      "driver_contact_attempts": 5,
+      "driver_call_attempts": 1,
+      "driver_disclosed_stop": false,
+      "driver_stop_mentions": 0,
+      "gaps": [],
+      "notes": [
+        "Driver arrived at the pickup point.",
+        "Driver waited 8 min and was 0 min late."
+      ]
+    },
+    "evidence_catalog": [
+      {
+        "id": "ev-d3e3a60036e68a6014162629",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "analysis.category",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": "no_show",
+        "text": "Dispute evidence has been processed by the deterministic analysis engine.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-d6c6b3769f2c6627a207e0af",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "analysis.driver_arrived",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": true,
+        "text": "Recorded arrival evidence indicates the driver arrived.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-2df0bced2bf52ca69a48bf55",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "analysis.driver_wait_min",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": 8,
+        "text": "Computed driver wait: 8 minutes.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-259e9ab75a62ea3b8076c077",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "analysis.driver_late_min",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": 0,
+        "text": "Computed driver lateness: 0 minutes.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-f34a11aca8776d005d5933a6",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "analysis.driver_contact_attempts",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": 5,
+        "text": "Recorded driver contact attempts: 5.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-ef1386e5062af02d430e63ce",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "cancellation_policy_override.free_wait_time_min",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": 5,
+        "text": "Effective free-wait threshold: 5 minutes.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-5b2903d7f7dc50168f459022",
+        "case_id": "DISP-002",
+        "source": "deterministic_analysis",
+        "source_path": "fare.cancellation_fee",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": 5,
+        "text": "Recorded cancellation fee: 5.",
+        "kind": "derived",
+        "observed_at": null,
+        "is_simulated": true
+      },
+      {
+        "id": "ev-08453e727141b494120cdbe5",
+        "case_id": "DISP-002",
+        "source": "party_statement",
+        "source_path": "rider.claim",
+        "version": "21a20f1ea5bb7fddc0b7",
+        "value": "I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+        "text": "Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+        "kind": "reported",
+        "observed_at": null,
+        "is_simulated": true
+      }
+    ],
+    "policy_version": "policy-v1-427380cb56919bc0",
+    "agent_results": {
+      "rider": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "rider@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      },
+      "driver": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "driver@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      },
+      "judge": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "judge@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      }
+    },
+    "fraud": {
+      "rider_risk": 0.7,
+      "driver_risk": 0.004,
+      "rider_rationale": "4 dispute(s) over 34 trips (11.76% rate).",
+      "driver_rationale": "1 dispute(s) over 3201 trips (0.03% rate).",
+      "flags": [
+        "Rider has a high dispute-filing rate.",
+        "Rider fraud flag: flagged_for_frequent_late_cancellations",
+        "Rider fraud flag: high rate of rejected disputes"
+      ]
+    },
+    "precedent": {
+      "clauses": [
+        {
+          "id": "NS-001.1",
+          "text": "A no-show cancellation fee may only be charged when the driver has arrived within 150 metres of the pickup point and waited at least 5 minutes.",
+          "policy": "No-Show & Cancellation Fee"
+        },
+        {
+          "id": "NS-001.5",
+          "text": "If the driver arrived on time and waited at least 5 minutes with documented contact attempts, the no-show fee is upheld against the rider.",
+          "policy": "No-Show & Cancellation Fee"
+        },
+        {
+          "id": "NS-001.4",
+          "text": "If the driver arrived on time but waited less than 5 minutes before cancelling, the cancellation fee must be refunded.",
+          "policy": "No-Show & Cancellation Fee"
+        },
+        {
+          "id": "NS-001.3",
+          "text": "If the driver arrived more than 10 minutes late, the cancellation fee is waived regardless of rider no-show.",
+          "policy": "No-Show & Cancellation Fee"
+        },
+        {
+          "id": "NS-001.2",
+          "text": "If the driver never arrived within 150 metres of the pickup point, the cancellation fee must be fully refunded.",
+          "policy": "No-Show & Cancellation Fee"
+        },
+        {
+          "id": "NS-001.6",
+          "text": "A first-time rider no-show dispute may receive a one-time courtesy credit at the reviewer's discretion.",
+          "policy": "No-Show & Cancellation Fee"
+        }
+      ],
+      "precedents": [
+        {
+          "id": "PRC-NS-301",
+          "category": "no_show",
+          "summary": "Driver GPS showed arrival 1.1km from pickup and a 2-minute wait; cancellation fee fully refunded.",
+          "ruling": "full_refund",
+          "amount": 5,
+          "confidence": 0.95,
+          "reasoning": "Driver never arrived within 150 metres of the pickup point."
+        },
+        {
+          "id": "PRC-NS-302",
+          "category": "no_show",
+          "summary": "Driver arrived on time and waited 6 minutes with documented messages; no-show fee upheld.",
+          "ruling": "no_action",
+          "amount": 0,
+          "confidence": 0.93,
+          "reasoning": "Driver satisfied the arrival and wait-time requirements."
+        },
+        {
+          "id": "PRC-NS-303",
+          "category": "no_show",
+          "summary": "Driver arrived 12 minutes late and cancelled after 3 minutes; cancellation fee refunded.",
+          "ruling": "full_refund",
+          "amount": 5,
+          "confidence": 0.9,
+          "reasoning": "Driver arrived more than 10 minutes late, voiding the no-show fee."
+        }
+      ]
+    },
+    "rider_case": {
+      "party": "rider",
+      "desired_outcome": "full refund",
+      "points": [
+        "Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+        "Dispute evidence has been processed by the deterministic analysis engine.",
+        "Recorded arrival evidence indicates the driver arrived.",
+        "Computed driver wait: 8 minutes.",
+        "Computed driver lateness: 0 minutes.",
+        "Recorded driver contact attempts: 5.",
+        "Effective free-wait threshold: 5 minutes.",
+        "Recorded cancellation fee: 5."
+      ],
+      "policy_citations": [
+        "NS-001.5",
+        "POL-NS-001"
+      ],
+      "argument": "Rider position: full refund. Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+      "structured": {
+        "party": "rider",
+        "claims": [
+          {
+            "text": "Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+            "evidence_ids": [
+              "ev-08453e727141b494120cdbe5"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Dispute evidence has been processed by the deterministic analysis engine.",
+            "evidence_ids": [
+              "ev-d3e3a60036e68a6014162629"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded arrival evidence indicates the driver arrived.",
+            "evidence_ids": [
+              "ev-d6c6b3769f2c6627a207e0af"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver wait: 8 minutes.",
+            "evidence_ids": [
+              "ev-2df0bced2bf52ca69a48bf55"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver lateness: 0 minutes.",
+            "evidence_ids": [
+              "ev-259e9ab75a62ea3b8076c077"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded driver contact attempts: 5.",
+            "evidence_ids": [
+              "ev-f34a11aca8776d005d5933a6"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Effective free-wait threshold: 5 minutes.",
+            "evidence_ids": [
+              "ev-ef1386e5062af02d430e63ce"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded cancellation fee: 5.",
+            "evidence_ids": [
+              "ev-5b2903d7f7dc50168f459022"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          }
+        ],
+        "missing_evidence": [],
+        "proposed_action": "full_refund"
+      },
+      "llm_result": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "rider@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      }
+    },
+    "driver_case": {
+      "party": "driver",
+      "desired_outcome": "no action",
+      "points": [
+        "Dispute evidence has been processed by the deterministic analysis engine.",
+        "Recorded arrival evidence indicates the driver arrived.",
+        "Computed driver wait: 8 minutes.",
+        "Computed driver lateness: 0 minutes.",
+        "Recorded driver contact attempts: 5.",
+        "Effective free-wait threshold: 5 minutes.",
+        "Recorded cancellation fee: 5."
+      ],
+      "policy_citations": [
+        "NS-001.5",
+        "POL-NS-001"
+      ],
+      "argument": "Driver position: no action. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+      "structured": {
+        "party": "driver",
+        "claims": [
+          {
+            "text": "Dispute evidence has been processed by the deterministic analysis engine.",
+            "evidence_ids": [
+              "ev-d3e3a60036e68a6014162629"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded arrival evidence indicates the driver arrived.",
+            "evidence_ids": [
+              "ev-d6c6b3769f2c6627a207e0af"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver wait: 8 minutes.",
+            "evidence_ids": [
+              "ev-2df0bced2bf52ca69a48bf55"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver lateness: 0 minutes.",
+            "evidence_ids": [
+              "ev-259e9ab75a62ea3b8076c077"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded driver contact attempts: 5.",
+            "evidence_ids": [
+              "ev-f34a11aca8776d005d5933a6"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Effective free-wait threshold: 5 minutes.",
+            "evidence_ids": [
+              "ev-ef1386e5062af02d430e63ce"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded cancellation fee: 5.",
+            "evidence_ids": [
+              "ev-5b2903d7f7dc50168f459022"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          }
+        ],
+        "missing_evidence": [],
+        "proposed_action": "no_action"
+      },
+      "llm_result": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "driver@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      }
+    },
+    "ruling": {
+      "action": "no_action",
+      "amount": 0,
+      "currency": "SGD",
+      "confidence": 0.95,
+      "escalated": false,
+      "matched_policy_ids": [
+        "POL-NS-001",
+        "NS-001.5"
+      ],
+      "missing_fields": [],
+      "reasoning_source": "verified_template",
+      "adjustment_notes": [
+        "Fraud flag: Rider has a high dispute-filing rate.",
+        "Fraud flag: Rider fraud flag: flagged_for_frequent_late_cancellations",
+        "Fraud flag: Rider fraud flag: high rate of rejected disputes",
+        "Consistent with prior precedent; confidence increased."
+      ],
+      "agent_output": {
+        "party": "judge",
+        "claims": [
+          {
+            "text": "Dispute evidence has been processed by the deterministic analysis engine.",
+            "evidence_ids": [
+              "ev-d3e3a60036e68a6014162629"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded arrival evidence indicates the driver arrived.",
+            "evidence_ids": [
+              "ev-d6c6b3769f2c6627a207e0af"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver wait: 8 minutes.",
+            "evidence_ids": [
+              "ev-2df0bced2bf52ca69a48bf55"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Computed driver lateness: 0 minutes.",
+            "evidence_ids": [
+              "ev-259e9ab75a62ea3b8076c077"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded driver contact attempts: 5.",
+            "evidence_ids": [
+              "ev-f34a11aca8776d005d5933a6"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Effective free-wait threshold: 5 minutes.",
+            "evidence_ids": [
+              "ev-ef1386e5062af02d430e63ce"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          },
+          {
+            "text": "Recorded cancellation fee: 5.",
+            "evidence_ids": [
+              "ev-5b2903d7f7dc50168f459022"
+            ],
+            "policy_ids": [
+              "NS-001.5",
+              "POL-NS-001"
+            ]
+          }
+        ],
+        "missing_evidence": [],
+        "proposed_action": "no_action"
+      },
+      "llm_result": {
+        "mode": "llm",
+        "status": "ok",
+        "model": "local-simulation",
+        "prompt_version": "judge@1.0.0",
+        "latency_ms": 0,
+        "error_code": null,
+        "attempts": 1,
+        "attempt_errors": [],
+        "is_simulated": true,
+        "scenario": "success"
+      },
+      "guard": {
+        "status": "approved",
+        "reasons": [],
+        "final_action": "no_action",
+        "final_amount": 0,
+        "policy_version": "policy-v1-427380cb56919bc0",
+        "evidence_ids": [
+          "ev-d3e3a60036e68a6014162629",
+          "ev-d6c6b3769f2c6627a207e0af",
+          "ev-2df0bced2bf52ca69a48bf55",
+          "ev-259e9ab75a62ea3b8076c077",
+          "ev-f34a11aca8776d005d5933a6",
+          "ev-ef1386e5062af02d430e63ce",
+          "ev-5b2903d7f7dc50168f459022"
+        ]
+      },
+      "reasoning": "Final decision: no action. Amount: SGD 0.00. Driver arrived within the permitted lateness and waited at least 5 minutes; no-show fee upheld. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Effective free-wait threshold: 5 minutes (case override). Overall confidence: 95%."
+    },
+    "trace": [
+      {
+        "agent": "Evidence Collection",
+        "role": "gather",
+        "content": "Retrieving trip GPS/telemetry, chat logs, fare breakdown and account history.",
+        "meta": {}
+      },
+      {
+        "agent": "Evidence Collection",
+        "role": "gather",
+        "content": "Evidence indexed: 6 chat messages, rider/driver history 4/1 disputes.",
+        "meta": {
+          "sources": {
+            "gps": true,
+            "chat_log": 6,
+            "fare": true,
+            "history": {
+              "rider_disputes": 4,
+              "driver_disputes": 1
+            }
+          }
+        }
+      },
+      {
+        "agent": "Fraud & Bad-Faith Detection",
+        "role": "risk",
+        "content": "Bad-faith risk: rider=0.70, driver=0.00.",
+        "meta": {
+          "rider_risk": 0.7,
+          "driver_risk": 0.004,
+          "flags": [
+            "Rider has a high dispute-filing rate.",
+            "Rider fraud flag: flagged_for_frequent_late_cancellations",
+            "Rider fraud flag: high rate of rejected disputes"
+          ]
+        }
+      },
+      {
+        "agent": "Policy & Precedent",
+        "role": "retrieve",
+        "content": "Retrieved 6 policy clause(s) and 3 precedent(s).",
+        "meta": {
+          "clauses": [
+            {
+              "id": "NS-001.1",
+              "text": "A no-show cancellation fee may only be charged when the driver has arrived within 150 metres of the pickup point and waited at least 5 minutes.",
+              "policy": "No-Show & Cancellation Fee"
+            },
+            {
+              "id": "NS-001.5",
+              "text": "If the driver arrived on time and waited at least 5 minutes with documented contact attempts, the no-show fee is upheld against the rider.",
+              "policy": "No-Show & Cancellation Fee"
+            },
+            {
+              "id": "NS-001.4",
+              "text": "If the driver arrived on time but waited less than 5 minutes before cancelling, the cancellation fee must be refunded.",
+              "policy": "No-Show & Cancellation Fee"
+            },
+            {
+              "id": "NS-001.3",
+              "text": "If the driver arrived more than 10 minutes late, the cancellation fee is waived regardless of rider no-show.",
+              "policy": "No-Show & Cancellation Fee"
+            },
+            {
+              "id": "NS-001.2",
+              "text": "If the driver never arrived within 150 metres of the pickup point, the cancellation fee must be fully refunded.",
+              "policy": "No-Show & Cancellation Fee"
+            },
+            {
+              "id": "NS-001.6",
+              "text": "A first-time rider no-show dispute may receive a one-time courtesy credit at the reviewer's discretion.",
+              "policy": "No-Show & Cancellation Fee"
+            }
+          ],
+          "precedents": [
+            {
+              "id": "PRC-NS-301",
+              "category": "no_show",
+              "summary": "Driver GPS showed arrival 1.1km from pickup and a 2-minute wait; cancellation fee fully refunded.",
+              "ruling": "full_refund",
+              "amount": 5,
+              "confidence": 0.95,
+              "reasoning": "Driver never arrived within 150 metres of the pickup point."
+            },
+            {
+              "id": "PRC-NS-302",
+              "category": "no_show",
+              "summary": "Driver arrived on time and waited 6 minutes with documented messages; no-show fee upheld.",
+              "ruling": "no_action",
+              "amount": 0,
+              "confidence": 0.93,
+              "reasoning": "Driver satisfied the arrival and wait-time requirements."
+            },
+            {
+              "id": "PRC-NS-303",
+              "category": "no_show",
+              "summary": "Driver arrived 12 minutes late and cancelled after 3 minutes; cancellation fee refunded.",
+              "ruling": "full_refund",
+              "amount": 5,
+              "confidence": 0.9,
+              "reasoning": "Driver arrived more than 10 minutes late, voiding the no-show fee."
+            }
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "gather",
+        "content": "Selecting rider-side claims from the versioned evidence catalog.",
+        "meta": {}
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+        "meta": {
+          "evidence_ids": [
+            "ev-08453e727141b494120cdbe5"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Dispute evidence has been processed by the deterministic analysis engine.",
+        "meta": {
+          "evidence_ids": [
+            "ev-d3e3a60036e68a6014162629"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Recorded arrival evidence indicates the driver arrived.",
+        "meta": {
+          "evidence_ids": [
+            "ev-d6c6b3769f2c6627a207e0af"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Computed driver wait: 8 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-2df0bced2bf52ca69a48bf55"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Computed driver lateness: 0 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-259e9ab75a62ea3b8076c077"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Recorded driver contact attempts: 5.",
+        "meta": {
+          "evidence_ids": [
+            "ev-f34a11aca8776d005d5933a6"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Effective free-wait threshold: 5 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-ef1386e5062af02d430e63ce"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "evidence",
+        "content": "Recorded cancellation fee: 5.",
+        "meta": {
+          "evidence_ids": [
+            "ev-5b2903d7f7dc50168f459022"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Rider Advocate",
+        "role": "argue",
+        "content": "Rider position: full refund. Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+        "meta": {
+          "desired_outcome": "full refund",
+          "policy_citations": [
+            "NS-001.5",
+            "POL-NS-001"
+          ],
+          "llm": {
+            "mode": "llm",
+            "status": "ok",
+            "model": "local-simulation",
+            "prompt_version": "rider@1.0.0",
+            "latency_ms": 0,
+            "error_code": null,
+            "attempts": 1,
+            "attempt_errors": [],
+            "is_simulated": true,
+            "scenario": "success"
+          }
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "gather",
+        "content": "Selecting driver-side claims from the versioned evidence catalog.",
+        "meta": {}
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Dispute evidence has been processed by the deterministic analysis engine.",
+        "meta": {
+          "evidence_ids": [
+            "ev-d3e3a60036e68a6014162629"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Recorded arrival evidence indicates the driver arrived.",
+        "meta": {
+          "evidence_ids": [
+            "ev-d6c6b3769f2c6627a207e0af"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Computed driver wait: 8 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-2df0bced2bf52ca69a48bf55"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Computed driver lateness: 0 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-259e9ab75a62ea3b8076c077"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Recorded driver contact attempts: 5.",
+        "meta": {
+          "evidence_ids": [
+            "ev-f34a11aca8776d005d5933a6"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Effective free-wait threshold: 5 minutes.",
+        "meta": {
+          "evidence_ids": [
+            "ev-ef1386e5062af02d430e63ce"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "evidence",
+        "content": "Recorded cancellation fee: 5.",
+        "meta": {
+          "evidence_ids": [
+            "ev-5b2903d7f7dc50168f459022"
+          ],
+          "policy_ids": [
+            "NS-001.5",
+            "POL-NS-001"
+          ]
+        }
+      },
+      {
+        "agent": "Driver Advocate",
+        "role": "argue",
+        "content": "Driver position: no action. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+        "meta": {
+          "desired_outcome": "no action",
+          "policy_citations": [
+            "NS-001.5",
+            "POL-NS-001"
+          ],
+          "llm": {
+            "mode": "llm",
+            "status": "ok",
+            "model": "local-simulation",
+            "prompt_version": "driver@1.0.0",
+            "latency_ms": 0,
+            "error_code": null,
+            "attempts": 1,
+            "attempt_errors": [],
+            "is_simulated": true,
+            "scenario": "success"
+          }
+        }
+      },
+      {
+        "agent": "Judge",
+        "role": "deliberate",
+        "content": "Applying policy prior: no_action (SGD 0.00).",
+        "meta": {}
+      },
+      {
+        "agent": "Judge",
+        "role": "rule",
+        "content": "Ruling: No Action (confidence 95%).",
+        "meta": {
+          "action": "no_action",
+          "amount": 0,
+          "confidence": 0.95,
+          "escalated": false,
+          "llm": {
+            "mode": "llm",
+            "status": "ok",
+            "model": "local-simulation",
+            "prompt_version": "judge@1.0.0",
+            "latency_ms": 0,
+            "error_code": null,
+            "attempts": 1,
+            "attempt_errors": [],
+            "is_simulated": true,
+            "scenario": "success"
+          }
+        }
+      }
+    ],
+    "duration_ms": 6,
+    "raw_app_events": [
+      {
+        "timestamp": "2026-09-13T08:30:00+08:00",
+        "event_type": "booking_confirmed",
+        "details": "Rider R-7823 booked trip TRIP-2026-09945 from Tiong Bahru Plaza to VivoCity. Scheduled pickup 08:45."
+      },
+      {
+        "timestamp": "2026-09-13T08:30:15+08:00",
+        "event_type": "driver_assigned",
+        "details": "Driver D-2398 (Lim Wei Ming, Honda HR-V SGP 4521 M) assigned. ETA 13 min."
+      },
+      {
+        "timestamp": "2026-09-13T08:30:20+08:00",
+        "event_type": "driver_en_route",
+        "details": "Driver started navigating to pickup location. Live tracking enabled."
+      },
+      {
+        "timestamp": "2026-09-13T08:43:00+08:00",
+        "event_type": "driver_arrived",
+        "details": "Driver GPS within 10m of pickup point. Speed 0 km/h. Auto-arrival confirmed."
+      },
+      {
+        "timestamp": "2026-09-13T08:43:05+08:00",
+        "event_type": "rider_notified",
+        "details": "Push notification + in-app alert sent to rider: 'Your driver has arrived.'"
+      },
+      {
+        "timestamp": "2026-09-13T08:43:10+08:00",
+        "event_type": "wait_timer_started",
+        "details": "Free wait timer started. 5 min free wait period ends at 08:48."
+      },
+      {
+        "timestamp": "2026-09-13T08:47:05+08:00",
+        "event_type": "driver_called_rider",
+        "details": "Driver initiated in-app call to rider. Call rang 22s, no answer."
+      },
+      {
+        "timestamp": "2026-09-13T08:48:10+08:00",
+        "event_type": "wait_timer_expired",
+        "details": "Free 5-min wait period expired. Rider had not boarded. Cancellation fee now applicable per policy."
+      },
+      {
+        "timestamp": "2026-09-13T08:51:00+08:00",
+        "event_type": "cancellation_fee_applied",
+        "details": "No-show threshold (8 min) reached. $5.00 cancellation fee charged to rider payment method (e-wallet)."
+      },
+      {
+        "timestamp": "2026-09-13T08:51:05+08:00",
+        "event_type": "driver_released",
+        "details": "Driver D-2398 released from trip. Trip status: cancelled (rider_no_show)."
+      }
+    ]
+  },
+  "events": [
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 1,
+      "parent_id": null,
+      "actor": "Orchestrator",
+      "kind": "run",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654399+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Local simulation started.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 2,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654567+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.gps",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 3,
+      "parent_id": 2,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654598+00:00",
+      "duration_ms": 0.007,
+      "input_summary": "case.read.gps",
+      "output_summary": "3 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 4,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654611+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.chat_log",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 5,
+      "parent_id": 4,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654635+00:00",
+      "duration_ms": 0.014,
+      "input_summary": "case.read.chat_log",
+      "output_summary": "6 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 6,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654645+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.fare",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 7,
+      "parent_id": 6,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654655+00:00",
+      "duration_ms": 0.002,
+      "input_summary": "case.read.fare",
+      "output_summary": "2 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 8,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654665+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.rider",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 9,
+      "parent_id": 8,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654678+00:00",
+      "duration_ms": 0.005,
+      "input_summary": "case.read.rider",
+      "output_summary": "9 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 10,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654688+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.driver",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 11,
+      "parent_id": 10,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654702+00:00",
+      "duration_ms": 0.005,
+      "input_summary": "case.read.driver",
+      "output_summary": "9 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 12,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654711+00:00",
+      "duration_ms": null,
+      "input_summary": "case.read.trip",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 13,
+      "parent_id": 12,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654725+00:00",
+      "duration_ms": 0.006,
+      "input_summary": "case.read.trip",
+      "output_summary": "4 supplied entries",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 14,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "running",
+      "started_at": "2026-10-12T08:59:55.654737+00:00",
+      "duration_ms": null,
+      "input_summary": "policy.read",
+      "output_summary": "",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 15,
+      "parent_id": 14,
+      "actor": "Evidence Collection",
+      "kind": "tool",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.654747+00:00",
+      "duration_ms": 0.002,
+      "input_summary": "policy.read",
+      "output_summary": "5 local policy documents read",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 16,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "gather",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.655095+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Retrieving trip GPS/telemetry, chat logs, fare breakdown and account history.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 17,
+      "parent_id": null,
+      "actor": "Evidence Collection",
+      "kind": "gather",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.655111+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Evidence indexed: 6 chat messages, rider/driver history 4/1 disputes.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {
+        "sources": {
+          "gps": true,
+          "chat_log": 6,
+          "fare": true,
+          "history": {
+            "rider_disputes": 4,
+            "driver_disputes": 1
+          }
+        }
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 18,
+      "parent_id": null,
+      "actor": "Fraud & Bad-Faith Detection",
+      "kind": "risk",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.655139+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Bad-faith risk: rider=0.70, driver=0.00.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {
+        "rider_risk": 0.7,
+        "driver_risk": 0.004,
+        "flags": [
+          "Rider has a high dispute-filing rate.",
+          "Rider fraud flag: flagged_for_frequent_late_cancellations",
+          "Rider fraud flag: high rate of rejected disputes"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 19,
+      "parent_id": null,
+      "actor": "Policy & Precedent",
+      "kind": "retrieve",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.655291+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Retrieved 6 policy clause(s) and 3 precedent(s).",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {
+        "clauses": [
+          {
+            "id": "NS-001.1",
+            "text": "A no-show cancellation fee may only be charged when the driver has arrived within 150 metres of the pickup point and waited at least 5 minutes.",
+            "policy": "No-Show & Cancellation Fee"
+          },
+          {
+            "id": "NS-001.5",
+            "text": "If the driver arrived on time and waited at least 5 minutes with documented contact attempts, the no-show fee is upheld against the rider.",
+            "policy": "No-Show & Cancellation Fee"
+          },
+          {
+            "id": "NS-001.4",
+            "text": "If the driver arrived on time but waited less than 5 minutes before cancelling, the cancellation fee must be refunded.",
+            "policy": "No-Show & Cancellation Fee"
+          },
+          {
+            "id": "NS-001.3",
+            "text": "If the driver arrived more than 10 minutes late, the cancellation fee is waived regardless of rider no-show.",
+            "policy": "No-Show & Cancellation Fee"
+          },
+          {
+            "id": "NS-001.2",
+            "text": "If the driver never arrived within 150 metres of the pickup point, the cancellation fee must be fully refunded.",
+            "policy": "No-Show & Cancellation Fee"
+          },
+          {
+            "id": "NS-001.6",
+            "text": "A first-time rider no-show dispute may receive a one-time courtesy credit at the reviewer's discretion.",
+            "policy": "No-Show & Cancellation Fee"
+          }
+        ],
+        "precedents": [
+          {
+            "id": "PRC-NS-301",
+            "category": "no_show",
+            "summary": "Driver GPS showed arrival 1.1km from pickup and a 2-minute wait; cancellation fee fully refunded.",
+            "ruling": "full_refund",
+            "amount": 5,
+            "confidence": 0.95,
+            "reasoning": "Driver never arrived within 150 metres of the pickup point."
+          },
+          {
+            "id": "PRC-NS-302",
+            "category": "no_show",
+            "summary": "Driver arrived on time and waited 6 minutes with documented messages; no-show fee upheld.",
+            "ruling": "no_action",
+            "amount": 0,
+            "confidence": 0.93,
+            "reasoning": "Driver satisfied the arrival and wait-time requirements."
+          },
+          {
+            "id": "PRC-NS-303",
+            "category": "no_show",
+            "summary": "Driver arrived 12 minutes late and cancelled after 3 minutes; cancellation fee refunded.",
+            "ruling": "full_refund",
+            "amount": 5,
+            "confidence": 0.9,
+            "reasoning": "Driver arrived more than 10 minutes late, voiding the no-show fee."
+          }
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 20,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "gather",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.655332+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Selecting rider-side claims from the versioned evidence catalog.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 21,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.656938+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately.",
+      "evidence_ids": [
+        "ev-08453e727141b494120cdbe5"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-08453e727141b494120cdbe5"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 22,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.656966+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Dispute evidence has been processed by the deterministic analysis engine.",
+      "evidence_ids": [
+        "ev-d3e3a60036e68a6014162629"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-d3e3a60036e68a6014162629"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 23,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.656982+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded arrival evidence indicates the driver arrived.",
+      "evidence_ids": [
+        "ev-d6c6b3769f2c6627a207e0af"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-d6c6b3769f2c6627a207e0af"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 24,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.656994+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Computed driver wait: 8 minutes.",
+      "evidence_ids": [
+        "ev-2df0bced2bf52ca69a48bf55"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-2df0bced2bf52ca69a48bf55"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 25,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657007+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Computed driver lateness: 0 minutes.",
+      "evidence_ids": [
+        "ev-259e9ab75a62ea3b8076c077"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-259e9ab75a62ea3b8076c077"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 26,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657021+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded driver contact attempts: 5.",
+      "evidence_ids": [
+        "ev-f34a11aca8776d005d5933a6"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-f34a11aca8776d005d5933a6"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 27,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657036+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Effective free-wait threshold: 5 minutes.",
+      "evidence_ids": [
+        "ev-ef1386e5062af02d430e63ce"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-ef1386e5062af02d430e63ce"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 28,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657075+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded cancellation fee: 5.",
+      "evidence_ids": [
+        "ev-5b2903d7f7dc50168f459022"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-5b2903d7f7dc50168f459022"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 29,
+      "parent_id": null,
+      "actor": "Rider Advocate",
+      "kind": "argue",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657118+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Rider position: full refund. Rider reports: I was at the pickup point at Tiong Bahru Plaza on time but the driver never showed up. I waited 10 minutes at the lobby and couldn't find the car. The app charged me a $5.00 cancellation fee for a 'no-show' which is completely unfair — I was there, the driver was not. I want the charge reversed immediately. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+      "evidence_ids": [],
+      "mode": "simulation",
+      "meta": {
+        "desired_outcome": "full refund",
+        "policy_citations": [
+          "NS-001.5",
+          "POL-NS-001"
+        ],
+        "llm": {
+          "mode": "llm",
+          "status": "ok",
+          "model": "local-simulation",
+          "prompt_version": "rider@1.0.0",
+          "latency_ms": 0,
+          "error_code": null,
+          "attempts": 1,
+          "attempt_errors": [],
+          "is_simulated": true,
+          "scenario": "success"
+        }
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 30,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "gather",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.657155+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Selecting driver-side claims from the versioned evidence catalog.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 31,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659481+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Dispute evidence has been processed by the deterministic analysis engine.",
+      "evidence_ids": [
+        "ev-d3e3a60036e68a6014162629"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-d3e3a60036e68a6014162629"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 32,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659498+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded arrival evidence indicates the driver arrived.",
+      "evidence_ids": [
+        "ev-d6c6b3769f2c6627a207e0af"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-d6c6b3769f2c6627a207e0af"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 33,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659509+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Computed driver wait: 8 minutes.",
+      "evidence_ids": [
+        "ev-2df0bced2bf52ca69a48bf55"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-2df0bced2bf52ca69a48bf55"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 34,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659519+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Computed driver lateness: 0 minutes.",
+      "evidence_ids": [
+        "ev-259e9ab75a62ea3b8076c077"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-259e9ab75a62ea3b8076c077"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 35,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659529+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded driver contact attempts: 5.",
+      "evidence_ids": [
+        "ev-f34a11aca8776d005d5933a6"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-f34a11aca8776d005d5933a6"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 36,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659539+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Effective free-wait threshold: 5 minutes.",
+      "evidence_ids": [
+        "ev-ef1386e5062af02d430e63ce"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-ef1386e5062af02d430e63ce"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 37,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "evidence",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659550+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Recorded cancellation fee: 5.",
+      "evidence_ids": [
+        "ev-5b2903d7f7dc50168f459022"
+      ],
+      "mode": "deterministic",
+      "meta": {
+        "evidence_ids": [
+          "ev-5b2903d7f7dc50168f459022"
+        ],
+        "policy_ids": [
+          "NS-001.5",
+          "POL-NS-001"
+        ]
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 38,
+      "parent_id": null,
+      "actor": "Driver Advocate",
+      "kind": "argue",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659573+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Driver position: no action. Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5.",
+      "evidence_ids": [],
+      "mode": "simulation",
+      "meta": {
+        "desired_outcome": "no action",
+        "policy_citations": [
+          "NS-001.5",
+          "POL-NS-001"
+        ],
+        "llm": {
+          "mode": "llm",
+          "status": "ok",
+          "model": "local-simulation",
+          "prompt_version": "driver@1.0.0",
+          "latency_ms": 0,
+          "error_code": null,
+          "attempts": 1,
+          "attempt_errors": [],
+          "is_simulated": true,
+          "scenario": "success"
+        }
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 39,
+      "parent_id": null,
+      "actor": "Judge",
+      "kind": "deliberate",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.659598+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Applying policy prior: no_action (SGD 0.00).",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 40,
+      "parent_id": null,
+      "actor": "Judge",
+      "kind": "rule",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.661359+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Ruling: No Action (confidence 95%).",
+      "evidence_ids": [],
+      "mode": "simulation",
+      "meta": {
+        "action": "no_action",
+        "amount": 0,
+        "confidence": 0.95,
+        "escalated": false,
+        "llm": {
+          "mode": "llm",
+          "status": "ok",
+          "model": "local-simulation",
+          "prompt_version": "judge@1.0.0",
+          "latency_ms": 0,
+          "error_code": null,
+          "attempts": 1,
+          "attempt_errors": [],
+          "is_simulated": true,
+          "scenario": "success"
+        }
+      }
+    },
+    {
+      "run_id": "2ffbc5278fa94cff974f73fbd976c3e9",
+      "seq": 41,
+      "parent_id": null,
+      "actor": "Orchestrator",
+      "kind": "run",
+      "status": "completed",
+      "started_at": "2026-10-12T08:59:55.662110+00:00",
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "Run completed; recommendation only. No payment executed.",
+      "evidence_ids": [],
+      "mode": "deterministic",
+      "meta": {}
+    }
+  ]
+}
