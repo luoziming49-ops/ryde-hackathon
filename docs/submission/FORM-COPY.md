@@ -1,12 +1,12 @@
 # 表单可粘贴文案
 
-2026-10-16口头同意与双语界面补充稿。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
+2026-10-16口头同意与双语界面补充稿，已按[实际Digital Native提交页](../sources/2026-10-16-submission-form.md)校正字段。英文正文可直接复制；方括号字段必须由负责人据实替换。标题、7词短介绍、项目描述、源码和原型说明已填入草稿。当前表单要求在线演示与5–8分钟视频链接，用户确认均未具备，两项留空。本文件不是提交回执。
 
-## Project name
+## Project Title
 
 Ryde Dispute AI
 
-## Short introduction
+## Short Blurb
 
 Evidence-led dispute review with transparent multi-agent reasoning.
 
@@ -38,11 +38,39 @@ https://github.com/luoziming49-ops/ryde-hackathon
 
 源码以默认main交付；既有整合记录见[终稿报告](../reports/FINAL-RELEASE.md)，最新功能补充的验证与发布状态见[当前状态](../STATUS.md)。
 
-## Demo / video URL（选做）
+## Project Demo Link（当前表单必填）
 
-[Not provided — local prototype only; no public deployment or recorded video supplied]
+待补真实的、浏览器可在线体验的公网URL。用户确认目前没有部署链接。不要把此说明、占位符、GitHub源码链接或127.0.0.1地址当作可体验的演示URL填写。
 
-若表单要求URL格式且该项可选，可留空；不要把127.0.0.1地址填成可公开访问的演示。
+## Demo Video Link（当前表单必填）
+
+待补真实可访问的视频URL。当前表单要求5–8分钟，涵盖项目介绍、核心agent功能及用法、开发方式反思和开发工具经验。用户确认目前没有视频链接；现有[演示脚本](DEMO.md)不能代替视频。
+
+手册p40曾将上述两项列为选做；当前实际表单均有必填标记，因此本次按必填缺口处理。
+
+## Working Prototype
+
+Runnable prototype and setup instructions: https://github.com/luoziming49-ops/ryde-hackathon
+
+The local browser workbench demonstrates two dispute categories end to end: route deviation and no-show. In Simulation mode, select RYDE-2026-0001 for an unresolved consent case (manual-review flag, amount undetermined), or RYDE-2026-0002 for a no-show case (SGD 5.00 full-refund recommendation). Each run exposes Rider Advocate, Driver Advocate and Judge outputs, evidence/policy citations, execution events, failure fallback and downloadable audit JSON. Three additional consent variants are explicitly synthetic. No payment or support dispatch is executed.
+
+Follow the repository README to run the prototype locally. The existing localhost address is not a publicly accessible demo.
+
+以上描述如实说明当前本地原型，不能替代Project Demo Link的公网URL要求。
+
+## 上传附件
+
+| 表单字段 | 已准备材料 | 当前表单限制 |
+|---|---|---|
+| Cover Image | `cover.png`（1920×1080）；380×216版仅作备用 | 1个文件，最多1MB；16:9，推荐380×216 |
+| WorkBuddy/CodeBuddy Conversation History | 本地交付包中的`WorkBuddy-Conversation-History.pdf`，包含3张真实截图及使用范围说明 | 1个文件，最多10MB；聊天记录及至少3张截图 |
+| Architecture Diagram PPT | 本地交付包中的`Ryde-Architecture.pptx`，单页16:9架构图 | 1个文件，最多10MB |
+
+三项附件均已实际上传，表单中显示已选文件，页面显示Draft saved；尚未点击Submit。原始对话截图不进入公开仓库。其他文件格式是否被接受仍以实际文件选择器为准。
+
+## Social Media Post Link（Bonus）
+
+当前没有社交发布链接，可留空。实际表单要求社交帖包含`#WorkBuddy #CodeBuddy #Miora #TencentCloudHackathon`；不得填入未经发布的链接。
 
 ## 团队与个人信息（由本人填写）
 
@@ -71,4 +99,4 @@ Evidence files:
 - workbuddy-02-demo-checklist.png
 - workbuddy-03-ui-review.png
 
-三张原图与采用说明已整理为本地独立证明包 `WorkBuddy-Usage-Evidence-2026-10-16.zip`，不包含在公开源码ZIP内，需另行上传。详细可见范围、未取得的完整清单和采用边界见[使用记录](WORKBUDDY-USAGE.md)。官方要求及尚未核验的上传限制见[REQUIREMENTS](../REQUIREMENTS.md)，不把截图齐备写成赛事资格已获认可。
+三张原图与采用说明已整理为本地独立证明包`WorkBuddy-Usage-Evidence-2026-10-16.zip`；为适配当前表单单附件、最多10MB的限制，另生成并上传`WorkBuddy-Conversation-History.pdf`，表单已显示该文件。两者均不包含在公开源码ZIP内。详细可见范围、未取得的完整清单和采用边界见[使用记录](WORKBUDDY-USAGE.md)。官方要求与当前表单限制见[REQUIREMENTS](../REQUIREMENTS.md)，不把截图齐备或附件上传写成赛事资格已获认可。

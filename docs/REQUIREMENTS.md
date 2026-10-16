@@ -7,8 +7,10 @@
 - **截止：2026-10-16（星期五）23:59，GMT+8（新加坡／北京时间）**。实际表单明确给出时区，见[S7](sources/2026-10-16-submission-review.md)。
 - [官方提交入口](https://tinyurl.com/TCHackathonSGProjectSubmission)已验证进入Google表单Project Submission；该URL虽在旧摘要中称报名表，目前用途已变化。
 - 第一页必填：队名、队长姓名、职位或专业、公司或学校、队长邮箱和电话、赛道、题目。本项目对应Digital Native Track及Ryde的Multi-Agent Autonomous Dispute Resolution System。
-- 文件过大可使用公开可访问的云存储链接。后续上传页须先填写必填资料才能进入；本轮未填写，因此文件格式、大小、数量、描述长度等限制仍未核验。
-- 本轮核验没有提交；参赛完成以平台实际回执为准。
+- Digital Native提交页已在2026-10-16的Chrome实际表单中读取，原始核验事实见[实际提交页记录](sources/2026-10-16-submission-form.md)。Project Title、Short Blurb（少于10词）、Project Description、Cover Image、Project Demo Link、Demo Video Link、WorkBuddy/CodeBuddy Conversation History、Architecture Diagram PPT、Source Code和Working Prototype均标为必填。
+- 上传限制已明确：Cover Image为1个文件、最多1MB，16:9、推荐380×216；Conversation History为1个文件、最多10MB，须含聊天记录及至少3张截图；Architecture Diagram PPT为1个文件、最多10MB。文件选择器接受的具体扩展名仍以实际上传校验为准。
+- **实际表单要求公网可体验的Project Demo Link，以及5–8分钟Demo Video Link。** 这与手册p40的选做说明不同；本次提交按当前表单必填处理。用户已确认两个链接均没有，本地地址和演示脚本不能替代。Social Media Post Link明确为Bonus。
+- 标题、7词短介绍、项目描述、源码和原型说明已填；封面、对话证明PDF、架构PPTX均已实际上传并在表单显示已选文件，页面显示Draft saved。两个必填URL及社交Bonus留空，未点击Submit。填写与缺口摘要见[FORM-FILL](tasks/FORM-FILL.md)，参赛完成仍以正式提交回执为准。
 
 ## 核心要求
 
@@ -30,23 +32,26 @@
 | ID | 材料 | 来源与限制 | 状态 |
 |---|---|---|---|
 | D01 | 工作原型与现场/实时流程演示 | p39；覆盖至少两类争议 | 本地模拟原型已验收，现场讲述待彩排 |
-| D02 | 多代理架构图 | p39 | [架构PNG](submission/architecture.png)与[SVG原稿](submission/architecture.svg)已导出检查 |
+| D02 | 多代理架构图PPT | p39；当前表单Architecture Diagram PPT必填，1个文件、最多10MB | [架构PNG](submission/architecture.png)与[SVG原稿](submission/architecture.svg)已检查；已校验的单页`Ryde-Architecture.pptx`已上传，表单显示已选文件 |
 | D03 | 完整源码 GitHub 仓库 | p39；公开性未在该条明确 | [源码main](https://github.com/luoziming49-ops/ryde-hackathon)为终稿入口；分支取舍见[终稿报告](reports/FINAL-RELEASE.md)，最新功能与验收入口见[当前状态](STATUS.md) |
 | D04 | 项目名称与短介绍 | p40；短介绍少于 10 个词 | [提交文案](submission/FORM-COPY.md)，7词短介绍 |
 | D05 | 项目描述 | p40；场景/用户/价值、痛点依据、业务/技术架构、提示词作用、量化或明确业务影响 | [英文表单文案](submission/FORM-COPY.md)已整理；业务收益为待测目标 |
-| D06 | CodeBuddy/WorkBuddy 开发对话与使用证明 | p40；至少 3 张真实聊天截图，缺少使用证明不进入评分 | 已收3张并原样整理到独立证明包，数量及可读内容已核对；[采用记录](submission/WORKBUDDY-USAGE.md)已填写，需在官方表单另行上传 |
-| D07 | 封面图 | p40；16:9，推荐 380×216；尺寸冲突待提交入口核实 | [1920×1080 PNG](submission/cover.png)、[380×216留边版](submission/cover-380x216.png)和[SVG](submission/cover.svg)已检查；最终上传限制待核实 |
+| D06 | CodeBuddy/WorkBuddy 开发对话与使用证明 | p40；至少3张真实聊天截图，缺少使用证明不进入评分；当前表单1个文件、最多10MB | 已收3张，原图及[采用记录](submission/WORKBUDDY-USAGE.md)已整理；已校验的单一附件`WorkBuddy-Conversation-History.pdf`已上传，表单显示已选文件；不在公开源码包内 |
+| D07 | 封面图 | p40与当前表单：16:9、推荐380×216；当前表单1个文件、最多1MB | [1920×1080 PNG](submission/cover.png)、[380×216留边版](submission/cover-380x216.png)和[SVG](submission/cover.svg)已检查；封面PNG已上传，表单显示已选文件 |
+| D08 | 在线项目演示链接 | 当前表单Project Demo Link必填；浏览器可在线体验 | 用户确认暂无公网部署链接，待补；不能使用127.0.0.1代替 |
+| D09 | 演示视频链接 | 当前表单Demo Video Link必填；5–8分钟，含项目介绍、核心agent功能与用法、开发反思及工具经验 | [脚本](submission/DEMO.md)已备，用户确认暂无视频链接，待录制并提供可访问链接 |
 
 另需填写上述团队及队长信息。口头同意与Ryde风格补充见[记录](reports/CONSENT-RYDE.md)，最新语言切换及实际验证见[双语报告](reports/BILINGUAL.md)；真实浏览器彩排仍受保存的站点权限阻止。素材盘点发现WB03的封面/架构预览虽后缀为PNG，实际为JPEG；打包时需匹配编码与扩展名，不能直接宣称为PNG。
 
-## 选做项
+## 手册选做项与当前表单差异
 
 - O01：额外证据收集、欺诈检测、政策与先例代理（p37）。
 - O02：图像分析、低置信度人工升级、纠正反馈、SLA/优先级路由（p37）。
-- O03：5–8 分钟演示视频（p40，Optional）。
-- O04：线上项目或演示链接（p40，Optional Bonus）。
+- O03：5–8分钟演示视频在手册p40标为Optional；**当前表单已标必填，按D09补齐**。
+- O04：线上项目或演示链接在手册p40标为Optional Bonus；**当前表单Project Demo Link已标必填，按D08补齐**。
+- 当前表单仅Social Media Post Link明确为Bonus，要求带指定活动与工具标签；本项目尚未提供该链接。
 
-O01已有本地确定性取证、风险和先例代理；O02已实现缺证与低置信度升级，未实现图像分析、纠正反馈和SLA路由。O03已准备[脚本](submission/DEMO.md)，尚未录制；O04尚无部署。这些项不全部加入承诺范围。P1/P2 可选择必要的产品保护措施，但不得把全部加分项说成官方 MVP 必做。
+O01已有本地确定性取证、风险和先例代理；O02已实现缺证与低置信度升级，未实现图像分析、纠正反馈和SLA路由。O01/O02不全部加入承诺范围。O03/O04保留手册历史说法以说明来源差异，但不能据此跳过当前表单必填项。
 
 ## 评分视角
 
@@ -54,10 +59,10 @@ p43 列出十项、每项 10 分：影响与相关性、以人为中心的设计
 
 该页注明详细赛道标准在注册后提供；当前不据此预测名次。设计时把选定的价值主张映射到可证明的运行结果，提交前再核对最新正式标准。
 
-## 最终材料与工具证明状态（2026-10-16，CP-026）
+## 已完成的材料与工具证明检查（2026-10-16，CP-026）
 
 - 实查发布主线及ZIP完整树、文件内容、SHA256、CRC与提交材料引用，均通过；封面与架构3张PNG已核对真实格式/尺寸并逐张查看，未见裁切。最终版本和校验值统一记录在交付包外使用说明。
 - 表单短介绍按空格计7词；文案中金额、合成样例、历史Live证据、双语原文及未实现能力的表述与当前代码一致。演示脚本已补两处操作遗漏：两个合成案例分别运行；切回0001重新运行后再查看引用。
 - 本轮只有材料与记录变化，功能代码沿用CP-024的445项回归（含89项前端）结果，未重复运行软件测试或发送模型请求。用户确认此前加载提示在刷新后恢复；不据此声明完整演示彩排完成。
-- D06已收到3张WorkBuddy对话截图：历史输入健壮性任务、演示清单草拟、静态界面审核。原图保持不变，只在本地独立证明包交付；实际可见范围及采用情况由[使用说明](submission/WORKBUDDY-USAGE.md)维护。源代码ZIP不包含这些对话原图，表单需另行上传。
-- 团队必填字段、后续上传限制和正式提交回执仍未齐；本次未填写或提交表单。上轮重新读取Google表单未成功，截止仍采用当天S7已核验记录，未声称读取到了后续页面。
+- D06已收到3张WorkBuddy对话截图：历史输入健壮性任务、演示清单草拟、静态界面审核。原图保持不变，只在本地独立证明包交付；实际可见范围及采用情况由[使用说明](submission/WORKBUDDY-USAGE.md)维护。源代码ZIP不包含这些对话原图；后续按表单单附件限制生成的PDF现已另行上传。
+- CP-026检查时尚未读到后续上传页，也未填写或提交表单。此后已实际读到Digital Native页并确认上述限制，完成现有文案填写及三项附件上传，页面显示Draft saved。当前仍缺公网演示链接、视频链接及正式提交回执；草稿保存与附件上传均不等于参赛提交完成。具体操作摘要见[FORM-FILL](tasks/FORM-FILL.md)。
