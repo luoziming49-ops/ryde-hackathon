@@ -1,0 +1,53 @@
+Full regression (paid calls disabled):
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+........................................................................ [ 65%]
+........................................................................ [ 81%]
+........................................................................ [ 97%]
+.........                                                                [100%]
+441 passed in 3.15s
+
+Frontend regression:
+........................................................................ [ 84%]
+.............                                                            [100%]
+85 passed in 2.56s
+
+Frozen offline evaluation:
+PASS RYDE-2026-0001-success
+PASS RYDE-2026-0001-rider_rejected
+PASS RYDE-2026-0001-retry_success
+PASS RYDE-2026-0001-provider_error
+PASS RYDE-2026-0002-success
+PASS RYDE-2026-0002-rider_rejected
+PASS RYDE-2026-0002-retry_success
+PASS RYDE-2026-0002-provider_error
+PASS RYDE-2026-0003-success
+PASS RYDE-2026-0003-rider_rejected
+PASS RYDE-2026-0003-retry_success
+PASS RYDE-2026-0003-provider_error
+PASS DISP-002-success
+PASS DISP-002-rider_rejected
+PASS DISP-002-retry_success
+PASS DISP-002-provider_error
+PASS missing-base-fare
+PASS missing-refund-fee
+PASS unknown-arrival
+PASS missing-lateness
+PASS conflicting-arrival-clocks
+PASS policy-missing
+PASS invalid-nonfinite-fare
+PASS untrusted-party-instruction
+PASS gps-departure-interrupts-wait
+PASS DEMO-ORAL-AGREED-success
+PASS DEMO-ORAL-CONFLICT-success
+PASS DEMO-ORAL-NOT-AGREED-success
+PASS DEMO-ORAL-NOT-AGREED-rider_rejected
+PASS DEMO-ORAL-NOT-AGREED-retry_success
+PASS DEMO-ORAL-NOT-AGREED-provider_error
+PASS agreed-route-extra-stop
+PASS medium-deviation-stop-context
+PASS unknown-traffic-affects-route-refund
+PASS small-deviation-no-extra-issue
+PASS no-show-objective-refund-no-chat
+36/36 passed; 0 failed. SIMULATION ONLY.

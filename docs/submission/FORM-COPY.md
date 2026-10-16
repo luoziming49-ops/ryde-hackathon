@@ -1,6 +1,6 @@
 # 表单可粘贴文案
 
-2026-10-16口头同意规则补充稿。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
+2026-10-16口头同意与双语界面补充稿。英文正文可直接复制；方括号字段必须由负责人据实替换。后续表单页的长度及上传限制尚未核验，必要时再按实际限制精简。本文件不是提交回执。
 
 ## Project name
 
@@ -28,7 +28,7 @@ The system distinguishes consistent, conflicting and unconfirmed accounts. GPS c
 
 The browser UI uses four baseline cases and three explicitly synthetic consent variants; these variants are not additional real-world cases. A structured /api/resolve endpoint accepts case data, but there is no upload or new-case entry screen and no persistent new-case storage. The route plot illustrates supplied coordinates. Deviation percentages use provided mileage; routes and traffic fields are not independently checked against a mapping service.
 
-FastAPI, Pydantic, Python orchestration and native browser JavaScript support a fixed sequence of three roles. Versioned prompts separate instructions from untrusted case data. Structured outputs are checked against the evidence catalog and applicable policy. Validation failures receive at most one repair attempt before visible fallback; transport failures fall back without a repair call. The workbench exposes events, per-agent outcomes, attempts, citation inspection and audit JSON. Run records are held in local process memory.
+FastAPI, Pydantic, Python orchestration and native browser JavaScript support a fixed sequence of three roles. Versioned prompts separate instructions from untrusted case data. Structured outputs are checked against the evidence catalog and applicable policy. Validation failures receive at most one repair attempt before visible fallback; transport failures fall back without a repair call. The workbench exposes events, per-agent outcomes, attempts, citation inspection and audit JSON. Run records are held in local process memory. The interface switches between Chinese and English without rerunning the case; source evidence, original explanations and audit data are preserved.
 
 Simulation exercises the actual agent and validation pipeline. Explicit Live API mode connects the same roles to DeepSeek and reports provider usage. Earlier bounded live checks demonstrated that connection and its failure paths; they do not validate the latest oral-consent logic or establish production accuracy. The intended value is clearer evidence review and explanations. Review-time savings, accuracy and customer outcomes remain unmeasured on representative data. All evidence and policies are demonstration inputs, with no live Ryde data connection, automated dispatch or payment execution.
 
@@ -36,7 +36,7 @@ Simulation exercises the actual agent and validation pipeline. Explicit Live API
 
 https://github.com/luoziming49-ops/ryde-hackathon
 
-源码以默认main交付；既有整合记录见[终稿报告](../reports/FINAL-RELEASE.md)，本轮口头同意补充的验证与发布状态见[当前状态](../STATUS.md)。
+源码以默认main交付；既有整合记录见[终稿报告](../reports/FINAL-RELEASE.md)，最新功能补充的验证与发布状态见[当前状态](../STATUS.md)。
 
 ## Demo / video URL（选做）
 

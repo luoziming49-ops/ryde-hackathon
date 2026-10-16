@@ -57,6 +57,22 @@ def test_official_case_all_evidence_tabs():
     "consent_result_conflicting", "consent_result_unconfirmed", "consent_result_legacy",
     "review_questions_escape", "review_questions_absent", "review_flag_no_dispatch",
     "consent_no_show", "gps_input_provenance",
+    "i18n_saved_preference", "i18n_selector_and_unknown", "i18n_ruling_amounts", "i18n_context_preserved",
+    "i18n_default_en", "i18n_browser_zh", "i18n_invalid_storage", "i18n_storage_read_error",
+    "i18n_storage_write_error", "i18n_reload_preference", "i18n_health_live_gate",
+    "i18n_source_preservation", "i18n_review_questions", "i18n_running_no_side_effects",
+    "i18n_live_running_no_side_effects", "i18n_completed_status", "i18n_error_status",
+    "i18n_loading_case", "i18n_architecture_modal", "i18n_startup_error_status",
+    "i18n_event_roles", "i18n_duplicate_reference_focus", "i18n_original_reason_disclosure",
 ])
 def test_frontend_behavior(scenario):
     run_behavior(scenario)
+
+
+@pytest.mark.parametrize("case_id,amount", [("RYDE-2026-0001", None), ("DEMO-ORAL-NOT-AGREED", 7.87)])
+def test_language_switch_preserves_real_api_response(client, case_id, amount):
+    response = client.post("/api/resolve", json={"case_id": case_id})
+    assert response.status_code == 200
+    result = response.json()
+    assert result["ruling"]["amount"] == amount
+    run_behavior("i18n_api_response", result)
