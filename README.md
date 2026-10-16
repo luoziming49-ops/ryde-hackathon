@@ -32,6 +32,12 @@ Choose four provider scenarios: all agents succeed; rider references rejected; i
 | DEMO-ORAL-CONFLICT · synthetic | Conflicting statements; manual review, no automatic amount |
 | DEMO-ORAL-NOT-AGREED · synthetic | Both parties report no agreement; rule refund SGD 7.87 |
 
+## Interface language
+
+Use the **中文 / English** selector in the header. A saved choice takes priority; otherwise, a Chinese browser locale starts in Chinese and other locales start in English. The page remembers the choice when browser storage is available. Switching only changes presentation: it does not rerun a case, call a model, change the amount, or change Simulation / Live API mode.
+
+Controls, status labels and fixed system guidance are bilingual. Chinese rulings include a summary of the structured result. Party statements, chats, cited evidence, original explanations and audit JSON retain their source content; unfamiliar returned text stays in its original language. This preserves the distinction between translated interface guidance and evidence.
+
 ## Consent and evidence limits
 
 Both parties can supply `route_consent` as `agreed`, `not_agreed` or `unknown` through the structured case API. The system compares these statements as consistent, conflicting or unconfirmed. Agreement between statements is not independent verification; GPS and missing chat never establish oral consent. Where unresolved consent would change responsibility or the refund, the recommendation is held for manual review with no automatic amount and explicit follow-up questions. Sufficient objective evidence in unrelated cases can still produce a recommendation.

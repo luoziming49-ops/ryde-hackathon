@@ -55,6 +55,12 @@
     font-size: 11px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border);
     background: var(--bg-2); color: var(--muted); display: inline-flex; align-items: center; gap: 7px;
   }
+  .header-tools { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; }
+  .language-select { min-height:36px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; color:var(--text); background:var(--panel); font-size:12px; }
+  .original-label { font-size:10px; color:var(--muted); margin-right:5px; }
+  .original-reason summary { cursor:pointer; font-size:12px; font-weight:600; }
+  .original-reason .lbl { margin-top:10px; }
+  .summary-facts { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:8px; }
   .dot { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--accent-2); }
   .dot.off { background: #7c8796; }
   .dot.warn { background: var(--gold); }
@@ -243,34 +249,36 @@
     <div class="logo">R</div>
     <div>
       <h1>Ryde Dispute AI</h1>
-      <p>Hackathon prototype · not an official Ryde product</p>
+      <p data-i18n="Hackathon prototype · not an official Ryde product">Hackathon prototype · not an official Ryde product</p>
     </div>
   </div>
-  <div class="badge" id="llmBadge" title="Service overview; each run has separate agent results below."><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
+  <div class="header-tools"><div class="badge" id="llmBadge" title="Service overview; each run has separate agent results below." data-i18n-title="Service overview; each run has separate agent results below."><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
+    <select id="languageSelect" class="language-select" aria-label="Language" data-i18n-aria-label="Language"><option value="zh">中文</option><option value="en">English</option></select>
+  </div>
 </header>
 
 <main class="wrap">
   <div class="workspace-heading">
-    <div><h2>Dispute workbench</h2><p>Review the evidence. Hear both sides. Follow every decision.</p></div>
-    <button class="btn ghost arch-btn" id="archBtn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6.5" y="2" width="7" height="4" rx="1"/><path d="M10 6v4M4 13v-3h12v3"/><rect x="1.5" y="13" width="5" height="4" rx="1"/><rect x="13.5" y="13" width="5" height="4" rx="1"/></svg>Architecture</button>
+    <div><h2 data-i18n="Dispute workbench">Dispute workbench</h2><p data-i18n="Review the evidence. Hear both sides. Follow every decision.">Review the evidence. Hear both sides. Follow every decision.</p></div>
+    <button class="btn ghost arch-btn" id="archBtn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6.5" y="2" width="7" height="4" rx="1"/><path d="M10 6v4M4 13v-3h12v3"/><rect x="1.5" y="13" width="5" height="4" rx="1"/><rect x="13.5" y="13" width="5" height="4" rx="1"/></svg><span data-i18n="Architecture">Architecture</span></button>
   </div>
   <div class="simulation-banner"><strong id="modeTitle">Simulation · Demo</strong><p id="modeDescription">Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.</p></div>
   <div class="grid">
     <!-- LEFT: case selection + evidence -->
     <div class="column">
       <div class="card">
-        <h2><span class="section-index" aria-hidden="true">01</span>Choose a sample case</h2>
+        <h2><span class="section-index" aria-hidden="true">01</span><span data-i18n="Choose a sample case">Choose a sample case</span></h2>
         <div class="body" id="disputeList"><div class="empty">Loading cases…</div></div>
-        <p class="hint case-note">Sample cases only · no case entry or uploads.</p>
+        <p class="hint case-note" data-i18n="Sample cases only · no case entry or uploads.">Sample cases only · no case entry or uploads.</p>
       </div>
 
       <div class="card">
-        <h2>Evidence &amp; case file</h2>
+        <h2><span data-i18n="Evidence &amp; case file">Evidence &amp; case file</span></h2>
         <div class="tabs" id="evtTabs">
-          <button data-tab="gps" class="active">GPS / Trip</button>
-          <button data-tab="chat">Chat</button>
-          <button data-tab="fare">Fare</button>
-          <button data-tab="history">Parties</button>
+          <button data-tab="gps" class="active" data-i18n="GPS / Trip">GPS / Trip</button>
+          <button data-tab="chat" data-i18n="Chat">Chat</button>
+          <button data-tab="fare" data-i18n="Fare">Fare</button>
+          <button data-tab="history" data-i18n="Parties">Parties</button>
         </div>
         <div id="evidencePanel"><div class="empty">Select a case to inspect evidence.</div></div>
       </div>
@@ -279,24 +287,24 @@
     <!-- RIGHT: pipeline + ruling -->
     <div class="column">
       <div class="card">
-        <h2><span class="section-index" aria-hidden="true">02</span>Agent workflow</h2>
+        <h2><span class="section-index" aria-hidden="true">02</span><span data-i18n="Agent workflow">Agent workflow</span></h2>
         <div class="body">
-          <div class="run-controls"><label for="modeSelect">Run mode
-            <select id="modeSelect" aria-describedby="modeAvailability"><option value="simulation" selected>Simulation</option><option id="liveModeOption" value="live" disabled>Live API</option></select>
-          </label><label id="scenarioControl" for="scenarioSelect">Simulation scenario
-            <select id="scenarioSelect"><option value="success">All agents succeed</option><option value="rider_rejected">Rider draft rejected → fallback</option><option value="retry_success">Invalid draft → retry succeeds</option><option value="provider_error">Provider error → fallback</option></select>
+          <div class="run-controls"><label for="modeSelect"><span data-i18n="Run mode">Run mode</span>
+            <select id="modeSelect" aria-describedby="modeAvailability"><option value="simulation" selected data-i18n="Simulation">Simulation</option><option id="liveModeOption" value="live" disabled data-i18n="Live API">Live API</option></select>
+          </label><label id="scenarioControl" for="scenarioSelect"><span data-i18n="Simulation scenario">Simulation scenario</span>
+            <select id="scenarioSelect"><option value="success" data-i18n="All agents succeed">All agents succeed</option><option value="rider_rejected" data-i18n="Rider draft rejected → fallback">Rider draft rejected → fallback</option><option value="retry_success" data-i18n="Invalid draft → retry succeeds">Invalid draft → retry succeeds</option><option value="provider_error" data-i18n="Provider error → fallback">Provider error → fallback</option></select>
           </label><button class="btn" id="resolveBtn" disabled>Run simulation</button></div>
           <p class="hint" id="modeAvailability">Checking live API availability…</p>
           <div id="runStatus" class="run-status" role="status" aria-live="polite">Select a sample case to begin.</div>
           <div class="agent-results" id="agentResults" aria-live="polite"><div class="hint">Agent results will appear after a run.</div></div>
-          <div class="pipeline" id="pipeline" role="region" aria-label="Execution events" tabindex="0"><div class="empty">The multi-agent workflow will appear here when you resolve a case.</div></div>
+          <div class="pipeline" id="pipeline" role="region" aria-label="Execution events" data-i18n-aria-label="Execution events" tabindex="0"><div class="empty">The multi-agent workflow will appear here when you resolve a case.</div></div>
         </div>
       </div>
 
-      <div class="card"><h2><span class="section-index" aria-hidden="true">03</span>Claims &amp; citations</h2><div id="claims" role="region" aria-label="Cited claims from all three agents" tabindex="0"><div class="empty">Each party’s cited claims appear after completion.</div></div></div>
+      <div class="card"><h2><span class="section-index" aria-hidden="true">03</span><span data-i18n="Claims &amp; citations">Claims &amp; citations</span></h2><div id="claims" role="region" aria-label="Cited claims from all three agents" data-i18n-aria-label="Cited claims from all three agents" tabindex="0"><div class="empty">Each party’s cited claims appear after completion.</div></div></div>
       <div class="card">
-        <h2><span class="section-index" aria-hidden="true">04</span>Guarded ruling</h2>
-        <div class="ruling" id="ruling"><div class="empty">No ruling yet.</div></div><div class="body"><button class="btn ghost" id="downloadBtn" disabled>Download audit JSON</button><p class="hint">Demo recommendation only. No payment is executed.</p></div>
+        <h2><span class="section-index" aria-hidden="true">04</span><span data-i18n="Guarded ruling">Guarded ruling</span></h2>
+        <div class="ruling" id="ruling"><div class="empty">No ruling yet.</div></div><div class="body"><button class="btn ghost" id="downloadBtn" disabled data-i18n="Download audit JSON">Download audit JSON</button><p class="hint" data-i18n="Demo recommendation only. No payment is executed.">Demo recommendation only. No payment is executed.</p></div>
       </div>
     </div>
   </div>
@@ -304,17 +312,322 @@
 
 <div class="modal" id="archModal" role="dialog" aria-modal="true" aria-labelledby="archTitle">
   <div class="box">
-    <button class="close" id="archClose" aria-label="Close architecture">✕</button>
-    <h2 id="archTitle">System architecture</h2>
+    <button class="close" id="archClose" aria-label="Close architecture" data-i18n-aria-label="Close architecture">✕</button>
+    <h2 id="archTitle" data-i18n="System architecture">System architecture</h2>
     <div id="archSvg"></div>
   </div>
 </div>
 
-<div class="modal" id="referenceModal" role="dialog" aria-modal="true" aria-labelledby="referenceTitle"><div class="box"><button class="close" id="referenceClose" aria-label="Close reference">✕</button><h2 id="referenceTitle">Source reference</h2><div id="referenceContent"></div></div></div>
+<div class="modal" id="referenceModal" role="dialog" aria-modal="true" aria-labelledby="referenceTitle"><div class="box"><button class="close" id="referenceClose" aria-label="Close reference" data-i18n-aria-label="Close reference">✕</button><h2 id="referenceTitle">Source reference</h2><div id="referenceContent"></div></div></div>
 
 <script>
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+
+// Only explicit UI/system text is translated. Evidence, quotations and audit data stay original.
+const ZH = {
+  "Ryde Dispute AI — Hackathon Prototype": "Ryde 争议处理 AI — 黑客松原型",
+  "Hackathon prototype · not an official Ryde product": "黑客松原型 · 非 Ryde 官方产品",
+  "Language": "语言",
+  "Dispute workbench": "争议处理工作台",
+  "Review the evidence. Hear both sides. Follow every decision.": "审阅证据，听取双方陈述，追溯每项决定。",
+  "Architecture": "系统架构",
+  "Choose a sample case": "选择示例案件",
+  "Sample cases only · no case entry or uploads.": "仅提供示例案件 · 暂不支持录入或上传。",
+  "Evidence & case file": "证据与案卷",
+  "GPS / Trip": "路线 / 行程",
+  "Chat": "聊天",
+  "Fare": "费用",
+  "Parties": "当事双方",
+  "Agent workflow": "代理协作流程",
+  "Run mode": "运行模式",
+  "Simulation scenario": "模拟场景",
+  "Simulation": "模拟",
+  "simulation": "模拟",
+  "Live API": "真实 API",
+  "live API": "真实 API",
+  "All agents succeed": "全部代理成功",
+  "Rider draft rejected → fallback": "乘客代理草稿被拒 → 回退",
+  "Invalid draft → retry succeeds": "草稿无效 → 重试成功",
+  "Provider error → fallback": "服务商错误 → 回退",
+  "Run simulation": "运行模拟",
+  "Run live API": "运行真实 API",
+  "Running simulation…": "模拟运行中…",
+  "Running live API…": "真实 API 运行中…",
+  "Claims & citations": "主张与引用",
+  "Guarded ruling": "规则保护下的裁决",
+  "Download audit JSON": "下载审计 JSON",
+  "Demo recommendation only. No payment is executed.": "仅供演示的处理建议，不执行付款。",
+  "System architecture": "系统架构",
+  "Source reference": "来源引用",
+  "Close architecture": "关闭系统架构",
+  "Close reference": "关闭引用",
+  "Execution events": "执行事件",
+  "Cited claims from all three agents": "三个代理提出的引用主张",
+  "Service overview; each run has separate agent results below.": "服务概览；每次运行的各代理结果见下方。",
+  "Checking backend…": "正在检查后端…",
+  "Loading cases…": "正在加载案件…",
+  "Select a case to inspect evidence.": "选择案件以查看证据。",
+  "Checking live API availability…": "正在检查真实 API 可用性…",
+  "Select a sample case to begin.": "选择一个示例案件以开始。",
+  "Agent results will appear after a run.": "运行后将在此显示代理结果。",
+  "The multi-agent workflow will appear here when you resolve a case.": "运行案件后将在此显示代理协作流程。",
+  "Each party’s cited claims appear after completion.": "完成后将在此显示各方附带引用的主张。",
+  "No ruling yet.": "尚无裁决。",
+  "Cited claims will appear when this run completes.": "本次运行完成后显示引用主张。",
+  "Agent results pending for this case.": "等待此案件的代理结果。",
+  "Backend unreachable": "无法连接后端",
+  "Could not load cases. Is the server running?": "无法加载案件，请检查服务是否运行。",
+  "Live API unavailable. Check backend configuration and refresh the page. Simulation remains available.": "真实 API 暂不可用。请检查后端配置并刷新页面；仍可使用模拟模式。",
+  "Live API available{model}. Model calls may incur usage charges.": "真实 API 可用{model}。模型调用可能产生费用。",
+  "Service: LLM online · {model}": "服务：模型在线 · {model}",
+  "Service: LLM configured ({model}) · not yet called": "服务：模型已配置（{model}）· 尚未调用",
+  "Service: LLM configured · falling back (last call failed)": "服务：模型已配置 · 使用回退（上次调用失败）",
+  "Service: deterministic mode (no API key)": "服务：确定性规则模式（无 API 密钥）",
+  "Service: LLM status unavailable": "服务：模型状态未知",
+  "Live API · Demo": "真实 API · 演示",
+  "Simulation · Demo": "模拟 · 演示",
+  "Sample case evidence · external model calls and real rule checks. Model usage may incur charges. Demo recommendation only; no payment is executed.": "示例案件证据 · 调用外部模型并执行规则校验。模型调用可能产生费用；仅提供演示建议，不执行付款。",
+  "Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.": "示例案卷 · 本地模拟代理响应 · 实际规则校验。此模式不调用外部模型，也不执行付款。",
+  "Ready · {caseId} · sample case · {mode}": "就绪 · {caseId} · 示例案件 · {mode}",
+  "Run the selected mode to inspect the guarded ruling.": "按所选模式运行，查看规则保护下的裁决。",
+  "Execution events will appear here.": "执行事件将在此显示。",
+  "Loading sample case…": "正在加载示例案件…",
+  "Loading evidence…": "正在加载证据…",
+  "No ruling for this case yet.": "此案件尚无裁决。",
+  "Waiting for case file.": "正在等待案卷。",
+  "Case could not be loaded. Select the case again to retry.": "案件加载失败，请重新选择以重试。",
+  "Not provided": "未提供",
+  "Unknown": "未知",
+  "Yes": "是",
+  "No": "否",
+  "Pickup": "上车地点",
+  "Dropoff": "下车地点",
+  "Distance": "距离",
+  "Duration": "时长",
+  "Traffic detected": "拥堵记录",
+  "optimal": "参考最优",
+  "est.": "预计",
+  "km": "公里",
+  "min": "分钟",
+  "Optimal route": "参考最优路线",
+  "Actual route": "实际路线",
+  "Stop": "停留点",
+  "Route sketch from supplied coordinates. Distance and traffic are case-file inputs, not map-verified.": "路线仅按所提供坐标绘制。里程与拥堵信息来自案卷输入，未经地图服务核验。",
+  "GPS route: Not provided": "GPS 路线：未提供",
+  "Sample GPS routes: optimal dashed, actual solid": "示例 GPS 路线：虚线为参考最优路线，实线为实际路线",
+  "No chat log.": "暂无聊天记录。",
+  "Base fare": "起步价",
+  "Distance fare (actual)": "里程费（实际）",
+  "Distance fare (optimal)": "里程费（参考最优）",
+  "Surge": "动态加价倍数",
+  "Total charged": "已收取总额",
+  "Cancellation fee": "取消费用",
+  "Rider": "乘客",
+  "Driver": "司机",
+  "Rider rating": "乘客评分",
+  "Rider prior disputes": "乘客历史争议次数",
+  "Driver rating": "司机评分",
+  "Driver prior disputes": "司机历史争议次数",
+  "rider": "乘客",
+  "driver": "司机",
+  "system": "系统",
+  "route deviation": "路线偏离",
+  "no show": "未到场",
+  "unknown": "未知",
+  "Agreed": "同意",
+  "Did not agree": "未同意",
+  "Route consent": "路线变更同意声明",
+  "Rider statement": "乘客声明",
+  "Driver statement": "司机声明",
+  "Statements consistent": "双方声明一致",
+  "Statements conflicting": "双方声明冲突",
+  "Statements unconfirmed": "双方声明未确认",
+  "Both report: {statement}.": "双方均声明：{statement}。",
+  "Party statements · not independently verified.": "仅为当事双方的声明，未经独立核验。",
+  "Original text": "原文",
+  "Starting {modeLower}…": "正在启动{modeLower}…",
+  "Dispatching agents…": "正在分派代理…",
+  "Waiting for the Policy Guard…": "等待规则保护校验…",
+  "{mode} running · {count} execution events · {caseId}": "{mode}运行中 · {count} 条执行事件 · {caseId}",
+  "{mode} completed{outcome} · {count} execution events · {caseId}": "{mode}已完成{outcome} · {count} 条执行事件 · {caseId}",
+  " · fallback used; inspect agent results": " · 已使用回退，请查看各代理结果",
+  " · agent status unavailable": " · 代理状态未知",
+  " · all three agent selections accepted": " · 三个代理的结构化选择均已通过",
+  "{mode} failed. Run again to retry.": "{mode}失败，请重新运行以重试。",
+  "Case could not be resolved. Please try again.": "案件处理失败，请重试。",
+  "Agent results unavailable for this run.": "本次运行暂无代理结果。",
+  "Error": "错误",
+  "Invalid request": "请求无效",
+  "Request failed (HTTP {status})": "请求失败（HTTP {status}）",
+  "Invalid run response. Please retry.": "运行响应无效，请重试。",
+  "Run response mismatch. Please retry.": "运行响应不匹配，请重试。",
+  "{mode} failed ({code}). Please retry.": "{mode}失败（{code}），请重试。",
+  "Completed run has no ruling. Please retry.": "运行已结束但未返回裁决，请重试。",
+  "Run mode mismatch. Please retry.": "运行模式不匹配，请重试。",
+  "Unknown run status. Please retry.": "运行状态未知，请重试。",
+  "live API run · sample case evidence": "真实 API 运行 · 示例案件证据",
+  "local backend · simulated responses": "本地后端 · 模拟响应",
+  "In progress": "进行中",
+  "Timing not provided": "未提供耗时",
+  "Mode not provided": "未提供模式",
+  "Run replay · recorded agent communication after resolution": "流程回放 · 处理完成后记录的代理通信",
+  "Evidence Collection": "证据收集",
+  "Fraud & Bad-Faith Detection": "欺诈与恶意行为检查",
+  "Policy & Precedent": "政策与先例",
+  "Rider Advocate": "乘客代理",
+  "Driver Advocate": "司机代理",
+  "Judge": "裁决代理",
+  "Policy Guard": "规则保护器",
+  "Run": "运行",
+  "Orchestrator": "协调器",
+  "gather": "收集",
+  "evidence": "证据",
+  "argue": "论证",
+  "deliberate": "审议",
+  "rule": "裁决",
+  "risk": "风险分析",
+  "retrieve": "检索",
+  "tool": "工具",
+  "analysis": "分析",
+  "argument": "论证",
+  "rebuttal": "回应",
+  "ruling": "裁决",
+  "decision": "决定",
+  "llm": "模型",
+  "validation": "校验",
+  "retry": "重试",
+  "fallback": "回退",
+  "run": "运行",
+  "started": "已启动",
+  "running": "运行中",
+  "completed": "已完成",
+  "failed": "失败",
+  "accepted": "已接受",
+  "rejected": "已拒绝",
+  "ok": "成功",
+  "error": "错误",
+  "live": "真实 API",
+  "deterministic": "确定性规则",
+  "Simulated · Deterministic fallback": "模拟 · 确定性回退",
+  "Simulated": "模拟",
+  "Simulated · Status unavailable": "模拟 · 状态未知",
+  "LLM": "模型",
+  "Deterministic fallback": "确定性回退",
+  "Status unavailable": "状态未知",
+  "structured selection accepted": "结构化选择已通过",
+  "template selected": "已选择模板",
+  "no API key": "无 API 密钥",
+  "call failed": "调用失败",
+  "model draft rejected": "模型草稿被拒",
+  "Scenario": "场景",
+  "Model": "模型",
+  "Prompt": "提示词版本",
+  "Attempts": "尝试次数",
+  "Reason": "原因",
+  "Attempt errors": "历次错误",
+  "Tokens": "Token 用量",
+  " (partial)": "（部分）",
+  "input": "输入",
+  "output": "输出",
+  "total": "总计",
+  "unavailable": "不可用",
+  "This run · per-agent results": "本次运行 · 各代理结果",
+  "Reference checks passed · references and final decision match.": "引用检查通过 · 引用与最终决定一致。",
+  "Model draft discarded · deterministic ruling applies.": "模型草稿已丢弃 · 采用确定性规则裁决。",
+  "Reference check status not provided.": "未提供引用检查状态。",
+  "Checked references": "已检查引用数",
+  "Policy version": "政策版本",
+  "Evidence reference checks": "证据引用检查",
+  "No Action": "无需处理",
+  "Partial Refund": "部分退款",
+  "Full Refund": "全额退款",
+  "Compensation": "补偿",
+  "Escalate to Human": "转人工复核",
+  "Insufficient Evidence": "证据不足",
+  "n/a": "暂无",
+  "Missing evidence": "待补充证据",
+  "Questions to verify": "待核实问题",
+  "Rule confidence score": "规则置信度",
+  "Not a calibrated probability": "并非经过校准的概率",
+  "Flagged for human review": "已标记人工复核",
+  "Review flag only · no support case has been dispatched.": "仅作复核标记，尚未向客服派单。",
+  "Verified template · checked evidence selection": "已校验模板 · 引用选择已检查",
+  "Ruling explanation · source not provided": "裁决说明 · 未提供来源",
+  "Risk adjustments": "风险调整",
+  "Resolved in {duration} ms · {steps} observable agent steps": "处理耗时 {duration} ms · {steps} 个可观察代理步骤",
+  "Decision summary": "裁决摘要",
+  "Amount pending verification. No payable amount has been determined.": "金额待核实，尚未确定可执行金额。",
+  "Recommendation only; no payment is executed.": "仅为处理建议，不执行付款。",
+  "Original ruling explanation": "原始裁决理由",
+  "Input route deviation": "输入路程偏差",
+  "Driver waiting time": "司机等待时长",
+  "Free waiting time": "规则免费等待时长",
+  "Arrival distance": "到达距离",
+  "Policy": "政策",
+  "Evidence": "证据",
+  "No structured claims provided for this agent.": "此代理未提供结构化主张。",
+  "Source record": "来源记录",
+  "Sample / simulation source": "示例 / 模拟来源",
+  "inspect the returned record below": "下方为返回的原始记录",
+  "title": "标题",
+  "text": "文本",
+  "value": "值",
+  "source": "来源",
+  "source path": "来源路径",
+  "version": "版本",
+  "Reference not found in this run’s catalog. No source content is available.": "本次运行的目录中找不到此引用，暂无来源内容。",
+  "LLM online": "模型在线",
+  "LLM configured · not yet called": "模型已配置 · 尚未调用",
+  "Fallback · last call failed": "使用回退 · 上次调用失败",
+  "Deterministic · no API key": "确定性规则 · 无 API 密钥",
+  "Dispute Filed": "提交争议",
+  "text + structured evidence": "文本与结构化证据",
+  "GPS · chat · fare · history": "GPS · 聊天 · 费用 · 历史",
+  "Data Sources": "数据来源",
+  "GPS/Telemetry · Chat Logs": "GPS / 遥测 · 聊天记录",
+  "Fare/Payment · Profiles": "费用 / 付款 · 当事人资料",
+  "(mocked APIs)": "（模拟数据接口）",
+  "Fraud & Bad-Faith": "欺诈与恶意行为",
+  "risk scoring": "风险评分",
+  "Local policy / precedent rules": "本地政策与先例规则",
+  "Rider Advocate Agent": "乘客代理",
+  "argues rider-favourable case": "陈述乘客立场",
+  "Driver Advocate Agent": "司机代理",
+  "argues driver-favourable case": "陈述司机立场",
+  "Judge Agent": "裁决代理",
+  "weighs cases · applies policy": "权衡双方主张 · 应用规则",
+  "confidence score": "置信度",
+  "natural-language ruling": "自然语言裁决",
+  "escalation protocol": "人工复核标记",
+  "Ruling Output": "裁决输出",
+  "refund / compensation /": "退款 / 补偿 /",
+  "no action + reasoning": "无需处理与理由",
+  "Reasoning Layer": "推理层",
+  "deterministic policy engine": "确定性规则引擎",
+  "Core agents (required)": "核心代理",
+  "Stretch agents (bonus)": "辅助规则模块",
+  "Does the supplied traffic explanation account for the extent of this detour?": "所提供的路况拥堵解释能否说明此次绕行的程度？",
+  "Did the rider agree to the route change, including any oral discussion? Record each party's account separately and resolve missing or conflicting reports.": "乘客是否同意路线变更，包括口头沟通？请分别记录双方说法，并核实缺失或冲突的声明。",
+  "Was the additional stop explained and agreed to, and did it change the fare? Route agreement alone does not answer this.": "额外停靠是否已说明并获得同意，是否影响费用？仅有路线同意声明无法回答这些问题。",
+  "What traffic or safety reason supports the detour? No traffic finding was supplied.": "有什么路况或安全原因支持绕行？当前未提供交通情况结论。"
+};
+// Review questions use only the four known policy templates, never other UI keys.
+const REVIEW_QUESTIONS = new Set([
+  "Does the supplied traffic explanation account for the extent of this detour?",
+  "Did the rider agree to the route change, including any oral discussion? Record each party's account separately and resolve missing or conflicting reports.",
+  "Was the additional stop explained and agreed to, and did it change the fare? Route agreement alone does not answer this.",
+  "What traffic or safety reason supports the detour? No traffic finding was supplied."
+]);
+function tr(key, values = {}) {
+  const template = currentLanguage === 'zh' && Object.prototype.hasOwnProperty.call(ZH, key) ? ZH[key] : key;
+  return String(template).replace(/\{([a-zA-Z]+)\}/g, (match, name) => Object.prototype.hasOwnProperty.call(values, name) ? String(values[name] ?? '') : match);
+}
+function preferredLanguage() {
+  try { const saved = localStorage.getItem('ryde-language'); if (saved === 'zh' || saved === 'en') return saved; } catch (_) {}
+  return typeof navigator !== 'undefined' && /^zh(?:-|$)/i.test(navigator.language || '') ? 'zh' : 'en';
+}
+let currentLanguage = preferredLanguage();
 
 let disputes = [];
 let selected = null;
@@ -331,6 +644,97 @@ let runEvents = [];
 let openModalId = null;
 let modalReturnFocus = null;
 
+// View-only state keeps language changes separate from network and business state.
+let lastHealth = null;
+let healthLoaded = false;
+let backendUnreachable = false;
+let casesLoaded = false;
+let activeEvidenceTab = 'gps';
+let referenceView = null;
+let modalReturnReference = null;
+let pipelineView = 'placeholder';
+let pipelineError = null;
+let replayTrace = [];
+let replayCount = 0;
+let statusMessage = {key: 'Select a sample case to begin.', values: {}, warn: false};
+const panelMessages = new Map([
+  ['#disputeList', {key: 'Loading cases…', cls: 'empty'}],
+  ['#evidencePanel', {key: 'Select a case to inspect evidence.', cls: 'empty'}],
+  ['#agentResults', {key: 'Agent results will appear after a run.', cls: 'hint'}],
+  ['#pipeline', {key: 'The multi-agent workflow will appear here when you resolve a case.', cls: 'empty'}],
+  ['#claims', {key: 'Each party’s cited claims appear after completion.', cls: 'empty'}],
+  ['#ruling', {key: 'No ruling yet.', cls: 'empty'}],
+]);
+function sourceHtml(value) {
+  return `${currentLanguage === 'zh' ? '<span class="original-label">原文</span>' : ''}${esc(value)}`;
+}
+function systemHtml(value) {
+  return Object.prototype.hasOwnProperty.call(ZH, value) ? esc(tr(value)) : sourceHtml(value);
+}
+function messageValues(values = {}) {
+  return Object.fromEntries(Object.entries(values).map(([key, value]) => [key,
+    ['mode', 'modeLower', 'outcome'].includes(key) ? tr(value) : value]));
+}
+function showStatus(key, values = {}, warn = false) {
+  statusMessage = {key, values, warn};
+  $('#runStatus').className = `run-status${warn ? ' warn' : ''}`;
+  $('#runStatus').textContent = tr(key, messageValues(values));
+}
+function placeholder(selector, key, cls = 'empty', error = null) {
+  panelMessages.set(selector, {key, cls, error});
+  $(selector).innerHTML = `<div class="${cls}">${error ? errorHtml(error) : esc(tr(key))}</div>`;
+  if (selector === '#pipeline') pipelineView = 'placeholder';
+}
+function uiError(key, values = {}) {
+  const error = new Error(tr(key, messageValues(values)));
+  error.uiKey = key; error.uiValues = values;
+  return error;
+}
+function errorHtml(error) {
+  return error.uiKey ? esc(tr(error.uiKey, messageValues(error.uiValues))) : sourceHtml(error.message);
+}
+function applyStaticLanguage() {
+  document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
+  document.title = tr('Ryde Dispute AI — Hackathon Prototype');
+  $('#languageSelect').value = currentLanguage;
+  $$('[data-i18n]').forEach(el => { el.textContent = tr(el.getAttribute('data-i18n')); });
+  for (const attribute of ['title', 'aria-label']) {
+    $$(`[data-i18n-${attribute}]`).forEach(el => el.setAttribute(attribute, tr(el.getAttribute(`data-i18n-${attribute}`))));
+  }
+}
+function setLanguage(language) {
+  if (language !== 'zh' && language !== 'en') return;
+  currentLanguage = language;
+  try { localStorage.setItem('ryde-language', language); } catch (_) {}
+  // These are presentation snapshots only. The run, evidence and audit objects are untouched.
+  const scrolls = ['#pipeline', '#evidencePanel', '#claims', '#ruling', '#referenceModal', '#referenceModal .box', '#referenceContent', '#archModal', '#archModal .box']
+    .map(selector => [$(selector), $(selector)?.scrollTop]);
+  const originalReasonOpen = $('#originalReason')?.open;
+  applyStaticLanguage();
+  if (healthLoaded) renderHealth(lastHealth, false);
+  else {
+    $('#llmText').textContent = tr('Checking backend…');
+    $('#modeAvailability').textContent = tr('Checking live API availability…');
+    renderModeControls();
+  }
+  if (backendUnreachable) $('#llmText').textContent = tr('Backend unreachable');
+  if (casesLoaded || disputes.length) renderDisputes();
+  if (selectedData) renderEvidenceTab(activeEvidenceTab);
+  if (currentResult) renderRuling(currentResult);
+  if (pipelineView === 'events') renderRunEvents(false);
+  else if (pipelineView === 'replay') renderReplay(false);
+  for (const [selector, message] of panelMessages) {
+    $(selector).innerHTML = `<div class="${message.cls}">${message.error ? errorHtml(message.error) : esc(tr(message.key))}</div>`;
+  }
+  if (pipelineError) appendPipelineError();
+  showStatus(statusMessage.key, statusMessage.values, statusMessage.warn);
+  if (referenceView && openModalId === 'referenceModal') renderReference();
+  if (openModalId === 'archModal') $('#archSvg').innerHTML = architectureSvg(lastHealth);
+  if ($('#originalReason') && originalReasonOpen != null) $('#originalReason').open = originalReasonOpen;
+  scrolls.forEach(([el, top]) => { if (el && top != null) el.scrollTop = top; });
+}
+$('#languageSelect').addEventListener('change', () => setLanguage($('#languageSelect').value));
+
 function invalidateRequests() {
   requestGeneration++;
   runInProgress = false;
@@ -345,9 +749,11 @@ function invalidateRequests() {
 function resetResults() {
   currentResult = null;
   runEvents = [];
+  pipelineError = null;
+  replayTrace = []; replayCount = 0;
   $('#downloadBtn').disabled = true;
-  $('#claims').innerHTML = '<div class="empty">Cited claims will appear when this run completes.</div>';
-  $('#agentResults').innerHTML = '<div class="hint">Agent results pending for this case.</div>';
+  placeholder('#claims', 'Cited claims will appear when this run completes.');
+  placeholder('#agentResults', 'Agent results pending for this case.', 'hint');
   if (openModalId) closeModal();
 }
 
@@ -357,7 +763,7 @@ async function readResponse(response) {
   const detail = error?.detail;
   const message = Array.isArray(detail) ? detail.map(item => item.msg || 'Invalid request').join('; ')
     : typeof detail === 'string' ? detail : null;
-  throw new Error(message || `Request failed (HTTP ${response.status})`);
+  throw message ? new Error(message) : uiError('Request failed (HTTP {status})', {status: response.status});
 }
 
 const AGENT_META = {
@@ -380,37 +786,40 @@ async function init() {
     const [h, d] = await Promise.all([fetch('/api/health').then(readResponse), fetch('/api/disputes').then(readResponse)]);
     renderHealth(h);
     disputes = d;
+    casesLoaded = true;
     renderDisputes();
   } catch (e) {
     renderHealth(null);
-    $('#llmText').textContent = 'Backend unreachable';
-    $('#disputeList').innerHTML = '<div class="empty">Could not load cases. Is the server running?</div>';
+    backendUnreachable = true;
+    $('#llmText').textContent = tr('Backend unreachable');
+    placeholder('#disputeList', 'Could not load cases. Is the server running?');
   }
 }
 
-function renderHealth(h) {
+function renderHealth(h, updateState = true) {
+  if (updateState) { lastHealth = h; healthLoaded = true; backendUnreachable = false; }
   liveEnabled = h?.live_enabled === true;
   $('#liveModeOption').disabled = !liveEnabled;
   $('#modeAvailability').textContent = liveEnabled
-    ? `Live API available${typeof h.live_model === 'string' ? ` · ${h.live_model}` : ''}. Model calls may incur usage charges.`
-    : 'Live API unavailable. Check backend configuration and refresh the page. Simulation remains available.';
+    ? tr('Live API available{model}. Model calls may incur usage charges.', {model: typeof h.live_model === 'string' ? ` · ${h.live_model}` : ''})
+    : tr('Live API unavailable. Check backend configuration and refresh the page. Simulation remains available.');
   renderModeControls();
   const dot = $('#llmBadge .dot');
   const state = h && h.state;
   if (state === 'ok') {
     dot.className = 'dot';
-    $('#llmText').textContent = `Service: LLM online · ${h.model || ''}`;
+    $('#llmText').textContent = tr('Service: LLM online · {model}', {model: h.model || ''});
   } else if (state === 'fallback' || state === 'configured') {
     dot.className = 'dot warn';
     $('#llmText').textContent = state === 'configured'
-      ? `Service: LLM configured (${h.model || ''}) · not yet called`
-      : `Service: LLM configured · falling back (last call failed)`;
+      ? tr('Service: LLM configured ({model}) · not yet called', {model: h.model || ''})
+      : tr('Service: LLM configured · falling back (last call failed)');
   } else if (state === 'no_key') {
     dot.className = 'dot off';
-    $('#llmText').textContent = 'Service: deterministic mode (no API key)';
+    $('#llmText').textContent = tr('Service: deterministic mode (no API key)');
   } else {
     dot.className = 'dot off';
-    $('#llmText').textContent = 'Service: LLM status unavailable';
+    $('#llmText').textContent = tr('Service: LLM status unavailable');
   }
 }
 
@@ -419,22 +828,20 @@ function renderModeControls() {
   $('#modeSelect').value = selectedMode;
   $('#scenarioControl').hidden = live;
   $('#scenarioSelect').disabled = live;
-  $('#modeTitle').textContent = live ? 'Live API · Demo' : 'Simulation · Demo';
-  $('#modeDescription').textContent = live
+  $('#modeTitle').textContent = tr(live ? 'Live API · Demo' : 'Simulation · Demo');
+  $('#modeDescription').textContent = tr(live
     ? 'Sample case evidence · external model calls and real rule checks. Model usage may incur charges. Demo recommendation only; no payment is executed.'
-    : 'Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.';
+    : 'Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.');
   $('#resolveBtn').disabled = runInProgress || !selectedData || (live && !liveEnabled);
-  $('#resolveBtn').textContent = runInProgress ? (live ? 'Running live API…' : 'Running simulation…') : (live ? 'Run live API' : 'Run simulation');
+  $('#resolveBtn').textContent = tr(runInProgress ? (live ? 'Running live API…' : 'Running simulation…') : (live ? 'Run live API' : 'Run simulation'));
 }
 
 function renderReadyState() {
   renderModeControls();
-  $('#runStatus').className = 'run-status';
-  $('#runStatus').textContent = selectedData
-    ? `Ready · ${selected} · sample case · ${selectedMode === 'live' ? 'live API' : 'simulation'}`
-    : 'Select a sample case to begin.';
-  $('#ruling').innerHTML = '<div class="empty">Run the selected mode to inspect the guarded ruling.</div>';
-  $('#pipeline').innerHTML = '<div class="empty">Execution events will appear here.</div>';
+  if (selectedData) showStatus('Ready · {caseId} · sample case · {mode}', {caseId: selected, mode: selectedMode === 'live' ? 'live API' : 'simulation'});
+  else showStatus('Select a sample case to begin.');
+  placeholder('#ruling', 'Run the selected mode to inspect the guarded ruling.');
+  placeholder('#pipeline', 'Execution events will appear here.');
 }
 
 $('#modeSelect').addEventListener('change', async () => {
@@ -469,11 +876,12 @@ async function refreshHealth(token = requestGeneration) {
 
 function renderDisputes() {
   const wrap = $('#disputeList');
+  panelMessages.delete('#disputeList');
   wrap.innerHTML = disputes.map(d => `
-    <button type="button" class="dispute" data-id="${esc(d.case_id)}">
-      <span class="tag ${esc(d.category)}">${esc(String(d.category || 'unknown').replace('_',' '))}</span>
+    <button type="button" class="dispute${d.case_id === selected ? ' active' : ''}" data-id="${esc(d.case_id)}">
+      <span class="tag ${esc(d.category)}">${systemHtml(String(d.category || 'unknown').replaceAll('_',' '))}</span>
       <h3>${esc(d.case_id)}</h3>
-      <p>${esc(d.rider_claim)}</p>
+      <p>${sourceHtml(d.rider_claim)}</p>
     </button>`).join('');
   $$('.dispute', wrap).forEach(el => el.addEventListener('click', () => selectDispute(el.dataset.id)));
 }
@@ -485,11 +893,10 @@ async function selectDispute(id) {
   resetResults();
   $$('.dispute').forEach(el => el.classList.toggle('active', el.dataset.id === id));
   renderModeControls();
-  $('#runStatus').className = 'run-status';
-  $('#runStatus').textContent = 'Loading sample case…';
-  $('#evidencePanel').innerHTML = '<div class="empty">Loading evidence…</div>';
-  $('#ruling').innerHTML = '<div class="empty">No ruling for this case yet.</div>';
-  $('#pipeline').innerHTML = '<div class="empty">Waiting for case file.</div>';
+  showStatus('Loading sample case…');
+  placeholder('#evidencePanel', 'Loading evidence…');
+  placeholder('#ruling', 'No ruling for this case yet.');
+  placeholder('#pipeline', 'Waiting for case file.');
   try {
     const data = await readResponse(await fetch(`/api/disputes/${encodeURIComponent(id)}`, {signal: activeController.signal}));
     if (token !== requestGeneration) return;
@@ -499,43 +906,43 @@ async function selectDispute(id) {
     renderReadyState();
   } catch(e) {
     if (token !== requestGeneration) return;
-    $('#runStatus').textContent = 'Case could not be loaded. Select the case again to retry.';
-    $('#evidencePanel').innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+    showStatus('Case could not be loaded. Select the case again to retry.');
+    placeholder('#evidencePanel', '', 'empty', e);
   }
 }
 
 function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function provided(value, suffix='') {
-  return value == null ? 'Not provided' : `${esc(value)}${suffix}`;
+  return value == null ? tr('Not provided') : `${esc(value)}${suffix}`;
 }
 
 function money(value, currency) {
   return typeof value === 'number' && Number.isFinite(value)
     ? `${value.toFixed(2)}${currency == null ? '' : ` ${esc(currency)}`}`
-    : 'Not provided';
+    : tr('Not provided');
 }
 
 function tripMeasure(actual, reference, unit, label) {
-  if (actual == null && reference == null) return 'Not provided';
-  return `${provided(actual, ` ${unit}`)} (${label} ${provided(reference, ` ${unit}`)})`;
+  if (actual == null && reference == null) return tr('Not provided');
+  return `${provided(actual, ` ${tr(unit)}`)} (${tr(label)} ${provided(reference, ` ${tr(unit)}`)})`;
 }
 
 function routeConsentHtml(evidence, showComparison = false) {
-  const statement = value => value === 'agreed' ? 'Agreed' : value === 'not_agreed' ? 'Did not agree' : 'Unknown';
-  const sourceText = value => typeof value === 'string' && value.trim() ? `<p class="statement-text">${esc(value)}</p>` : '';
+  const statement = value => tr(value === 'agreed' ? 'Agreed' : value === 'not_agreed' ? 'Did not agree' : 'Unknown');
+  const sourceText = value => typeof value === 'string' && value.trim() ? `<p class="statement-text">${sourceHtml(value)}</p>` : '';
   const state = ['consistent', 'conflicting', 'unconfirmed'].includes(evidence?.consent_report_state)
     ? evidence.consent_report_state : 'unconfirmed';
   const labels = {consistent: 'Statements consistent', conflicting: 'Statements conflicting', unconfirmed: 'Statements unconfirmed'};
   const matching = state === 'consistent' && ['agreed', 'not_agreed'].includes(evidence?.consent_consistent_value)
-    ? `<p class="hint">Both report: ${esc(statement(evidence.consent_consistent_value))}.</p>` : '';
-  return `<section class="consent-summary"><h3>Route consent</h3>
-    ${showComparison ? `<div class="consent-state ${state}">${esc(labels[state])}</div>` : ''}
-    <div class="row"><span class="k">Rider statement</span><span class="v">${esc(statement(evidence?.rider_route_consent))}</span></div>
+    ? `<p class="hint">${esc(tr('Both report: {statement}.', {statement: statement(evidence.consent_consistent_value)}))}</p>` : '';
+  return `<section class="consent-summary"><h3>${esc(tr('Route consent'))}</h3>
+    ${showComparison ? `<div class="consent-state ${state}">${esc(tr(labels[state]))}</div>` : ''}
+    <div class="row"><span class="k">${esc(tr('Rider statement'))}</span><span class="v">${esc(statement(evidence?.rider_route_consent))}</span></div>
     ${sourceText(evidence?.rider_statement_text)}
-    <div class="row"><span class="k">Driver statement</span><span class="v">${esc(statement(evidence?.driver_route_consent))}</span></div>
+    <div class="row"><span class="k">${esc(tr('Driver statement'))}</span><span class="v">${esc(statement(evidence?.driver_route_consent))}</span></div>
     ${sourceText(evidence?.driver_statement_text)}
-    ${showComparison ? matching : ''}<p class="hint">Party statements · not independently verified.</p></section>`;
+    ${showComparison ? matching : ''}<p class="hint">${esc(tr('Party statements · not independently verified.'))}</p></section>`;
 }
 
 function renderEvidence() {
@@ -544,51 +951,53 @@ function renderEvidence() {
 }
 
 function renderEvidenceTab(tab) {
+  activeEvidenceTab = tab;
+  panelMessages.delete('#evidencePanel');
   const d = selectedData || {};
   const p = $('#evidencePanel');
   if (tab === 'gps') {
     const trip = d.trip || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Pickup</span><span class="v">${provided(trip.pickup?.name)}</span></div>
-      <div class="row"><span class="k">Dropoff</span><span class="v">${provided(trip.dropoff?.name)}</span></div>
-      <div class="row"><span class="k">Distance</span><span class="v">${tripMeasure(trip.actual_distance_km, trip.optimal_distance_km, 'km', 'optimal')}</span></div>
-      <div class="row"><span class="k">Duration</span><span class="v">${tripMeasure(trip.actual_duration_min, trip.estimated_duration_min, 'min', 'est.')}</span></div>
-      <div class="row"><span class="k">Traffic detected</span><span class="v">${trip.traffic_detected == null ? 'Not provided' : trip.traffic_detected ? 'Yes' : 'No'}</span></div>
+      <div class="row"><span class="k">${esc(tr('Pickup'))}</span><span class="v">${provided(trip.pickup?.name)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Dropoff'))}</span><span class="v">${provided(trip.dropoff?.name)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Distance'))}</span><span class="v">${tripMeasure(trip.actual_distance_km, trip.optimal_distance_km, 'km', 'optimal')}</span></div>
+      <div class="row"><span class="k">${esc(tr('Duration'))}</span><span class="v">${tripMeasure(trip.actual_duration_min, trip.estimated_duration_min, 'min', 'est.')}</span></div>
+      <div class="row"><span class="k">${esc(tr('Traffic detected'))}</span><span class="v">${tr(trip.traffic_detected == null ? 'Not provided' : trip.traffic_detected ? 'Yes' : 'No')}</span></div>
       <div class="map-wrap" style="margin-top:12px;">${routeMap(d)}</div>
       <div class="legend">
-        <span><span style="width:12px;height:3px;background:#596879;display:inline-block;"></span> Optimal route</span>
-        <span><span style="width:12px;height:3px;background:#c72d55;display:inline-block;"></span> Actual route</span>
-        <span><span style="width:8px;height:8px;border-radius:50%;background:#a16a14;display:inline-block;"></span> Stop</span>
+        <span><span style="width:12px;height:3px;background:#596879;display:inline-block;"></span> ${esc(tr('Optimal route'))}</span>
+        <span><span style="width:12px;height:3px;background:#c72d55;display:inline-block;"></span> ${esc(tr('Actual route'))}</span>
+        <span><span style="width:8px;height:8px;border-radius:50%;background:#a16a14;display:inline-block;"></span> ${esc(tr('Stop'))}</span>
       </div>
-      <p class="hint">Route sketch from supplied coordinates. Distance and traffic are case-file inputs, not map-verified.</p>
+      <p class="hint">${esc(tr('Route sketch from supplied coordinates. Distance and traffic are case-file inputs, not map-verified.'))}</p>
       ${d.category === 'route_deviation' ? routeConsentHtml({rider_route_consent: d.rider?.route_consent, driver_route_consent: d.driver?.route_consent,
         rider_statement_text: d.rider?.claim, driver_statement_text: d.driver?.response ?? d.driver?.claim}) : ''}
     </div>`;
   } else if (tab === 'chat') {
     const msgs = (d.chat_log||[]).map(m => `
       <div class="msg ${esc(m.from)}">
-        <div class="who">${esc(m.from)}</div>${esc(m.text)}
+        <div class="who">${systemHtml(m.from)}</div>${sourceHtml(m.text)}
       </div>`).join('');
-    p.innerHTML = `<div class="evt active"><div class="chat">${msgs || '<div class="empty">No chat log.</div>'}</div></div>`;
+    p.innerHTML = `<div class="evt active"><div class="chat">${msgs || `<div class="empty">${esc(tr('No chat log.'))}</div>`}</div></div>`;
   } else if (tab === 'fare') {
     const f = d.fare || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Base fare</span><span class="v">${money(f.base_fare)}</span></div>
-      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${money(f.distance_fare_actual)}</span></div>
-      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${money(f.distance_fare_optimal)}</span></div>
-      <div class="row"><span class="k">Surge</span><span class="v">${provided(f.surge_multiplier, '×')}</span></div>
-      <div class="row"><span class="k">Total charged</span><span class="v">${money(f.total_charged, f.currency)}</span></div>
-      <div class="row"><span class="k">Cancellation fee</span><span class="v">${money(f.cancellation_fee)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Base fare'))}</span><span class="v">${money(f.base_fare)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Distance fare (actual)'))}</span><span class="v">${money(f.distance_fare_actual)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Distance fare (optimal)'))}</span><span class="v">${money(f.distance_fare_optimal)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Surge'))}</span><span class="v">${provided(f.surge_multiplier, '×')}</span></div>
+      <div class="row"><span class="k">${esc(tr('Total charged'))}</span><span class="v">${money(f.total_charged, f.currency)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Cancellation fee'))}</span><span class="v">${money(f.cancellation_fee)}</span></div>
     </div>`;
   } else if (tab === 'history') {
     const r = d.rider || {}, dr = d.driver || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Rider</span><span class="v">${provided(r.name)}</span></div>
-      <div class="row"><span class="k">Rider rating</span><span class="v">${provided(r.avg_rating)}</span></div>
-      <div class="row"><span class="k">Rider prior disputes</span><span class="v">${provided(r.dispute_history)}</span></div>
-      <div class="row"><span class="k">Driver</span><span class="v">${provided(dr.name)}</span></div>
-      <div class="row"><span class="k">Driver rating</span><span class="v">${provided(dr.avg_rating)}</span></div>
-      <div class="row"><span class="k">Driver prior disputes</span><span class="v">${provided(dr.dispute_history)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Rider'))}</span><span class="v">${provided(r.name)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Rider rating'))}</span><span class="v">${provided(r.avg_rating)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Rider prior disputes'))}</span><span class="v">${provided(r.dispute_history)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Driver'))}</span><span class="v">${provided(dr.name)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Driver rating'))}</span><span class="v">${provided(dr.avg_rating)}</span></div>
+      <div class="row"><span class="k">${esc(tr('Driver prior disputes'))}</span><span class="v">${provided(dr.dispute_history)}</span></div>
     </div>`;
   }
 }
@@ -602,7 +1011,7 @@ function routeMap(d) {
   const act = norm(gps.actual_route);
   const stops = norm(trip.unexpected_stops);
   const pts = [...opt, ...act, ...stops];
-  if (!pts.length) return '<div class="empty">GPS route: Not provided</div>';
+  if (!pts.length) return `<div class="empty">${esc(tr('GPS route: Not provided'))}</div>`;
   const lats = pts.map(p=>p[0]), lngs = pts.map(p=>p[1]);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
   const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
@@ -612,7 +1021,7 @@ function routeMap(d) {
   const X = lng => pad + (lng-minLng)*scale + ((W-2*pad) - spanLng*scale)/2;
   const Y = lat => H - pad - (lat-minLat)*scale - ((H-2*pad) - spanLat*scale)/2;
   const path = arr => arr.map((p,i)=>`${i?'L':'M'}${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}`).join(' ');
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Sample GPS routes: optimal dashed, actual solid" style="background:#f7f9fc;border:1px solid var(--border);border-radius:10px;">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(tr('Sample GPS routes: optimal dashed, actual solid'))}" style="background:#f7f9fc;border:1px solid var(--border);border-radius:10px;">`;
   svg += `<path d="${path(opt)}" fill="none" stroke="#596879" stroke-width="2.5" stroke-dasharray="4 3"/>`;
   svg += `<path d="${path(act)}" fill="none" stroke="#c72d55" stroke-width="2.5"/>`;
   if (valid(point(trip.pickup))) svg += `<circle cx="${X(trip.pickup.lng)}" cy="${Y(trip.pickup.lat)}" r="4" fill="#c72d55"/>`;
@@ -633,34 +1042,33 @@ $('#resolveBtn').addEventListener('click', async () => {
   resetResults();
   runInProgress = true;
   renderModeControls();
-  $('#runStatus').className = 'run-status';
-  $('#runStatus').textContent = `Starting ${modeLabel.toLowerCase()}…`;
-  $('#pipeline').innerHTML = '<div class="empty">Dispatching agents…</div>';
-  $('#ruling').innerHTML = '<div class="empty">Waiting for the Policy Guard…</div>';
+  showStatus('Starting {modeLower}…', {modeLower: mode === 'live' ? 'live API' : 'simulation'});
+  placeholder('#pipeline', 'Dispatching agents…');
+  placeholder('#ruling', 'Waiting for the Policy Guard…');
   try {
     const started = await readResponse(await fetch(mode === 'live' ? '/api/live-runs' : '/api/runs', {
       method: 'POST', headers: {'Content-Type':'application/json'}, signal,
       body: JSON.stringify(mode === 'live' ? {case_id: caseId} : {case_id: caseId, scenario})
     }));
     if (token !== requestGeneration) return;
-    if (typeof started.run_id !== 'string') throw new Error('Invalid run response. Please retry.');
+    if (typeof started.run_id !== 'string') throw uiError('Invalid run response. Please retry.');
     let after = 0;
     while (token === requestGeneration) {
       const snapshot = await readResponse(await fetch(`/api/runs/${encodeURIComponent(started.run_id)}?after=${after}`, {signal}));
       if (token !== requestGeneration) return;
-      if (snapshot.run_id !== started.run_id) throw new Error('Run response mismatch. Please retry.');
+      if (snapshot.run_id !== started.run_id) throw uiError('Run response mismatch. Please retry.');
       for (const event of snapshot.events || []) {
         if (Number.isInteger(event.seq) && event.seq > after) runEvents.push(event);
       }
       after = Math.max(after, Number.isInteger(snapshot.next_seq) ? snapshot.next_seq : after);
       renderRunEvents();
-      $('#runStatus').textContent = `${modeLabel} running · ${runEvents.length} execution events · ${caseId}`;
-      if (snapshot.status === 'failed') throw new Error(`${modeLabel} failed (${snapshot.error_code || 'run_failed'}). Please retry.`);
+      showStatus('{mode} running · {count} execution events · {caseId}', {mode: modeLabel, count: runEvents.length, caseId});
+      if (snapshot.status === 'failed') throw uiError('{mode} failed ({code}). Please retry.', {mode: modeLabel, code: snapshot.error_code || 'run_failed'});
       if (snapshot.status === 'completed') {
-        if (!snapshot.result?.ruling) throw new Error('Completed run has no ruling. Please retry.');
+        if (!snapshot.result?.ruling) throw uiError('Completed run has no ruling. Please retry.');
         if ((mode === 'live' && snapshot.result.execution?.mode !== 'live') ||
             (snapshot.result.execution?.mode && snapshot.result.execution.mode !== mode)) {
-          throw new Error('Run mode mismatch. Please retry.');
+          throw uiError('Run mode mismatch. Please retry.');
         }
         renderRuling(snapshot.result);
         currentResult = snapshot.result;
@@ -669,21 +1077,20 @@ $('#resolveBtn').addEventListener('click', async () => {
         const fallback = rows.some(row => row?.mode === 'fallback') || snapshot.result.ruling.guard?.status === 'rejected';
         const agentsAccepted = rows.every(row => row?.mode === 'llm' && row.status === 'ok' && (mode !== 'live' || row.is_simulated !== true));
         const outcome = fallback ? ' · fallback used; inspect agent results' : !agentsAccepted ? ' · agent status unavailable' : ' · all three agent selections accepted';
-        $('#runStatus').className = `run-status${fallback || !agentsAccepted ? ' warn' : ''}`;
-        $('#runStatus').textContent = `${modeLabel} completed${outcome} · ${runEvents.length} execution events · ${caseId}`;
+        showStatus('{mode} completed{outcome} · {count} execution events · {caseId}', {mode: modeLabel, outcome, count: runEvents.length, caseId}, fallback || !agentsAccepted);
         break;
       }
-      if (snapshot.status !== 'running') throw new Error('Unknown run status. Please retry.');
+      if (snapshot.status !== 'running') throw uiError('Unknown run status. Please retry.');
       await new Promise(resolve => { releasePoll = resolve; pollTimer = setTimeout(resolve, 150); });
       releasePoll = null;
     }
   } catch(e) {
     if (token !== requestGeneration) return;
-    $('#runStatus').className = 'run-status warn';
-    $('#runStatus').textContent = `${modeLabel} failed. Run again to retry.`;
-    $('#pipeline').innerHTML += `<div class="empty" role="alert">Error: ${esc(e.message)}</div>`;
-    $('#ruling').innerHTML = '<div class="empty">Case could not be resolved. Please try again.</div>';
-    $('#agentResults').innerHTML = '<div class="hint">Agent results unavailable for this run.</div>';
+    showStatus('{mode} failed. Run again to retry.', {mode: modeLabel}, true);
+    pipelineError = e;
+    appendPipelineError();
+    placeholder('#ruling', 'Case could not be resolved. Please try again.');
+    placeholder('#agentResults', 'Agent results unavailable for this run.', 'hint');
   } finally {
     if (token === requestGeneration) {
       runInProgress = false;
@@ -693,38 +1100,47 @@ $('#resolveBtn').addEventListener('click', async () => {
   }
 });
 
-function renderRunEvents() {
-  $('#pipeline').innerHTML = `<div class="hint">Execution events · ${selectedMode === 'live' ? 'live API run · sample case evidence' : 'local backend · simulated responses'}</div>` + runEvents.map(m => {
+function appendPipelineError() {
+  $('#pipeline').innerHTML += `<div class="empty" role="alert">${esc(tr('Error'))}: ${errorHtml(pipelineError)}</div>`;
+}
+function renderRunEvents(scrollToEnd = true) {
+  pipelineView = 'events';
+  panelMessages.delete('#pipeline');
+  $('#pipeline').innerHTML = `<div class="hint">${esc(tr('Execution events'))} · ${esc(tr(selectedMode === 'live' ? 'live API run · sample case evidence' : 'local backend · simulated responses'))}</div>` + runEvents.map(m => {
     const meta = AGENT_META[m.actor] || {cls: 'agent-judge', icon: '•'};
     return `<div class="step"><div class="avatar ${meta.cls}" aria-hidden="true">${meta.icon}</div><div class="txt">
-      <div class="role">#${esc(m.seq)} · ${esc(m.kind)} · ${esc(m.status)}</div><div class="agent-name" style="color:${metaColor(m.actor)}">${esc(m.actor)}</div>
-      <div class="msg-body">${esc(m.output_summary || m.input_summary)}</div>
-      <span class="agent-detail">${m.duration_ms == null ? (['started', 'running'].includes(m.status) ? 'In progress' : 'Timing not provided') : `${esc(m.duration_ms)} ms`} · ${esc(m.mode || 'Mode not provided')}</span>
+      <div class="role">#${esc(m.seq)} · ${systemHtml(m.kind)} · ${systemHtml(m.status)}</div><div class="agent-name" style="color:${metaColor(m.actor)}">${systemHtml(m.actor)}</div>
+      <div class="msg-body">${sourceHtml(m.output_summary || m.input_summary)}</div>
+      <span class="agent-detail">${m.duration_ms == null ? esc(tr(['started', 'running'].includes(m.status) ? 'In progress' : 'Timing not provided')) : `${esc(m.duration_ms)} ms`} · ${m.mode ? systemHtml(m.mode) : esc(tr('Mode not provided'))}</span>
       ${m.meta?.llm ? agentResultHtml(m.meta.llm) : ''}</div></div>`;
   }).join('');
-  $('#pipeline').scrollTop = $('#pipeline').scrollHeight;
+  if (scrollToEnd) $('#pipeline').scrollTop = $('#pipeline').scrollHeight;
 }
 
-function animateTrace(trace, done) {
+function renderReplay(scrollToEnd = true) {
+  pipelineView = 'replay';
+  panelMessages.delete('#pipeline');
   const wrap = $('#pipeline');
-  wrap.innerHTML = '<div class="hint">Run replay · recorded agent communication after resolution</div>';
-  let i = 0;
-  const step = () => {
-    if (i >= trace.length) { done && done(); return; }
-    const m = trace[i++];
-    const meta = AGENT_META[m.agent] || { cls: 'agent-judge', icon: '•' };
+  wrap.innerHTML = `<div class="hint">${esc(tr('Run replay · recorded agent communication after resolution'))}</div>`;
+  replayTrace.slice(0, replayCount).forEach(m => {
+    const meta = AGENT_META[m.agent] || {cls: 'agent-judge', icon: '•'};
     const el = document.createElement('div');
     el.className = 'step';
-    el.innerHTML = `
-      <div class="avatar ${meta.cls}">${meta.icon}</div>
-      <div class="txt">
-        <div class="role">${esc(m.role)}</div>
-        <div class="agent-name" style="color:${metaColor(m.agent)}">${esc(m.agent)}</div>
-        <div class="msg-body">${esc(m.content)}</div>
-        ${m.meta?.llm ? `<span class="agent-detail">${agentResultHtml(m.meta.llm)}</span>` : ''}
-      </div>`;
+    el.innerHTML = `<div class="avatar ${meta.cls}">${meta.icon}</div><div class="txt">
+      <div class="role">${systemHtml(m.role)}</div><div class="agent-name" style="color:${metaColor(m.agent)}">${systemHtml(m.agent)}</div>
+      <div class="msg-body">${sourceHtml(m.content)}</div>
+      ${m.meta?.llm ? `<span class="agent-detail">${agentResultHtml(m.meta.llm)}</span>` : ''}</div>`;
     wrap.appendChild(el);
-    wrap.scrollTop = wrap.scrollHeight;
+  });
+  if (scrollToEnd) wrap.scrollTop = wrap.scrollHeight;
+}
+function animateTrace(trace, done) {
+  replayTrace = trace; replayCount = 0;
+  renderReplay();
+  const step = () => {
+    if (replayCount >= trace.length) { done && done(); return; }
+    replayCount++;
+    renderReplay();
     setTimeout(step, 260);
   };
   step();
@@ -744,25 +1160,26 @@ function agentResultHtml(result) {
     ? {ok: 'template selected', no_key: 'no API key', error: 'call failed', rejected: 'model draft rejected'}[result.status]
     : '';
   const details = [];
-  if (result?.scenario) details.push(`Scenario: ${esc(result.scenario)}`);
-  if (result?.model != null) details.push(`Model: ${esc(result.model)}`);
-  if (result?.prompt_version != null) details.push(`Prompt: ${esc(result.prompt_version)}`);
-  if (Number.isInteger(result?.attempts) && result.attempts >= 0) details.push(`Attempts: ${result.attempts}`);
+  if (result?.scenario) details.push(`${esc(tr('Scenario'))}: ${systemHtml(({success: 'All agents succeed', rider_rejected: 'Rider draft rejected → fallback', retry_success: 'Invalid draft → retry succeeds', provider_error: 'Provider error → fallback'})[result.scenario] || result.scenario)}`);
+  if (result?.model != null) details.push(`${esc(tr('Model'))}: ${esc(result.model)}`);
+  if (result?.prompt_version != null) details.push(`${esc(tr('Prompt'))}: ${esc(result.prompt_version)}`);
+  if (Number.isInteger(result?.attempts) && result.attempts >= 0) details.push(`${esc(tr('Attempts'))}: ${result.attempts}`);
   if (typeof result?.latency_ms === 'number' && Number.isFinite(result.latency_ms)) details.push(`${result.latency_ms} ms`);
-  if (result?.error_code != null) details.push(`Reason: ${esc(result.error_code)}`);
-  if (Array.isArray(result?.attempt_errors) && result.attempt_errors.length) details.push(`Attempt errors: ${result.attempt_errors.map(esc).join(', ')}`);
+  if (result?.error_code != null) details.push(`${esc(tr('Reason'))}: ${esc(result.error_code)}`);
+  if (Array.isArray(result?.attempt_errors) && result.attempt_errors.length) details.push(`${esc(tr('Attempt errors'))}: ${result.attempt_errors.map(esc).join(', ')}`);
   const usageKeys = [['prompt_tokens', 'input'], ['completion_tokens', 'output'], ['total_tokens', 'total']];
   const usage = usageKeys.filter(([key]) => Number.isInteger(result?.usage?.[key]) && result.usage[key] >= 0);
   details.push(usage.length
-    ? `Tokens${result?.usage_complete === true && usage.length === usageKeys.length ? '' : ' (partial)'}: ${usage.map(([key, label]) => `${result.usage[key]} ${label}`).join(' / ')}`
-    : 'Tokens: unavailable');
-  return `<span class="${cls}">${mode}${status ? ` · ${status}` : ''}</span>${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}`;
+    ? `${esc(tr('Tokens'))}${result?.usage_complete === true && usage.length === usageKeys.length ? '' : esc(tr(' (partial)'))}: ${usage.map(([key, label]) => `${result.usage[key]} ${esc(tr(label))}`).join(' / ')}`
+    : `${esc(tr('Tokens'))}: ${esc(tr('unavailable'))}`);
+  return `<span class="${cls}">${esc(tr(mode))}${status ? ` · ${esc(tr(status))}` : ''}</span>${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}`;
 }
 
 function renderAgentResults(results) {
-  $('#agentResults').innerHTML = '<div class="hint">This run · per-agent results</div>' +
+  panelMessages.delete('#agentResults');
+  $('#agentResults').innerHTML = `<div class="hint">${esc(tr('This run · per-agent results'))}</div>` +
     [['rider', 'Rider Advocate'], ['driver', 'Driver Advocate'], ['judge', 'Judge']].map(([party, name]) =>
-      `<div class="agent-result" data-agent="${party}"><strong>${name}</strong>${agentResultHtml(results?.[party])}</div>`
+      `<div class="agent-result" data-agent="${party}"><strong>${esc(tr(name))}</strong>${agentResultHtml(results?.[party])}</div>`
     ).join('');
 }
 
@@ -770,15 +1187,16 @@ function guardHtml(guard) {
   const state = guard?.status === 'approved' ? 'Reference checks passed · references and final decision match.'
     : guard?.status === 'rejected' ? 'Model draft discarded · deterministic ruling applies.'
     : 'Reference check status not provided.';
-  const reasons = Array.isArray(guard?.reasons) ? guard.reasons.map(esc).join(', ') : '';
+  const reasons = Array.isArray(guard?.reasons) ? guard.reasons.map(sourceHtml).join(', ') : '';
   const details = [];
-  if (Array.isArray(guard?.evidence_ids)) details.push(`Checked references: ${guard.evidence_ids.length}`);
-  if (guard?.policy_version != null) details.push(`Policy version: ${esc(guard.policy_version)}`);
-  return `<div class="reason"><div class="lbl">Evidence reference checks</div>${state}${reasons ? `<br>${reasons}` : ''}${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}</div>`;
+  if (Array.isArray(guard?.evidence_ids)) details.push(`${esc(tr('Checked references'))}: ${guard.evidence_ids.length}`);
+  if (guard?.policy_version != null) details.push(`${esc(tr('Policy version'))}: ${esc(guard.policy_version)}`);
+  return `<div class="reason"><div class="lbl">${esc(tr('Evidence reference checks'))}</div>${esc(tr(state))}${reasons ? `<br>${reasons}` : ''}${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}</div>`;
 }
 
 function renderRuling(res) {
   currentResult = res;
+  panelMessages.delete('#ruling');
   renderClaims(res);
   const r = res.ruling;
   renderAgentResults(res.agent_results);
@@ -788,50 +1206,76 @@ function renderRuling(res) {
   const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human', insufficient_evidence:'Insufficient Evidence' }[r.action] || r.action;
   const gaugeSvg = `<svg viewBox="0 0 150 150" width="128" height="128" aria-hidden="true"><circle cx="75" cy="75" r="64" fill="none" stroke="#e8edf2" stroke-width="9"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
   const gaugeHtml = confNull
-    ? `<div class="gauge"><div class="val" style="color:var(--muted);font-size:24px;">n/a</div></div>`
+    ? `<div class="gauge"><div class="val" style="color:var(--muted);font-size:24px;">${esc(tr('n/a'))}</div></div>`
     : `<div class="gauge">${gaugeSvg}<div class="val" style="color:${color}">${conf}%</div></div>`;
-  const amountHtml = typeof r.amount === 'number' && Number.isFinite(r.amount) ? `<div class="amount">${esc(r.currency)} ${r.amount.toFixed(2)}</div>` : '';
+  const hasAmount = typeof r.amount === 'number' && Number.isFinite(r.amount);
+  const amountHtml = hasAmount ? `<div class="amount">${esc(r.currency)} ${r.amount.toFixed(2)}</div>` : '';
   const pills = referenceButtons('policy', r.matched_policy_ids);
   const missing = (r.missing_fields || []);
-  const missingHtml = missing.length ? `<div class="reason"><div class="lbl">Missing evidence</div>${missing.map(esc).join('<br>')}</div>` : '';
+  const missingHtml = missing.length ? `<div class="reason"><div class="lbl">${esc(tr('Missing evidence'))}</div>${missing.map(sourceHtml).join('<br>')}</div>` : '';
   const reviewQuestions = Array.isArray(r.review_questions) ? r.review_questions.filter(q => typeof q === 'string' && q.trim()) : [];
-  const reviewHtml = reviewQuestions.length ? `<div class="reason review-questions"><div class="lbl">Questions to verify</div><ul>${reviewQuestions.map(q => `<li>${esc(q)}</li>`).join('')}</ul></div>` : '';
+  const reviewHtml = reviewQuestions.length ? `<div class="reason review-questions"><div class="lbl">${esc(tr('Questions to verify'))}</div><ul>${reviewQuestions.map(q => `<li>${REVIEW_QUESTIONS.has(q) ? esc(tr(q)) : sourceHtml(q)}</li>`).join('')}</ul></div>` : '';
   const routeCase = (res.evidence?.category || selectedData?.category) === 'route_deviation';
+  // Summarise only structured values. The original explanation remains available in full.
+  const facts = [
+    ['Input route deviation', res.evidence?.deviation_ratio == null ? null : res.evidence.deviation_ratio * 100, '%'],
+    ['Driver waiting time', res.evidence?.driver_wait_min, tr('min')],
+    ['Free waiting time', res.evidence?.free_wait_min, tr('min')],
+    ['Arrival distance', res.evidence?.driver_arrival_distance_m, 'm'],
+  ].filter(([, value]) => typeof value === 'number' && Number.isFinite(value));
+  const summary = currentLanguage === 'zh' ? `<div class="reason"><div class="lbl">${esc(tr('Decision summary'))}</div>
+    ${systemHtml(actionLabel)}。${esc(tr(hasAmount ? 'Recommendation only; no payment is executed.' : 'Amount pending verification. No payable amount has been determined.'))}
+    ${facts.length ? `<div class="summary-facts">${facts.map(([label, value, unit]) => `<span>${esc(tr(label))}：${esc(Number(value.toFixed(2)))} ${esc(unit)}</span>`).join('')}</div>` : ''}</div>` : '';
   $('#ruling').innerHTML = `
     <div class="ruling-summary">
-      <div class="ruling-confidence">${gaugeHtml}<div class="hint">Rule confidence score<br>Not a calibrated probability</div></div>
-      <div class="ruling-decision"><div class="verdict">${esc(actionLabel)}</div>${amountHtml}<div class="pills">${pills}</div></div>
+      <div class="ruling-confidence">${gaugeHtml}<div class="hint">${esc(tr('Rule confidence score'))}<br>${esc(tr('Not a calibrated probability'))}</div></div>
+      <div class="ruling-decision"><div class="verdict">${systemHtml(actionLabel)}</div>${amountHtml}<div class="pills">${pills}</div></div>
     </div>
-    ${r.escalated ? '<div class="escalate">Flagged for human review<p class="hint">Review flag only · no support case has been dispatched.</p></div>' : ''}
+    ${r.escalated ? `<div class="escalate">${esc(tr('Flagged for human review'))}<p class="hint">${esc(tr('Review flag only · no support case has been dispatched.'))}</p></div>` : ''}
+    ${summary}
     ${routeCase ? routeConsentHtml(res.evidence, true) : ''}
     ${reviewHtml}
     ${missingHtml}
-    <div class="reason"><div class="lbl">${r.reasoning_source === 'verified_template' ? 'Verified template · checked evidence selection' : 'Ruling explanation · source not provided'}</div>${esc(r.reasoning)}</div>
+    <details id="originalReason" class="reason original-reason"${currentLanguage === 'en' ? ' open' : ''}><summary>${esc(tr('Original ruling explanation'))}</summary><div class="lbl">${esc(tr(r.reasoning_source === 'verified_template' ? 'Verified template · checked evidence selection' : 'Ruling explanation · source not provided'))}</div>${sourceHtml(r.reasoning)}</details>
     ${guardHtml(r.guard)}
-    ${(r.adjustment_notes||[]).length ? `<div class="reason"><div class="lbl">Risk adjustments</div>${r.adjustment_notes.map(esc).join('<br>')}</div>` : ''}
-    <div class="hint">Resolved in ${esc(res.duration_ms)} ms · ${res.trace?.length ?? 0} observable agent steps</div>`;
+    ${(r.adjustment_notes||[]).length ? `<div class="reason"><div class="lbl">${esc(tr('Risk adjustments'))}</div>${r.adjustment_notes.map(sourceHtml).join('<br>')}</div>` : ''}
+    <div class="hint">${esc(tr('Resolved in {duration} ms · {steps} observable agent steps', {duration: res.duration_ms, steps: res.trace?.length ?? 0}))}</div>`;
 }
 
 function referenceButtons(kind, ids) {
-  return (Array.isArray(ids) ? ids : []).map(id => `<button type="button" class="pill" data-ref-kind="${kind}" data-ref-id="${esc(id)}">${kind === 'policy' ? 'Policy' : 'Evidence'} · ${esc(id)}</button>`).join('');
+  return (Array.isArray(ids) ? ids : []).map(id => `<button type="button" class="pill" data-ref-kind="${kind}" data-ref-id="${esc(id)}">${esc(tr(kind === 'policy' ? 'Policy' : 'Evidence'))} · ${esc(id)}</button>`).join('');
 }
 
 function renderClaims(res) {
+  panelMessages.delete('#claims');
   const groups = [['Rider Advocate', res.rider_case?.structured], ['Driver Advocate', res.driver_case?.structured], ['Judge', res.ruling?.agent_output]];
-  $('#claims').innerHTML = groups.map(([name, result]) => `<section class="claim-group"><h3>${name}</h3>${Array.isArray(result?.claims) && result.claims.length ? result.claims.map(c => `<div class="claim">${esc(c.text)}<div class="claim-refs">${referenceButtons('evidence', c.evidence_ids)}${referenceButtons('policy', c.policy_ids)}</div></div>`).join('') : '<p class="hint">No structured claims provided for this agent.</p>'}</section>`).join('');
+  $('#claims').innerHTML = groups.map(([name, result]) => `<section class="claim-group"><h3>${esc(tr(name))}</h3>${Array.isArray(result?.claims) && result.claims.length ? result.claims.map(c => `<div class="claim">${sourceHtml(c.text)}<div class="claim-refs">${referenceButtons('evidence', c.evidence_ids)}${referenceButtons('policy', c.policy_ids)}</div></div>`).join('') : `<p class="hint">${esc(tr('No structured claims provided for this agent.'))}</p>`}</section>`).join('');
 }
 
-function showReference(kind, id) {
+function renderReference() {
+  const {kind, id} = referenceView;
   const catalog = kind === 'policy' ? currentResult?.policy_catalog : currentResult?.evidence_catalog;
   const item = Array.isArray(catalog) ? catalog.find(row => row.id === id) : null;
-  $('#referenceTitle').textContent = `${kind === 'policy' ? 'Policy' : 'Evidence'} · ${id}`;
+  $('#referenceTitle').textContent = `${tr(kind === 'policy' ? 'Policy' : 'Evidence')} · ${id}`;
   const value = v => typeof v === 'object' && v !== null ? JSON.stringify(v, null, 2) : v;
-  $('#referenceContent').innerHTML = item ? `<p class="hint">${item.is_simulated === false ? 'Source record' : 'Sample / simulation source'} · inspect the returned record below</p><dl>${['title', 'text', 'value', 'source', 'source_path', 'version'].map(key => `<div class="catalog-row"><dt>${esc(key.replace('_', ' '))}</dt><dd>${item[key] == null ? 'Not provided' : esc(value(item[key]))}</dd></div>`).join('')}</dl>` : '<p class="empty">Reference not found in this run’s catalog. No source content is available.</p>';
+  $('#referenceContent').innerHTML = item ? `<p class="hint">${esc(tr(item.is_simulated === false ? 'Source record' : 'Sample / simulation source'))} · ${esc(tr('inspect the returned record below'))}</p><dl>${['title', 'text', 'value', 'source', 'source_path', 'version'].map(key => `<div class="catalog-row"><dt>${esc(tr(key.replace('_', ' ')))}</dt><dd>${item[key] == null ? esc(tr('Not provided')) : sourceHtml(value(item[key]))}</dd></div>`).join('')}</dl>` : `<p class="empty">${esc(tr('Reference not found in this run’s catalog. No source content is available.'))}</p>`;
+}
+function showReference(kind, id) {
+  referenceView = {kind, id};
+  renderReference();
   openModal('referenceModal', 'referenceClose');
 }
 
 function openModal(id, focusId) {
-  if (!openModalId) modalReturnFocus = document.activeElement;
+  if (!openModalId) {
+    modalReturnFocus = document.activeElement;
+    modalReturnReference = null;
+    if (modalReturnFocus?.dataset?.refId) {
+      const {refKind: kind, refId: id} = modalReturnFocus.dataset;
+      const matches = $$('[data-ref-id]').filter(el => el.dataset.refKind === kind && el.dataset.refId === id);
+      modalReturnReference = {kind, id, index: matches.indexOf(modalReturnFocus)};
+    }
+  }
   if (openModalId) $(`#${openModalId}`).classList.remove('open');
   openModalId = id;
   $(`#${id}`).classList.add('open');
@@ -842,8 +1286,9 @@ function closeModal() {
   if (!openModalId) return;
   $(`#${openModalId}`).classList.remove('open');
   openModalId = null;
-  modalReturnFocus?.focus();
-  modalReturnFocus = null;
+  const currentTrigger = modalReturnReference ? $$('[data-ref-id]').filter(el => el.dataset.refKind === modalReturnReference.kind && el.dataset.refId === modalReturnReference.id)[modalReturnReference.index] : null;
+  (modalReturnFocus?.isConnected ? modalReturnFocus : currentTrigger || modalReturnFocus)?.focus();
+  modalReturnFocus = null; modalReturnReference = null;
 }
 
 for (const target of ['#claims', '#ruling']) $(target).addEventListener('click', event => {
@@ -885,20 +1330,20 @@ function architectureSvg(health) {
   return `<svg viewBox="0 0 900 560" width="100%" xmlns="http://www.w3.org/2000/svg" style="background:#f7f9fc;border-radius:12px;display:block;">
   <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#718399"/></marker></defs>
 
-  ${box(30,60,210,64)}<text ${t} x="135" y="88">Dispute Filed</text><text ${s} x="135" y="108">text + structured evidence</text>
-  ${box(30,170,210,70,'#aab8c9')}<text ${t} x="135" y="198">Evidence Collection</text><text ${s} x="135" y="218">GPS · chat · fare · history</text>
-  ${box(30,290,210,92)}<text ${t} x="135" y="316">Data Sources</text><text ${s} x="135" y="338">GPS/Telemetry · Chat Logs</text><text ${s} x="135" y="354">Fare/Payment · Profiles</text><text ${s} x="135" y="370">(mocked APIs)</text>
-  ${box(30,410,210,60,'#aab8c9')}<text ${t} x="135" y="435">Fraud &amp; Bad-Faith</text><text ${s} x="135" y="454">risk scoring</text>
-  ${box(30,490,210,56,'#aab8c9')}<text ${t} x="135" y="513">Policy &amp; Precedent</text><text ${s} x="135" y="530">Local policy / precedent rules</text>
+  ${box(30,60,210,64)}<text ${t} x="135" y="88">${esc(tr('Dispute Filed'))}</text><text ${s} x="135" y="108">${esc(tr('text + structured evidence'))}</text>
+  ${box(30,170,210,70,'#aab8c9')}<text ${t} x="135" y="198">${esc(tr('Evidence Collection'))}</text><text ${s} x="135" y="218">${esc(tr('GPS · chat · fare · history'))}</text>
+  ${box(30,290,210,92)}<text ${t} x="135" y="316">${esc(tr('Data Sources'))}</text><text ${s} x="135" y="338">${esc(tr('GPS/Telemetry · Chat Logs'))}</text><text ${s} x="135" y="354">${esc(tr('Fare/Payment · Profiles'))}</text><text ${s} x="135" y="370">${esc(tr('(mocked APIs)'))}</text>
+  ${box(30,410,210,60,'#aab8c9')}<text ${t} x="135" y="435">${esc(tr('Fraud & Bad-Faith'))}</text><text ${s} x="135" y="454">${esc(tr('risk scoring'))}</text>
+  ${box(30,490,210,56,'#aab8c9')}<text ${t} x="135" y="513">${esc(tr('Policy & Precedent'))}</text><text ${s} x="135" y="530">${esc(tr('Local policy / precedent rules'))}</text>
 
-  ${box(340,150,220,70,'#c72d55')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
-  ${box(340,300,220,70,'#c72d55')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
+  ${box(340,150,220,70,'#c72d55')}<text ${t} x="450" y="178">${esc(tr('Rider Advocate Agent'))}</text><text ${s} x="450" y="197">${esc(tr('argues rider-favourable case'))}</text>
+  ${box(340,300,220,70,'#c72d55')}<text ${t} x="450" y="328">${esc(tr('Driver Advocate Agent'))}</text><text ${s} x="450" y="347">${esc(tr('argues driver-favourable case'))}</text>
 
-  ${box(680,190,200,140,'#c72d55')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
+  ${box(680,190,200,140,'#c72d55')}<text ${t} x="780" y="220">${esc(tr('Judge Agent'))}</text><text ${s} x="780" y="240">${esc(tr('weighs cases · applies policy'))}</text><text ${s} x="780" y="256">${esc(tr('confidence score'))}</text><text ${s} x="780" y="272">${esc(tr('natural-language ruling'))}</text><text ${s} x="780" y="288">${esc(tr('escalation protocol'))}</text>
 
-  ${box(680,410,200,80)}<text ${t} x="780" y="438">Ruling Output</text><text ${s} x="780" y="458">refund / compensation /</text><text ${s} x="780" y="474">no action + reasoning</text>
+  ${box(680,410,200,80)}<text ${t} x="780" y="438">${esc(tr('Ruling Output'))}</text><text ${s} x="780" y="458">${esc(tr('refund / compensation /'))}</text><text ${s} x="780" y="474">${esc(tr('no action + reasoning'))}</text>
 
-  ${box(340,430,220,82)}<text ${t} x="450" y="455">Reasoning Layer</text><text ${s} x="450" y="474">${llm}${model}</text><text ${s} x="450" y="503">deterministic policy engine</text>
+  ${box(340,430,220,82)}<text ${t} x="450" y="455">${esc(tr('Reasoning Layer'))}</text><text ${s} x="450" y="474">${esc(tr(llm))}${model}</text><text ${s} x="450" y="503">${esc(tr('deterministic policy engine'))}</text>
 
   ${ln('M240,92 L340,92 L340,185')}
   ${ln('M240,205 L340,205 L340,185')}
@@ -910,11 +1355,17 @@ function architectureSvg(health) {
   ${ln('M240,518 L560,518 L560,335','#718399')}
   ${ln('M135,490 L135,382','#718399','4 3')}
 
-  <text ${s} x="780" y="360">Core agents (required)</text>
-  <text ${s} x="780" y="378">Stretch agents (bonus)</text>
+  <text ${s} x="780" y="360">${esc(tr('Core agents (required)'))}</text>
+  <text ${s} x="780" y="378">${esc(tr('Stretch agents (bonus)'))}</text>
 </svg>`;
 }
 
+applyStaticLanguage();
+renderModeControls();
+$('#llmText').textContent = tr('Checking backend…');
+$('#modeAvailability').textContent = tr('Checking live API availability…');
+for (const [selector, message] of panelMessages) placeholder(selector, message.key, message.cls);
+showStatus(statusMessage.key);
 init();
 </script>
 </body>

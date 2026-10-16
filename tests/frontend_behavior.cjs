@@ -1,15 +1,27 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
+const scenario = process.argv[2];
+const input = JSON.parse(fs.readFileSync(0, 'utf8'));
+const html = fs.readFileSync('frontend/index.html', 'utf8');
+const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 
 class Element {
   constructor() {
     this.innerHTML = ''; this.textContent = ''; this.disabled = false;
     this.listeners = {}; this.children = []; this.className = ''; this.value = 'success'; this.hidden = false; this.dataset = {}; this.attributes = {};
-    this.classList = { add() {}, remove() {}, toggle() {} };
+    this.tagName = ''; this.lang = ''; this.isConnected = true; this.scrollTop = 0; this.scrollHeight = 999; this.open = false;
+    this.classList = {
+      contains: name => this.className.split(/\s+/).includes(name),
+      add: name => { if (!this.classList.contains(name)) this.className = (this.className + ' ' + name).trim(); },
+      remove: name => { this.className = this.className.split(/\s+/).filter(c => c !== name).join(' '); },
+      toggle: (name, force) => { const enabled = force ?? !this.classList.contains(name); this.classList[enabled ? 'add' : 'remove'](name); return enabled; },
+    };
   }
   focus() { document.activeElement = this; }
-  setAttribute(key, value) { this.attributes[key] = value; }
+  setAttribute(key, value) { this.attributes[key] = String(value); if (key === 'lang') this.lang = String(value); }
+  getAttribute(key) { return this.attributes[key] ?? null; }
+  removeAttribute(key) { delete this.attributes[key]; }
   click() { return this.listeners.click?.({target: this}); }
   addEventListener(type, handler) { this.listeners[type] = handler; }
   appendChild(child) { this.children.push(child); }
@@ -23,20 +35,67 @@ const element = selector => {
   return elements.get(selector);
 };
 const createdElements = [];
+// Static translation targets are read from production markup; no dictionary is mocked.
+const staticElements = [];
+const decodeHtmlText = value => value.replace(/&(amp|quot|apos|lt|gt|#39|#(\d+)|#x([a-f0-9]+));/gi, (all, entity, decimal, hex) =>
+  decimal ? String.fromCodePoint(Number(decimal)) : hex ? String.fromCodePoint(parseInt(hex, 16)) : ({amp: '&', quot: '"', apos: "'", lt: '<', gt: '>', '#39': "'"})[entity.toLowerCase()]);
+for (const match of html.slice(0, html.indexOf('<script>')).matchAll(/<([a-z][\w-]*)([^<>]*)>/gi)) {
+  const [, tag, attributes] = match;
+  const attrs = Object.fromEntries([...attributes.matchAll(/([\w:-]+)="([^"]*)"/g)].map(m => [m[1], decodeHtmlText(m[2])]));
+  if (!attrs.id && !Object.keys(attrs).some(key => key.startsWith('data-'))) continue;
+  const el = attrs.id ? element('#' + attrs.id) : new Element();
+  el.tagName = tag.toUpperCase(); el.id = attrs.id || ''; el.attributes = attrs;
+  for (const [key, value] of Object.entries(attrs)) if (key.startsWith('data-')) el.dataset[key.slice(5).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = value;
+  if (attrs.class) el.className = attrs.class;
+  const contentStart = match.index + match[0].length;
+  el.textContent = decodeHtmlText(html.slice(contentStart, html.indexOf('</' + tag, contentStart)).replace(/<[^>]*>/g, '').trim());
+  staticElements.push(el);
+}
+const staticQueryAll = selector => {
+  if (selector === '#evtTabs button') return staticElements.filter(el => el.dataset.tab);
+  const attribute = selector.match(/^\[([\w-]+)(?:="([^"]*)")?\]$/);
+  if (attribute) return staticElements.filter(el => el.getAttribute(attribute[1]) != null && (attribute[2] === undefined || el.getAttribute(attribute[1]) === attribute[2]));
+  return [];
+};
+// Model the real details node created by ruling.innerHTML, including its initial open attribute.
+let reasonMarkup = null, reasonElement = null;
+const queryDocument = selector => {
+  if (selector !== '#originalReason') return element(selector);
+  const markup = element('#ruling').innerHTML;
+  const opening = markup.match(/<details\b[^>]*\bid="originalReason"[^>]*>/);
+  if (!opening) { if (reasonElement) reasonElement.isConnected = false; reasonMarkup = null; reasonElement = null; return null; }
+  if (markup !== reasonMarkup) {
+    if (reasonElement) reasonElement.isConnected = false;
+    reasonElement = new Element(); reasonElement.id = 'originalReason'; reasonElement.tagName = 'DETAILS';
+    reasonElement.open = /\sopen(?:\s|=|>)/.test(opening[0]); reasonMarkup = markup;
+  }
+  return reasonElement;
+};
 const document = {
-  querySelector: element, querySelectorAll: () => [],
+  querySelector: queryDocument, querySelectorAll: staticQueryAll, documentElement: new Element(),
   createElement: () => { const el = new Element(); createdElements.push(el); return el; }, activeElement: null, listeners: {},
   addEventListener(type, handler) { this.listeners[type] = handler; },
 };
 const downloads = [];
 const urls = {createObjectURL(blob) { downloads.push(blob); return 'blob:local'; }, revokeObjectURL() {}};
-const context = vm.createContext({ document, console, setTimeout: fn => fn(), clearTimeout: () => {}, AbortController, Blob, URL: urls, fetch: async () => {
-  throw new Error('Unexpected network request');
-}});
-const html = fs.readFileSync('frontend/index.html', 'utf8');
-const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-// Avoid startup I/O; tests call the production functions and actual click handler.
-vm.runInContext(script.replace(/\ninit\(\);\s*$/, ''), context);
+const preferences = new Map();
+const storageCalls = [];
+const browserLanguage = ['i18n_browser_zh', 'i18n_saved_preference', 'i18n_invalid_storage', 'i18n_storage_read_error'].includes(scenario) ? 'zh-SG' : 'en-US';
+if (scenario === 'i18n_saved_preference') preferences.set('ryde-language', 'en');
+if (scenario === 'i18n_invalid_storage') preferences.set('ryde-language', 'not-a-language');
+const localStorage = {
+  getItem(key) { return preferences.get(key) ?? null; },
+  setItem(key, value) { storageCalls.push([key, value]); if (scenario === 'i18n_storage_write_error') throw new Error('Storage write denied'); preferences.set(key, String(value)); },
+};
+const makePage = () => {
+  const page = vm.createContext({ document, console, setTimeout: fn => fn(), clearTimeout: () => {}, AbortController, Blob, URL: urls,
+    navigator: {language: browserLanguage}, localStorage, fetch: async () => { throw new Error('Unexpected network request'); }});
+  if (scenario === 'i18n_storage_read_error') Object.defineProperty(page, 'localStorage', {get() {throw new Error('Storage access denied');}});
+  // Avoid startup I/O; tests call production functions and actual event handlers.
+  vm.runInContext(script.replace(/\ninit\(\);\s*$/, ''), page);
+  return page;
+};
+const context = makePage();
 const run = code => vm.runInContext(code, context);
 const setCase = data => { context.fixture = data; run('selectedData = fixture; selected = "test";'); };
 const panel = () => element('#evidencePanel').innerHTML;
@@ -46,8 +105,6 @@ const rowValue = (markup, label) => {
   assert.ok(match, `Missing row: ${label}`);
   return match[1];
 };
-const scenario = process.argv[2];
-const input = JSON.parse(fs.readFileSync(0, 'utf8'));
 const agentResult = (overrides = {}) => ({mode: 'llm', status: 'ok', model: 'test-model',
   prompt_version: 'advocate.v1', latency_ms: 24, error_code: null, attempts: 1,
   attempt_errors: [], ...overrides});
@@ -346,8 +403,321 @@ async function simulationTest(name) {
   } else throw new Error('Unknown simulation test ' + name);
 }
 
+async function languageTest(name) {
+  assert.equal(run('typeof setLanguage'), 'function', 'The production page must expose its language switch');
+  const switchLanguage = language => run(`setLanguage(${JSON.stringify(language)})`);
+  const expectLanguage = language => {
+    assert.equal(run('currentLanguage'), language);
+    assert.equal(document.documentElement.lang, language === 'zh' ? 'zh-CN' : 'en');
+    assert.equal(element('#languageSelect').value, language);
+  };
+  if (name === 'i18n_saved_preference') {
+    expectLanguage('en'); // Saved English wins over zh-SG browser preference.
+    switchLanguage('zh');
+    expectLanguage('zh');
+    assert.equal(preferences.get('ryde-language'), 'zh');
+  } else if (name === 'i18n_selector_and_unknown') {
+    assert.match(html, /<select[^>]*id="languageSelect"/);
+    assert.equal(typeof element('#languageSelect').listeners.change, 'function');
+    element('#languageSelect').value = 'zh';
+    await element('#languageSelect').listeners.change({target: element('#languageSelect')});
+    expectLanguage('zh');
+    assert.match(element('#resolveBtn').textContent, /运行.*模拟|模拟.*运行/);
+    const heading = staticElements.find(el => el.dataset.i18n === 'Dispute workbench');
+    assert.ok(heading, 'Use the real workbench heading from production HTML');
+    assert.match(heading.textContent, /争议/);
+    assert.match(element('#languageSelect').getAttribute('aria-label'), /语言/);
+    const writes = storageCalls.length;
+    for (const invalid of ['fr', '', null, '<img>']) switchLanguage(invalid);
+    expectLanguage('zh');
+    assert.equal(storageCalls.length, writes, 'unknown languages must not overwrite preference');
+    switchLanguage('en'); expectLanguage('en');
+    assert.equal(element('#resolveBtn').textContent, 'Run simulation');
+    assert.equal(heading.textContent, 'Dispute workbench');
+  } else if (name === 'i18n_ruling_amounts') {
+    const response = rulingResponse({evidence: {category: 'route_deviation', consent_report_state: 'unconfirmed'}});
+    Object.assign(response.ruling, {action: 'insufficient_evidence', amount: null, confidence: null, escalated: true});
+    renderResponse(response);
+    const before = JSON.stringify(response);
+    switchLanguage('zh');
+    assert.match(element('#ruling').innerHTML, /证据不足/);
+    assert.match(element('#ruling').innerHTML, /未.*派|尚未.*派/);
+    assert.doesNotMatch(element('#ruling').innerHTML, /class="amount"|SGD 0\.00/);
+    assert.equal(run('JSON.stringify(currentResult)'), before);
+    switchLanguage('en');
+    assert.match(element('#ruling').innerHTML, /Insufficient Evidence/);
+    const zero = rulingResponse(); Object.assign(zero.ruling, {action: 'no_action', amount: 0});
+    renderResponse(zero); switchLanguage('zh');
+    assert.match(element('#ruling').innerHTML, /SGD 0\.00/);
+    assert.equal(run('currentResult.ruling.amount'), 0);
+    switchLanguage('en'); assert.match(element('#ruling').innerHTML, /No Action/);
+  } else if (name === 'i18n_context_preserved') {
+    context.fetch = async url => ({ok: true, json: async () => url === '/api/health' ? {state: 'no_key'} : []});
+    await run('init()');
+    setCase({category: 'route_deviation', fare: {currency: 'SGD', cancellation_fee: 0, total_charged: 0}, rider: {}, driver: {}});
+    const fareTab = staticElements.find(el => el.dataset.tab === 'fare');
+    assert.equal(typeof fareTab.listeners.click, 'function');
+    await fareTab.click();
+    assert.equal(fareTab.classList.contains('active'), true);
+    element('#scenarioSelect').value = 'retry_success';
+    const response = rulingResponse({evidence_catalog: [{id: 'e1', text: 'Original <source>', source: 'sample'}]});
+    renderResponse(response); element('#downloadBtn').disabled = false;
+    element('#resolveBtn').focus(); run("showReference('evidence', 'e1')");
+    const before = run('JSON.stringify([selected, selectedData, selectedMode, currentResult, runEvents, requestGeneration])');
+    let requests = 0; context.fetch = async () => {requests++; throw new Error('No request during language switch');};
+    switchLanguage('zh');
+    assert.equal(run('JSON.stringify([selected, selectedData, selectedMode, currentResult, runEvents, requestGeneration])'), before);
+    assert.equal(element('#scenarioSelect').value, 'retry_success');
+    assert.equal(fareTab.classList.contains('active'), true, 'The visible active tab must remain selected');
+    assert.equal(element('#downloadBtn').disabled, false);
+    assert.match(panel(), /SGD/); assert.doesNotMatch(panel(), /<svg/);
+    assert.equal(run('openModalId'), 'referenceModal');
+    assert.match(element('#referenceTitle').textContent, /e1/);
+    assert.match(element('#referenceContent').innerHTML, /Original &lt;source&gt;/);
+    assert.equal(requests, 0);
+    switchLanguage('en');
+    document.listeners.keydown({key: 'Escape', preventDefault() {}});
+    assert.equal(document.activeElement, element('#resolveBtn'));
+  } else if (['i18n_default_en', 'i18n_browser_zh', 'i18n_invalid_storage', 'i18n_storage_read_error', 'i18n_storage_write_error'].includes(name)) {
+    expectLanguage(['i18n_browser_zh', 'i18n_invalid_storage', 'i18n_storage_read_error'].includes(name) ? 'zh' : 'en');
+    switchLanguage('zh'); expectLanguage('zh');
+    assert.match(element('#resolveBtn').textContent, /运行.*模拟|模拟.*运行/);
+    switchLanguage('en'); expectLanguage('en');
+    assert.equal(element('#resolveBtn').textContent, 'Run simulation');
+  } else if (name === 'i18n_reload_preference') {
+    switchLanguage('zh');
+    assert.equal(preferences.get('ryde-language'), 'zh');
+    const reloaded = makePage();
+    assert.equal(vm.runInContext('currentLanguage', reloaded), 'zh');
+    assert.equal(document.documentElement.lang, 'zh-CN');
+    assert.equal(element('#languageSelect').value, 'zh');
+  } else if (name === 'i18n_health_live_gate') {
+    setCase({}); run('renderHealth({state: "configured", model: "model-original", live_enabled: true, live_model: "model-original"})');
+    switchLanguage('zh');
+    assert.match(element('#llmText').textContent, /已配置/);
+    assert.match(element('#llmText').textContent, /model-original/);
+    assert.equal(element('#liveModeOption').disabled, false);
+    assert.equal(run('selectedMode'), 'simulation');
+    element('#modeSelect').value = 'live'; await element('#modeSelect').listeners.change({target: element('#modeSelect')});
+    assert.equal(element('#scenarioControl').hidden, true);
+    assert.match(element('#modeDescription').textContent, /费用|计费/);
+    run('renderHealth(null)');
+    assert.equal(element('#resolveBtn').disabled, true);
+    switchLanguage('en');
+    assert.equal(run('selectedMode'), 'live');
+    assert.equal(element('#liveModeOption').disabled, true);
+    assert.equal(element('#resolveBtn').disabled, true);
+    assert.match(element('#llmText').textContent, /unavailable/i);
+    let requests = 0; context.fetch = async () => {requests++; throw new Error('Live must stay blocked');};
+    await element('#resolveBtn').click(); assert.equal(requests, 0);
+    switchLanguage('zh'); assert.equal(element('#resolveBtn').disabled, true);
+  } else if (name === 'i18n_source_preservation') {
+    const raw = 'No Action <script>original source</script>';
+    setCase({category: 'route_deviation', rider: {claim: raw}, driver: {response: raw}, chat_log: [{from: 'rider', text: raw}]});
+    run("renderEvidenceTab('gps')"); switchLanguage('zh');
+    assert.match(panel(), /No Action &lt;script&gt;original source&lt;\/script&gt;/);
+    assert.doesNotMatch(panel(), /<script>/);
+    run("renderEvidenceTab('chat')"); switchLanguage('en'); switchLanguage('zh');
+    assert.match(panel(), /No Action &lt;script&gt;original source&lt;\/script&gt;/);
+    const response = rulingResponse({rider_case: {structured: {claims: [{text: raw, evidence_ids: ['e1'], policy_ids: []}]}},
+      evidence_catalog: [{id: 'e1', text: raw, value: '<img src=original>', source: 'sample'}]});
+    response.ruling.reasoning = raw;
+    renderResponse(response); const before = JSON.stringify(response);
+    switchLanguage('en'); switchLanguage('zh');
+    assert.equal(run('JSON.stringify(currentResult)'), before);
+    assert.match(element('#claims').innerHTML, /No Action &lt;script&gt;original source&lt;\/script&gt;/);
+    assert.match(element('#ruling').innerHTML, /No Action &lt;script&gt;original source&lt;\/script&gt;/);
+    run("showReference('evidence', 'e1')");
+    assert.match(element('#referenceContent').innerHTML, /No Action &lt;script&gt;original source&lt;\/script&gt;/);
+    assert.match(element('#referenceContent').innerHTML, /&lt;img src=original&gt;/);
+    assert.doesNotMatch(element('#claims').innerHTML + element('#ruling').innerHTML + element('#referenceContent').innerHTML, /<script>|<img/);
+  } else if (name === 'i18n_review_questions') {
+    const response = rulingResponse();
+    Object.assign(response.ruling, {action: 'insufficient_evidence', amount: null, confidence: null, escalated: true,
+      review_questions: ["Did the rider agree to the route change, including any oral discussion? Record each party's account separately and resolve missing or conflicting reports.",
+        'Was the additional stop explained and agreed to, and did it change the fare? Route agreement alone does not answer this.',
+        'What traffic or safety reason supports the detour? No traffic finding was supplied.',
+        'Does the supplied traffic explanation account for the extent of this detour?',
+        'Unmapped question <img src=original>', 'No Action']});
+    renderResponse(response); switchLanguage('zh');
+    const markup = element('#ruling').innerHTML;
+    assert.match(markup, /待核实|需要核实/);
+    assert.match(markup, /口头/); assert.match(markup, /停靠|停留/); assert.match(markup, /路况|交通/);
+    assert.match(markup, /Unmapped question &lt;img src=original&gt;/);
+    assert.match(markup, /No Action/, 'An unknown question must stay original even if it matches another UI dictionary key');
+    assert.doesNotMatch(markup, /<img/);
+    assert.deepEqual(JSON.parse(run('JSON.stringify(currentResult.ruling.review_questions)')), response.ruling.review_questions);
+    switchLanguage('en'); assert.match(element('#ruling').innerHTML, /Did the rider agree to the route change/);
+  } else if (name === 'i18n_api_response') {
+    assert.ok(input && input.ruling, 'Use the actual offline API response supplied by pytest');
+    renderResponse(input); const before = JSON.stringify(input);
+    switchLanguage('zh');
+    const markup = element('#ruling').innerHTML;
+    assert.match(markup, input.ruling.action === 'insufficient_evidence' ? /证据不足/ : /部分退款/);
+    if (input.ruling.amount === null) {
+      assert.doesNotMatch(markup, /class="amount"|SGD 0\.00/);
+      assert.match(markup, /口头/);
+    } else assert.match(markup, /SGD 7\.87/);
+    context.originalReasoning = input.ruling.reasoning;
+    assert.ok(markup.includes(run('esc(originalReasoning)')), 'Original API reasoning remains inspectable');
+    assert.equal(run('JSON.stringify(currentResult)'), before);
+    switchLanguage('en'); assert.equal(run('JSON.stringify(currentResult)'), before);
+  } else if (['i18n_running_no_side_effects', 'i18n_live_running_no_side_effects', 'i18n_completed_status', 'i18n_error_status'].includes(name)) {
+    const ok = data => ({ok: true, json: async () => data});
+    const live = name === 'i18n_live_running_no_side_effects';
+    setCase({case_id: 'test', category: 'route_deviation', fare: {currency: 'SGD', cancellation_fee: 0, total_charged: 0}});
+    run('renderHealth({state: "configured", model: "model-original", live_enabled: true})');
+    if (live) {element('#modeSelect').value = 'live'; await element('#modeSelect').listeners.change({target: element('#modeSelect')});}
+    const mode = live ? 'live' : 'simulation';
+    const response = rulingResponse({case_id: 'test', execution: {mode}, agent_results: {rider: agentResult(), driver: agentResult(), judge: agentResult()}});
+    const event = {seq: 1, actor: 'Judge', kind: 'rule', status: 'completed', output_summary: 'Original <audit> text', mode};
+    const complete = {run_id: 'language-run', status: 'completed', events: [event], next_seq: 1, result: response};
+    let release; const pending = new Promise(resolve => {release = resolve;});
+    const requests = [];
+    context.fetch = async (url, options) => {
+      requests.push({url, options});
+      if (url === '/api/health') return ok({state: 'configured', model: 'model-original', live_enabled: true});
+      if (url === (live ? '/api/live-runs' : '/api/runs')) {
+        if (name === 'i18n_error_status') return {ok: false, status: 503, json: async () => ({detail: 'Original provider detail <danger>'})};
+        return ok({run_id: 'language-run', status: 'running'});
+      }
+      if (url.startsWith('/api/runs/language-run?')) return name.endsWith('no_side_effects') ? pending : ok(complete);
+      throw new Error('Unexpected ' + url);
+    };
+    element('#scenarioSelect').value = 'retry_success';
+    const work = element('#resolveBtn').click();
+    if (name.endsWith('no_side_effects')) {
+      await new Promise(resolve => setImmediate(resolve));
+      assert.equal(run('runInProgress'), true);
+      const state = run('JSON.stringify([selected, selectedData, selectedMode, runEvents, currentResult, requestGeneration])');
+      const signal = requests[0].options.signal; const count = requests.length;
+      run("renderEvidenceTab('fare')"); element('#pipeline').scrollTop = 37;
+      switchLanguage('zh');
+      assert.equal(requests.length, count, 'Language change must not fetch, restart or poll');
+      assert.equal(signal.aborted, false);
+      assert.equal(run('activeController.signal'), signal);
+      assert.equal(run('JSON.stringify([selected, selectedData, selectedMode, runEvents, currentResult, requestGeneration])'), state);
+      assert.equal(run('runInProgress'), true);
+      assert.equal(element('#resolveBtn').disabled, true);
+      assert.match(element('#resolveBtn').textContent, /运行中|正在运行/);
+      assert.equal(element('#scenarioSelect').value, 'retry_success');
+      assert.equal(element('#pipeline').scrollTop, 37);
+      assert.match(panel(), /SGD/);
+      release(ok(complete));
+    }
+    await work;
+    const count = requests.length; switchLanguage('zh');
+    assert.equal(requests.length, count);
+    if (name === 'i18n_error_status') {
+      assert.match(element('#runStatus').textContent, /失败/);
+      assert.match(element('#pipeline').innerHTML, /Original provider detail &lt;danger&gt;/);
+      assert.doesNotMatch(element('#pipeline').innerHTML, /<danger>/);
+      assert.equal(element('#downloadBtn').disabled, true);
+      switchLanguage('en'); assert.match(element('#runStatus').textContent, /failed/i);
+      assert.match(element('#pipeline').innerHTML, /Original provider detail &lt;danger&gt;/);
+    } else {
+      assert.match(element('#runStatus').textContent, /完成/);
+      assert.doesNotMatch(element('#runStatus').textContent, /就绪|ready/i);
+      assert.equal(element('#downloadBtn').disabled, false);
+      assert.equal(run('currentResult.ruling.amount'), 7.87);
+      assert.equal(requests.filter(r => r.options?.method === 'POST').length, 1);
+      await element('#downloadBtn').click(); const zhAudit = JSON.parse(await downloads.at(-1).text());
+      switchLanguage('en'); assert.match(element('#runStatus').textContent, /completed/i);
+      await element('#downloadBtn').click(); const enAudit = JSON.parse(await downloads.at(-1).text());
+      assert.deepEqual(enAudit, zhAudit, 'Language switch must not alter the exported audit');
+      assert.deepEqual(enAudit.result, response); assert.deepEqual(enAudit.events, [event]);
+    }
+  } else if (name === 'i18n_loading_case') {
+    let release; const pending = new Promise(resolve => {release = resolve;}); const requests = [];
+    context.fetch = async (url, options) => {requests.push({url, options}); return pending;};
+    const work = run("selectDispute('language-case')");
+    const generation = run('requestGeneration'); const signal = requests[0].options.signal;
+    switchLanguage('zh');
+    assert.equal(requests.length, 1); assert.equal(signal.aborted, false);
+    assert.equal(run('requestGeneration'), generation);
+    assert.equal(run('selectedData'), null); assert.equal(element('#resolveBtn').disabled, true);
+    assert.match(element('#runStatus').textContent, /加载|读取/);
+    release({ok: true, json: async () => ({case_id: 'language-case', trip: {pickup: {name: 'Original pickup'}}})});
+    await work;
+    assert.match(element('#runStatus').textContent, /就绪/);
+    assert.match(panel(), /Original pickup/);
+    assert.equal(element('#resolveBtn').disabled, false);
+  } else if (name === 'i18n_event_roles') {
+    const roles = ['gather', 'evidence', 'argue', 'deliberate', 'rule', 'risk', 'retrieve'];
+    const raw = roles.join(' ') + ' <original>';
+    const events = roles.map((kind, i) => ({seq: i + 1, actor: 'Judge', kind, status: 'completed', mode: 'simulation', output_summary: raw}));
+    context.languageEvents = events; run('runEvents = languageEvents; renderRunEvents()');
+    switchLanguage('zh');
+    const markup = element('#pipeline').innerHTML;
+    const renderedRoles = [...markup.matchAll(/<div class="role">([\s\S]*?)<\/div>/g)].map(match => match[1]);
+    assert.equal(renderedRoles.length, roles.length);
+    for (const text of renderedRoles) assert.doesNotMatch(text, /\b(gather|evidence|argue|deliberate|rule|risk|retrieve)\b/, 'Known backend roles must be translated');
+    assert.ok(markup.includes(raw.replace('<original>', '&lt;original&gt;')), 'Original event output remains unmodified');
+    assert.equal(run('JSON.stringify(runEvents)'), JSON.stringify(events));
+    switchLanguage('en');
+    for (const role of roles) assert.match(element('#pipeline').innerHTML, new RegExp(' · ' + role + ' · '));
+  } else if (name === 'i18n_duplicate_reference_focus') {
+    const response = rulingResponse({evidence_catalog: [{id: 'same-id', text: 'Original shared reference', source: 'sample'}]});
+    const makeTrigger = () => {const el = new Element(); el.dataset = {refKind: 'evidence', refId: 'same-id'}; return el;};
+    let references = [makeTrigger(), makeTrigger()];
+    document.querySelectorAll = selector => selector === '[data-ref-id]' ? references : staticQueryAll(selector);
+    renderResponse(response);
+    references[1].focus(); run("showReference('evidence', 'same-id')");
+    // Without replacement, the exact connected trigger must win over the first duplicate.
+    run('closeModal()'); assert.equal(document.activeElement, references[1]);
+    references[1].focus(); run("showReference('evidence', 'same-id')");
+    const old = references;
+    switchLanguage('zh');
+    // Browser boundary: innerHTML replacement detaches old buttons and creates their counterparts.
+    old.forEach(el => {el.isConnected = false;}); references = [makeTrigger(), makeTrigger()];
+    document.listeners.keydown({key: 'Escape', preventDefault() {}});
+    assert.equal(document.activeElement, references[1], 'Return to the corresponding second reference after rerender, not the first duplicate');
+  } else if (name === 'i18n_original_reason_disclosure') {
+    renderResponse(rulingResponse());
+    assert.equal(document.querySelector('#originalReason').open, true, 'English initially preserves the previously visible explanation');
+    document.querySelector('#originalReason').open = false;
+    switchLanguage('zh'); assert.equal(document.querySelector('#originalReason').open, false);
+    document.querySelector('#originalReason').open = true;
+    switchLanguage('en'); assert.equal(document.querySelector('#originalReason').open, true, 'Language change preserves the user disclosure choice');
+    switchLanguage('zh');
+    const response = rulingResponse(); response.ruling.reasoning = 'Another original explanation';
+    renderResponse(response);
+    assert.equal(document.querySelector('#originalReason').open, false, 'A newly rendered Chinese result initially shows its structured summary');
+  } else if (name === 'i18n_startup_error_status') {
+    let requests = 0;
+    context.fetch = async () => {requests++; throw new Error('Backend unreachable test boundary');};
+    await run('init()');
+    assert.match(element('#llmText').textContent, /Backend unreachable/);
+    const count = requests;
+    switchLanguage('zh');
+    assert.match(element('#llmText').textContent, /无法连接后端|后端.*不可达|后端.*无法/);
+    assert.match(element('#disputeList').innerHTML, /无法加载|加载失败/);
+    assert.equal(element('#liveModeOption').disabled, true);
+    assert.equal(requests, count);
+    switchLanguage('en');
+    assert.match(element('#llmText').textContent, /Backend unreachable/);
+    assert.match(element('#disputeList').innerHTML, /Could not load cases/);
+  } else if (name === 'i18n_architecture_modal') {
+    let requests = 0;
+    context.fetch = async url => {requests++; assert.equal(url, '/api/health'); return {ok: true, json: async () => ({state: 'configured', model: 'model-original'})};};
+    element('#archBtn').focus(); await element('#archBtn').click();
+    assert.equal(requests, 1); assert.equal(run('openModalId'), 'archModal');
+    switchLanguage('zh');
+    assert.equal(requests, 1, 'Architecture language switch must use cached health');
+    assert.equal(run('openModalId'), 'archModal');
+    assert.match(element('#archTitle').textContent, /架构/);
+    assert.match(element('#archSvg').innerHTML, /model-original/);
+    switchLanguage('en');
+    assert.equal(requests, 1); assert.match(element('#archTitle').textContent, /architecture/i);
+    document.listeners.keydown({key: 'Escape', preventDefault() {}});
+    assert.equal(document.activeElement, element('#archBtn'));
+  } else throw new Error('Unknown language test ' + name);
+}
+
 async function main() {
-  if (scenario.startsWith('live_')) {
+  if (scenario.startsWith('i18n_')) {
+    await languageTest(scenario);
+  } else if (scenario.startsWith('live_')) {
     await liveTest(scenario);
   } else if (scenario.startsWith('simulation_')) {
     await simulationTest(scenario);
