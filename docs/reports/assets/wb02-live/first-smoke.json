@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-10-14T07:20:44.439716+00:00",
+  "mode": "live",
+  "evidence_mode": "sample",
+  "payment_executed": false,
+  "case_id": "RYDE-2026-0001",
+  "model": "deepseek-flash",
+  "provider_base_url": "https://api.deepseek.com",
+  "passed": true,
+  "checks": {
+    "all_agents_live": true,
+    "ruling_matches_expected": true,
+    "guard_approved": true
+  },
+  "http_attempts": 3,
+  "request_limit": 6,
+  "duration_ms": 5928,
+  "usage": {
+    "prompt_tokens": 7536,
+    "completion_tokens": 1034,
+    "total_tokens": 8570
+  },
+  "usage_complete": true,
+  "cost": null,
+  "cost_note": "Token usage is provider-reported; no invoice amount is inferred.",
+  "agents": {
+    "rider": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "rider@1.0.0",
+      "latency_ms": 1995,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2231,
+        "completion_tokens": 318,
+        "total_tokens": 2549
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "driver": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "driver@1.0.0",
+      "latency_ms": 1877,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2230,
+        "completion_tokens": 398,
+        "total_tokens": 2628
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "judge": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "judge@1.0.0",
+      "latency_ms": 2041,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 3075,
+        "completion_tokens": 318,
+        "total_tokens": 3393
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    }
+  },
+  "actual": {
+    "action": "partial_refund",
+    "amount": 7.87
+  },
+  "expected": {
+    "action": "partial_refund",
+    "amount": 7.87
+  }
+}

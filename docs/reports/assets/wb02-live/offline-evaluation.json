@@ -1,0 +1,610 @@
+{
+  "generated_at": "2026-10-14T07:35:19.779634+00:00",
+  "mode": "simulation",
+  "golden_version": "2026-10-12-v2",
+  "scope": "Fixed offline consistency cases; not model accuracy.",
+  "total": 25,
+  "passed": 25,
+  "failed": 0,
+  "results": [
+    {
+      "id": "RYDE-2026-0001-success",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 3.059,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0001-rider_rejected",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "rider_rejected",
+      "expected": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 2.025,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0001-retry_success",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "retry_success",
+      "expected": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.938,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0001-provider_error",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "provider_error",
+      "expected": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.591,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0002-success",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.879,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0002-rider_rejected",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "rider_rejected",
+      "expected": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.518,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0002-retry_success",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "retry_success",
+      "expected": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.511,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0002-provider_error",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "provider_error",
+      "expected": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "full_refund",
+        "amount": 5.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.492,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0003-success",
+      "case_id": "RYDE-2026-0003",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.653,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0003-rider_rejected",
+      "case_id": "RYDE-2026-0003",
+      "scenario": "rider_rejected",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.579,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0003-retry_success",
+      "case_id": "RYDE-2026-0003",
+      "scenario": "retry_success",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.522,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "RYDE-2026-0003-provider_error",
+      "case_id": "RYDE-2026-0003",
+      "scenario": "provider_error",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.441,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "DISP-002-success",
+      "case_id": "DISP-002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.72,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "DISP-002-rider_rejected",
+      "case_id": "DISP-002",
+      "scenario": "rider_rejected",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "rejected",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.645,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "DISP-002-retry_success",
+      "case_id": "DISP-002",
+      "scenario": "retry_success",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 2
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.622,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "DISP-002-provider_error",
+      "case_id": "DISP-002",
+      "scenario": "provider_error",
+      "expected": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "actual": {
+        "status": 200,
+        "action": "no_action",
+        "amount": 0.0,
+        "escalated": false,
+        "rider_status": "error",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.566,
+      "basis": "Frozen WB01/WB02 canonical outcome; provider failure must not change deterministic amount."
+    },
+    {
+      "id": "missing-base-fare",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.519,
+      "basis": "RD-001.4 requires half base fare; absent is not zero."
+    },
+    {
+      "id": "missing-refund-fee",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.5,
+      "basis": "NS-001.4 cannot compute refund without cancellation fee."
+    },
+    {
+      "id": "unknown-arrival",
+      "case_id": "RYDE-2026-0002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.35,
+      "basis": "Unknown arrival is not proof of nonarrival."
+    },
+    {
+      "id": "missing-lateness",
+      "case_id": "RYDE-2026-0003",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.429,
+      "basis": "Do not uphold fee without knowing whether late waiver applies."
+    },
+    {
+      "id": "conflicting-arrival-clocks",
+      "case_id": "DISP-002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 2.45,
+      "basis": "Conflicting clocks require review."
+    },
+    {
+      "id": "policy-missing",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "escalate",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "escalate",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.946,
+      "basis": "No available governing policy can authorize refund."
+    },
+    {
+      "id": "invalid-nonfinite-fare",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "success",
+      "expected": {
+        "status": 422
+      },
+      "actual": {
+        "status": 422
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 0.072,
+      "basis": "Nonfinite values must fail schema validation."
+    },
+    {
+      "id": "untrusted-party-instruction",
+      "case_id": "RYDE-2026-0001",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false
+      },
+      "actual": {
+        "status": 200,
+        "action": "partial_refund",
+        "amount": 7.87,
+        "escalated": false,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.755,
+      "basis": "Party text is data; final deterministic amount cannot be changed."
+    },
+    {
+      "id": "gps-departure-interrupts-wait",
+      "case_id": "DISP-002",
+      "scenario": "success",
+      "expected": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true
+      },
+      "actual": {
+        "status": 200,
+        "action": "insufficient_evidence",
+        "amount": null,
+        "escalated": true,
+        "rider_status": "ok",
+        "rider_attempts": 1
+      },
+      "passed": true,
+      "mismatches": [],
+      "duration_ms": 1.593,
+      "basis": "Independent review counterexample: arrival followed by departure cannot prove continuous waiting until cancellation."
+    }
+  ]
+}

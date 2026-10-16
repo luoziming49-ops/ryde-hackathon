@@ -1,17 +1,19 @@
 # 当前状态
 
-修订：9 · 2026-10-07（Asia/Singapore）· 同步：complete
+修订：18 · CP-018 · 2026-10-16（Asia/Singapore）· 同步：updating
 
-## 阶段
+## 当前方向
 
-实施冲刺（implementation sprint）。方向已确认：平台争议处理工作台；两类争议 route_deviation + no_show；三类代理（Rider Advocate / Driver Advocate / Judge）。产品开发已授权。
+Digital Native / Ryde争议处理工作台。用户授权负责人自主实施、成果后审阅；模拟MVP与DeepSeek真实接入已完成，当前优先赛事提交，不重做既有开发。原范围与验收见[MVP-SIM](tasks/MVP-SIM.md)，模型扩测另列可选任务。
 
-## 计划与下一步
+## 今日提交与缺口
 
-- 计划：[SPRINT](SPRINT.md)（9 天冲刺排期 S0–S5）。
-- 下一步任务：**S1**（健壮性 + 官方 DISP-002 数据格式适配）。
-- 已完成：S0 导入 V2 代码、更新规则、跑通测试与 API。
+已确认官方提交表单今天23:59（GMT+8）截止。入口、必填团队信息和必交材料在[要求清单](REQUIREMENTS.md)，核验边界在[S7](sources/2026-10-16-submission-review.md)。表单需先填第一页必填资料才能查看后续上传限制，本轮未填写。优先补至少3张真实CodeBuddy/WorkBuddy开发聊天截图，项目目录未见，影响评分资格；应用截图不能替代。然后发布完整源码、适配封面与架构图格式、完成表单并保存回执。介绍与脚本已在[交付包](submission/README.md)。目前没有成片、公网部署或正式提交凭据；视频与线上演示链接按手册为选做。
 
-## 协作
+## 当前可用成果
 
-仓库：https://github.com/luoziming49-ops/ryde-hackathon（private / main）。团队按任务分支、PR 和相互审阅协作。工程规则见 [PROJECT_RULES.md](../PROJECT_RULES.md)。
+本地工作台默认模拟，可明确切换Live API；三代理真实输出、用量、重试与回退可见，金额由规则保护。已配置本地凭据，暂不需重配。历史362项回归、四案小样本及失败复测只维护在[真实API报告](reports/WB02-LIVE.md)；本轮未复跑应用或调用模型。小样本不证明真实业务准确率或长期稳定；业务政策与证据仍是演示，真实数据服务和支付未接入。后续模型调用须明确预算，旧额度不是长期授权。
+
+## 版本与协作
+
+仓库ryde-hackathon，分支feat/mvp-simulation-workbench，当前代码HEAD为258c0c3；本轮核验记录另有未提交文档修改。GitHub仓库公开，但该HEAD不在远端，不能把仓库链接当作最新版本已交付。发布前仍须协调远端S1b与PR#3。协调助手负责收尾，执行者本轮仅只读盘点；凭据与私人信息不进入共享记录。两目录按修订18同步，历史见[LOG](archive/LOG.md)，未完事项见[TASKS](TASKS.md)。complete仅表示记录同步完成。

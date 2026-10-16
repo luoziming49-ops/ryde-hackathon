@@ -7,6 +7,12 @@ import pytest
 from backend.core.llm import LLMConfig, LLMProvider
 
 
+@pytest.fixture(autouse=True)
+def offline_environment(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "")
+    monkeypatch.setenv("LLM_API_KEY", "")
+
+
 def test_status_no_key():
     p = LLMProvider(config=None)
     s = p.status()
@@ -50,7 +56,7 @@ def test_failure_sets_state_fallback(monkeypatch):
     assert out == "fb"
     assert p.last_call_ok is False
     assert p.fail_count == 1
-    assert p.last_error == "connection refused"
+    assert p.last_error == "provider_error"
     assert p.status()["state"] == "fallback"
 
 

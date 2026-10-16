@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-10-14T07:21:48.708917+00:00",
+  "mode": "live",
+  "evidence_mode": "sample",
+  "payment_executed": false,
+  "case_id": "RYDE-2026-0003",
+  "model": "deepseek-flash",
+  "provider_base_url": "https://api.deepseek.com",
+  "passed": false,
+  "checks": {
+    "all_agents_live": false,
+    "ruling_matches_expected": true,
+    "guard_approved": true
+  },
+  "http_attempts": 4,
+  "request_limit": 6,
+  "duration_ms": 6946,
+  "usage": {
+    "prompt_tokens": 9200,
+    "completion_tokens": 1148,
+    "total_tokens": 10348
+  },
+  "usage_complete": true,
+  "cost": null,
+  "cost_note": "Token usage is provider-reported; no invoice amount is inferred.",
+  "agents": {
+    "rider": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "rider@1.0.0",
+      "latency_ms": 1958,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2101,
+        "completion_tokens": 317,
+        "total_tokens": 2418
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "driver": {
+      "mode": "fallback",
+      "status": "rejected",
+      "model": "deepseek-flash",
+      "prompt_version": "driver@1.0.0",
+      "latency_ms": 3515,
+      "error_code": "invalid_output",
+      "attempts": 2,
+      "attempt_errors": [
+        "invalid_output",
+        "invalid_output"
+      ],
+      "usage": {
+        "prompt_tokens": 4206,
+        "completion_tokens": 568,
+        "total_tokens": 4774
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    },
+    "judge": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "deepseek-flash",
+      "prompt_version": "judge@1.0.0",
+      "latency_ms": 1466,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": {
+        "prompt_tokens": 2893,
+        "completion_tokens": 263,
+        "total_tokens": 3156
+      },
+      "usage_complete": true,
+      "is_simulated": false,
+      "scenario": null
+    }
+  },
+  "actual": {
+    "action": "no_action",
+    "amount": 0.0
+  },
+  "expected": {
+    "action": "no_action",
+    "amount": 0.0
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-14",
+  "provider": "DeepSeek",
+  "base_url": "https://api.deepseek.com",
+  "model": "deepseek-flash",
+  "authorization": {
+    "request_limit": 30,
+    "spend_limit_usd": 1,
+    "scope": "four existing sample cases; model prompts and demo policies"
+  },
+  "actual_http_requests": 26,
+  "usage": {
+    "prompt_tokens": 60639,
+    "completion_tokens": 8081,
+    "total_tokens": 68720
+  },
+  "usage_complete": true,
+  "conservative_estimate_usd": 0.0278889,
+  "estimated_with": "Peak cache-miss input $0.30/M and output $1.20/M; provider token counts; no discounts assumed. This is an estimate, not an invoice.",
+  "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "invoice_cost_usd": null,
+  "runs": [
+    {
+      "file": "first-smoke.json",
+      "http_attempts": 3,
+      "usage": {
+        "prompt_tokens": 7536,
+        "completion_tokens": 1034,
+        "total_tokens": 8570
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "RYDE-2026-0002.json",
+      "http_attempts": 3,
+      "usage": {
+        "prompt_tokens": 7027,
+        "completion_tokens": 748,
+        "total_tokens": 7775
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "RYDE-2026-0003.json",
+      "http_attempts": 4,
+      "usage": {
+        "prompt_tokens": 9200,
+        "completion_tokens": 1148,
+        "total_tokens": 10348
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "DISP-002.json",
+      "http_attempts": 3,
+      "usage": {
+        "prompt_tokens": 6660,
+        "completion_tokens": 988,
+        "total_tokens": 7648
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "driver-diagnostic.json",
+      "http_attempts": 1,
+      "usage": {
+        "prompt_tokens": 2100,
+        "completion_tokens": 375,
+        "total_tokens": 2475
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "browser-rejection.json",
+      "http_attempts": 4,
+      "usage": {
+        "prompt_tokens": 9250,
+        "completion_tokens": 1280,
+        "total_tokens": 10530
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "driver-diagnostic-full-context.json",
+      "http_attempts": 2,
+      "usage": {
+        "prompt_tokens": 4222,
+        "completion_tokens": 618,
+        "total_tokens": 4840
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "browser-live-accepted.json",
+      "http_attempts": 3,
+      "usage": {
+        "prompt_tokens": 7163,
+        "completion_tokens": 1009,
+        "total_tokens": 8172
+      },
+      "usage_complete": true
+    },
+    {
+      "file": "route-prompt-1.0.1.json",
+      "http_attempts": 3,
+      "usage": {
+        "prompt_tokens": 7481,
+        "completion_tokens": 881,
+        "total_tokens": 8362
+      },
+      "usage_complete": true
+    }
+  ]
+}

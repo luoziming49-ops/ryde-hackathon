@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-12",
+  "browser": "Codex In-app Browser",
+  "base_url": "http://127.0.0.1:8765",
+  "fixtures_replaced": false,
+  "checks": [
+    {
+      "scenario": "Rider draft rejected → fallback",
+      "observed": [
+        "  - option \"Rider draft rejected → fallback\" [selected]",
+        "  - option \"Provider error → fallback\"",
+        "- status: Simulation completed · 42 execution events · RYDE-2026-0002",
+        "- text: Simulated · Deterministic fallback · model draft rejected",
+        "- generic: \"Scenario: rider_rejected · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 2 · 0 ms · Reason: invalid_output · Attempt errors: invalid_output, invalid_output\"",
+        "- generic: \"Scenario: rider_rejected · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 6 ms\"",
+        "- generic: \"Scenario: rider_rejected · Model: local-simulation · Prompt: judge@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- text: Simulated · Deterministic fallback · model draft rejected",
+        "- generic: \"Scenario: rider_rejected · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 2 · 0 ms · Reason: invalid_output · Attempt errors: invalid_output, invalid_output\"",
+        "- generic: \"Scenario: rider_rejected · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 6 ms\"",
+        "- generic: \"Applying policy prior: full_refund (SGD 5.00).\"",
+        "- generic: \"Ruling: Full Refund of SGD 5.00 (confidence 98%).\""
+      ]
+    },
+    {
+      "scenario": "Invalid draft → retry succeeds",
+      "observed": [
+        "  - option \"Rider draft rejected → fallback\"",
+        "  - option \"Provider error → fallback\"",
+        "- status: Simulation completed · 42 execution events · RYDE-2026-0002",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 2 · 0 ms · Attempt errors: invalid_json\"",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: judge@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 2 · 0 ms · Attempt errors: invalid_json\"",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: \"Applying policy prior: full_refund (SGD 5.00).\"",
+        "- generic: \"Ruling: Full Refund of SGD 5.00 (confidence 98%).\"",
+        "- generic: \"Scenario: retry_success · Model: local-simulation · Prompt: judge@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: SGD 5.00"
+      ]
+    },
+    {
+      "scenario": "Provider error → fallback",
+      "observed": [
+        "  - option \"Rider draft rejected → fallback\"",
+        "  - option \"Provider error → fallback\" [selected]",
+        "- status: Simulation completed · 42 execution events · RYDE-2026-0002",
+        "- text: Simulated · Deterministic fallback · call failed",
+        "- generic: \"Scenario: provider_error · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 1 · 0 ms · Reason: provider_error · Attempt errors: provider_error\"",
+        "- generic: \"Scenario: provider_error · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: \"Scenario: provider_error · Model: local-simulation · Prompt: judge@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- text: Simulated · Deterministic fallback · call failed",
+        "- generic: \"Scenario: provider_error · Model: local-simulation · Prompt: rider@1.0.0 · Attempts: 1 · 0 ms · Reason: provider_error · Attempt errors: provider_error\"",
+        "- generic: \"Scenario: provider_error · Model: local-simulation · Prompt: driver@1.0.0 · Attempts: 1 · 0 ms\"",
+        "- generic: \"Applying policy prior: full_refund (SGD 5.00).\"",
+        "- generic: \"Ruling: Full Refund of SGD 5.00 (confidence 98%).\""
+      ]
+    },
+    {
+      "case": "no show RYDE-2026-0003",
+      "observed": [
+        "- status: Simulation completed · 42 execution events · RYDE-2026-0003",
+        "- generic: \"Applying policy prior: no_action (SGD 0.00).\"",
+        "- generic: \"Ruling: No Action (confidence 95%).\"",
+        "- generic: No Action",
+        "- generic: SGD 0.00",
+        "- text: \"Final decision: no action. Amount: SGD 0.00. Driver arrived within the permitted lateness and waited at least 5 minutes; no-show fee upheld. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 6 minutes. Computed driver lateness: 1 minutes. Recorded driver contact attempts: 3. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Recorded base fare: 0. Effective free-wait threshold: 5 minutes (default policy). Overall confidence: 95%.\""
+      ]
+    },
+    {
+      "case": "no show DISP-002",
+      "observed": [
+        "- status: Simulation completed · 41 execution events · DISP-002",
+        "- generic: \"Applying policy prior: no_action (SGD 0.00).\"",
+        "- generic: \"Ruling: No Action (confidence 95%).\"",
+        "- generic: No Action",
+        "- generic: SGD 0.00",
+        "- text: \"Final decision: no action. Amount: SGD 0.00. Driver arrived within the permitted lateness and waited at least 5 minutes; no-show fee upheld. Selected evidence: Dispute evidence has been processed by the deterministic analysis engine. Recorded arrival evidence indicates the driver arrived. Computed driver wait: 8 minutes. Computed driver lateness: 0 minutes. Recorded driver contact attempts: 5. Effective free-wait threshold: 5 minutes. Recorded cancellation fee: 5. Effective free-wait threshold: 5 minutes (case override). Overall confidence: 95%.\""
+      ]
+    }
+  ],
+  "canonical_route": {
+    "action": "partial_refund",
+    "amount": 7.87
+  },
+  "canonical_no_show": {
+    "action": "full_refund",
+    "amount": 5
+  },
+  "citations": {
+    "evidence": "analysis.deviation_ratio = 43.43",
+    "policy": "RD-001.6",
+    "escape_restores_focus": true
+  },
+  "mobile": {
+    "width": 390,
+    "scroll_width": 390
+  },
+  "download": {
+    "case_id": "DISP-002",
+    "saved": true
+  },
+  "console": []
+}

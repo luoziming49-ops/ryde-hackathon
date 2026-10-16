@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-08",
+  "timezone": "Asia/Singapore",
+  "runtime": "Python 3.12",
+  "source": "TestClient, final WB01 code, explicit empty API keys",
+  "homepage_status": 200,
+  "health": {
+    "status": "ok",
+    "llm_configured": false,
+    "state": "no_key",
+    "last_call_ok": null,
+    "last_error": null,
+    "success_count": 0,
+    "fail_count": 0,
+    "model": null
+  },
+  "cases": [
+    {
+      "case_id": "RYDE-2026-0001",
+      "http_status": 200,
+      "action": "partial_refund",
+      "amount": 7.87,
+      "confidence": 0.96,
+      "escalated": false
+    },
+    {
+      "case_id": "RYDE-2026-0002",
+      "http_status": 200,
+      "action": "full_refund",
+      "amount": 5.0,
+      "confidence": 0.98,
+      "escalated": false
+    },
+    {
+      "case_id": "RYDE-2026-0003",
+      "http_status": 200,
+      "action": "no_action",
+      "amount": 0.0,
+      "confidence": 0.95,
+      "escalated": false
+    },
+    {
+      "case_id": "DISP-002",
+      "http_status": 200,
+      "action": "no_action",
+      "amount": 0.0,
+      "confidence": 0.95,
+      "escalated": false
+    }
+  ]
+}

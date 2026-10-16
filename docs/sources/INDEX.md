@@ -39,3 +39,8 @@
 [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)，2026-09-20 已搜索并打开官方正文。Codex 在启动时构建 AGENTS 指令链；本项目因此精简自动加载入口，并通过项目规则要求按需读取普通资料。
 
 一页、500–800 中文字及三层目录是本项目约定，不是官方模型限制；未修改全局配置，也未宣称历史对话会因文件精简而自动缩短。
+
+<a id="s7"></a>
+## S7：2026-10-16实际提交表单与提交日核验
+
+[核验记录](2026-10-16-submission-review.md)。浏览器确认官方短链接当前进入Project Submission，明确10月16日23:59（GMT+8）；第一页字段已核对，后续上传页受必填资料校验阻挡，格式限制尚未核验。该地址当前用途更新了S3旧标签；本轮未提交。

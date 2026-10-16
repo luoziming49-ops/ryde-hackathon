@@ -1,0 +1,57 @@
+{
+  "case_id": "RYDE-2026-0003",
+  "http_attempts": 2,
+  "agent": {
+    "mode": "llm",
+    "status": "ok",
+    "model": "deepseek-flash",
+    "prompt_version": "driver@1.0.0",
+    "latency_ms": 3488,
+    "error_code": null,
+    "attempts": 2,
+    "attempt_errors": [
+      "invalid_output"
+    ],
+    "usage": {
+      "prompt_tokens": 4222,
+      "completion_tokens": 618,
+      "total_tokens": 4840
+    },
+    "usage_complete": true,
+    "is_simulated": false,
+    "scenario": null
+  },
+  "validation_diagnostics": [
+    {
+      "error": "invalid_evidence_reference",
+      "claim_count": 6,
+      "references": [
+        {
+          "path": "analysis.driver_arrived",
+          "text_matches": true
+        },
+        {
+          "path": "analysis.driver_wait_min",
+          "text_matches": true
+        },
+        {
+          "path": "analysis.driver_late_min",
+          "text_matches": true
+        },
+        {
+          "path": "analysis.driver_contact_attempts",
+          "text_matches": true
+        },
+        {
+          "path": "policy.default_free_wait_min",
+          "text_matches": true
+        },
+        {
+          "path": "driver.response",
+          "text_matches": false
+        }
+      ]
+    }
+  ],
+  "other_agents": "offline simulation; diagnostic run only"
+}

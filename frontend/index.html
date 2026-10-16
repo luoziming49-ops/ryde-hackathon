@@ -6,144 +6,221 @@
 <title>Ryde Dispute AI — Multi-Agent Autonomous Dispute Resolution</title>
 <style>
   :root {
-    --bg: #0b0f1a;
-    --bg-2: #101627;
-    --panel: #151d33;
-    --panel-2: #1b2440;
-    --border: #26304f;
-    --text: #e8ecf8;
-    --muted: #8a94b8;
-    --accent: #4f8cff;
-    --accent-2: #22d3a5;
-    --gold: #f5b942;
-    --danger: #ff6b6b;
-    --rider: #34d399;
-    --driver: #f87171;
-    --judge: #f5b942;
-    --evidence: #4f8cff;
-    --fraud: #fb923c;
-    --policy: #a78bfa;
-    --radius: 14px;
-    --shadow: 0 8px 30px rgba(0,0,0,.35);
+    color-scheme: light;
+    --bg: #f5f6f8;
+    --bg-2: #f7f8fa;
+    --panel: #ffffff;
+    --panel-2: #f1f3f6;
+    --border: #e2e6ec;
+    --text: #202733;
+    --muted: #626d7d;
+    --accent: #0868cf;
+    --accent-soft: #edf5ff;
+    --accent-2: #24734e;
+    --gold: #8d5d12;
+    --danger: #b44338;
+    --rider: #286cae;
+    --driver: #556782;
+    --judge: #3d5277;
+    --evidence: #286cae;
+    --fraud: #8d5d12;
+    --policy: #636487;
+    --radius: 18px;
+    --shadow: 0 2px 8px rgba(25, 40, 65, .025), 0 12px 32px rgba(25, 40, 65, .025);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
-    background: radial-gradient(1200px 600px at 20% -10%, #1c2a55 0%, var(--bg) 55%);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+    font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased;
   }
+  button, select { font: inherit; }
   a { color: var(--accent); }
-
+  button:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 28px; border-bottom: 1px solid var(--border);
-    background: rgba(11,15,26,.7); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 18px max(28px, calc((100vw - 1320px) / 2)); border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, .92); backdrop-filter: blur(16px);
     position: sticky; top: 0; z-index: 10;
   }
-  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .brand .logo {
-    width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2)); font-weight: 800; font-size: 20px; color: #06101f;
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center;
+    background: var(--accent); font-weight: 650; font-size: 21px; letter-spacing: -.06em; color: #fff;
   }
-  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
-  .brand p { font-size: 12px; color: var(--muted); }
+  .brand h1 { font-size: 16px; font-weight: 650; letter-spacing: -.025em; }
+  .brand p { font-size: 11px; color: var(--muted); margin-top: 1px; }
   .badge {
-    font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border);
-    background: var(--panel); color: var(--muted); display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--bg-2); color: var(--muted); display: inline-flex; align-items: center; gap: 7px;
   }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
-  .dot.off { background: var(--danger); }
-  .dot.warn { background: #f5b942; }
-
-  .wrap { max-width: 1380px; margin: 0 auto; padding: 24px 28px 60px; }
-  .grid { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
-  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-
+  .dot { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--accent-2); }
+  .dot.off { background: #7c8796; }
+  .dot.warn { background: var(--gold); }
+  .wrap { max-width: 1376px; margin: 0 auto; padding: 34px 28px 56px; }
+  .workspace-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
+  .workspace-heading h2 { font-size: 30px; line-height: 1.25; font-weight: 650; letter-spacing: -.045em; }
+  .workspace-heading p { margin-top: 6px; color: var(--muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: 350px minmax(0, 1fr); gap: 22px; align-items: start; }
+  .column { display: grid; gap: 20px; }
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
-  .card h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 16px 18px 10px; }
-  .card .body { padding: 6px 18px 18px; }
+  .card h2 { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 650; letter-spacing: -.02em; color: var(--text); padding: 20px 20px 14px; }
+  .section-index { display: inline-grid; place-items: center; min-width: 23px; height: 23px; border-radius: 7px; background: var(--panel-2); color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0; }
+  .card .body { padding: 0 20px 20px; }
+  .card, .grid > div, .step .txt { min-width: 0; }
 
-  /* Dispute cards */
-  .dispute { padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; margin-bottom: 10px; transition: .15s; background: var(--panel-2); }
-  .dispute:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .dispute.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,140,255,.15); }
-  .dispute .tag { font-size: 11px; padding: 3px 9px; border-radius: 6px; background: rgba(79,140,255,.15); color: var(--accent); font-weight: 600; text-transform: capitalize; }
-  .dispute .tag.no_show { background: rgba(248,113,113,.15); color: var(--driver); }
-  .dispute h3 { font-size: 14px; margin: 8px 0 6px; }
-  .dispute p { font-size: 12.5px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  /* Case selection */
+  .dispute {
+    width: 100%; text-align: left; color: var(--text); font: inherit;
+    padding: 13px 14px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer;
+    margin-bottom: 9px; background: var(--panel); transition: background .16s ease, border-color .16s ease, box-shadow .16s ease;
+  }
+  .dispute:last-child { margin-bottom: 0; }
+  .dispute:hover { background: var(--bg-2); border-color: #b9c6d8; }
+  .dispute.active { border-color: #5e9de3; background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(8, 104, 207, .12); }
+  .dispute .tag { display: inline-flex; font-size: 10px; line-height: 1.4; padding: 3px 7px; border-radius: 5px; background: var(--panel-2); color: #4b5c72; font-weight: 600; text-transform: capitalize; }
+  .dispute.active .tag { background: #dcecff; color: #285c93; }
+  .dispute h3 { font-size: 13px; font-weight: 650; margin: 7px 0 4px; letter-spacing: -.015em; }
+  .dispute p { font-size: 12px; line-height: 1.5; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px; justify-content: center;
-    background: linear-gradient(135deg, var(--accent), #6d5bff); color: #fff; border: none;
-    padding: 13px 20px; border-radius: 11px; font-weight: 700; font-size: 14px; cursor: pointer; width: 100%; transition: .15s;
+    background: var(--accent); color: #fff; border: 1px solid transparent;
+    padding: 11px 17px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;
+    transition: background .16s ease, box-shadow .16s ease;
   }
-  .btn:hover { filter: brightness(1.1); }
-  .btn:disabled { opacity: .5; cursor: not-allowed; }
-  .btn.ghost { background: var(--panel-2); border: 1px solid var(--border); color: var(--text); }
+  .btn:hover { background: #075bb5; box-shadow: 0 2px 5px rgba(8, 104, 207, .13); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  .btn.ghost { background: var(--panel); border-color: var(--border); color: #445268; }
+  .btn.ghost:hover { background: var(--bg-2); border-color: #c5ceda; box-shadow: none; }
+  .arch-btn { width: auto; flex-shrink: 0; font-size: 12px; padding: 9px 13px; }
+  .arch-btn svg { width: 16px; height: 16px; }
 
-  /* Evidence tabs */
-  .tabs { display: flex; gap: 6px; padding: 0 18px; }
-  .tabs button { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 8px; border-radius: 8px; font-size: 12px; cursor: pointer; }
-  .tabs button.active { background: var(--panel-2); color: var(--text); border-color: var(--accent); }
-  .evt { display: none; padding: 14px 18px; font-size: 13px; }
+  /* Evidence */
+  .tabs { display: flex; gap: 3px; padding: 4px; margin: 0 20px; border-radius: 9px; background: var(--panel-2); }
+  .tabs button { flex: 1; background: transparent; border: 1px solid transparent; color: var(--muted); padding: 6px 3px; border-radius: 6px; font-size: 11px; font-weight: 550; cursor: pointer; }
+  .tabs button.active { background: var(--panel); color: var(--text); box-shadow: 0 1px 4px rgba(25, 40, 65, .1); }
+  .evt { display: none; padding: 14px 20px 20px; font-size: 12px; }
   .evt.active { display: block; }
-  .evt .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(38,48,79,.6); }
+  .evt .row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid #edf0f4; }
   .evt .row:last-child { border-bottom: none; }
-  .evt .k { color: var(--muted); }
-  .evt .v { font-weight: 600; text-align: right; }
-
-  .chat { display: flex; flex-direction: column; gap: 8px; }
-  .msg { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 12.5px; }
-  .msg.rider { background: rgba(52,211,153,.12); align-self: flex-start; border-bottom-left-radius: 3px; }
-  .msg.driver { background: rgba(248,113,113,.12); align-self: flex-end; border-bottom-right-radius: 3px; }
-  .msg .who { font-size: 10.5px; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .05em; }
-
+  .evt .k { color: var(--muted); flex-shrink: 0; }
+  .evt .v { font-weight: 550; text-align: right; }
+  .chat { display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 90%; padding: 10px 12px; border-radius: 12px; font-size: 12px; }
+  .msg.rider { background: var(--accent-soft); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg.driver { background: var(--panel-2); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .msg .who { font-size: 10px; font-weight: 600; color: var(--muted); margin-bottom: 3px; text-transform: capitalize; }
   .map-wrap { width: 100%; }
-  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--muted); margin-top: 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px; color: var(--muted); margin-top: 8px; }
   .legend span { display: inline-flex; align-items: center; gap: 5px; }
 
-  /* Pipeline */
-  .pipeline { max-height: 520px; overflow-y: auto; }
-  .step { display: flex; gap: 12px; padding: 11px 18px; border-bottom: 1px solid rgba(38,48,79,.5); animation: fadeIn .35s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  .step .avatar { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+  /* Run controls and observable events */
+  .simulation-banner { display: flex; gap: 18px; align-items: center; padding: 13px 17px; margin-bottom: 24px; border: 1px solid #dbe6f3; background: #edf3fa; border-radius: 12px; }
+  .simulation-banner strong { display: flex; align-items: center; gap: 7px; color: #315c8f; white-space: nowrap; font-size: 11px; font-weight: 650; }
+  .simulation-banner strong::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #578ac7; }
+  .simulation-banner p { color: #50637c; font-size: 12px; line-height: 1.5; }
+  .run-controls { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+  .run-controls label { display: block; font-size: 11px; font-weight: 550; color: var(--muted); flex: 1; min-width: 150px; }
+  .run-controls select { width: 100%; margin-top: 6px; background: var(--panel); color: var(--text); border: 1px solid #d5dbe4; border-radius: 9px; padding: 10px; font-size: 12px; min-height: 42px; }
+  .run-controls .btn { width: auto; min-height: 42px; }
+  .run-controls [hidden] { display: none; }
+  .run-status { padding: 14px 0 2px; color: #475e79; font-size: 12px; overflow-wrap: anywhere; }
+  .run-status.warn { color: var(--gold); }
+  .agent-results { margin-top: 12px; padding: 13px 15px; background: var(--bg-2); border: 1px solid #e9edf2; border-radius: 11px; text-align: left; }
+  .agent-results > .hint { margin-top: 0; }
+  .agent-result { padding: 9px 0; font-size: 12px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+  .agent-result:last-child { border-bottom: none; padding-bottom: 0; }
+  .agent-result strong { display: inline-block; min-width: 118px; font-weight: 600; }
+  .agent-detail { display: block; margin-top: 4px; font-size: 11px; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
+  .mode-llm { color: var(--accent-2); }
+  .mode-fallback { color: var(--gold); }
+  .mode-unknown { color: var(--muted); }
+  .pipeline { max-height: 360px; overflow-y: auto; margin-top: 16px; scrollbar-width: thin; scrollbar-color: #bdc7d4 transparent; }
+  .pipeline > .hint { margin: 0 0 7px; }
+  .step { display: flex; gap: 11px; padding: 13px 2px; border-bottom: 1px solid #edf0f4; animation: fadeIn .25s ease; }
+  .step:last-child { border-bottom: none; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .step .avatar { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: grid; place-items: center; font-size: 11px; font-weight: 650; }
   .step .txt { flex: 1; }
-  .step .agent-name { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-  .step .msg-body { font-size: 13px; color: var(--text); margin-top: 2px; }
-  .step .role { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1px; }
+  .step .agent-name { font-size: 12px; font-weight: 650; }
+  .step .msg-body { font-size: 12px; color: var(--text); margin-top: 4px; line-height: 1.65; }
+  .step .role { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+  .agent-evidence, .agent-rider { background: #e7f0fb; color: #286cae; }
+  .agent-fraud { background: #f6efdf; color: var(--gold); }
+  .agent-policy { background: #efeff6; color: var(--policy); }
+  .agent-driver { background: #edf0f5; color: var(--driver); }
+  .agent-judge { background: #e9edf5; color: var(--judge); }
 
-  .agent-evidence { background: #4f8cff; color: #fff; }
-  .agent-fraud { background: #fb923c; color: #3a1a00; }
-  .agent-policy { background: #a78bfa; color: #1c1133; }
-  .agent-rider { background: #34d399; color: #04251a; }
-  .agent-driver { background: #f87171; color: #2b0808; }
-  .agent-judge { background: #f5b942; color: #2b1a00; }
-
-  /* Ruling */
-  .ruling { text-align: center; padding: 20px; }
-  .gauge { position: relative; width: 150px; height: 150px; margin: 6px auto 10px; }
+  /* Claims and guarded ruling */
+  .claim-group { padding: 18px 20px; border-top: 1px solid var(--border); }
+  #claims { max-height: 480px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #bdc7d4 transparent; }
+  #claims:focus-visible, #pipeline:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .claim-group h3 { font-size: 13px; font-weight: 650; margin-bottom: 9px; }
+  .claim { font-size: 12px; line-height: 1.65; padding: 13px 14px; margin-top: 8px; background: var(--bg-2); border: 1px solid #edf0f4; border-radius: 10px; }
+  .claim-refs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .ruling { padding: 4px 20px 18px; }
+  .ruling-summary { display: flex; gap: 28px; align-items: center; padding: 10px 4px 20px; }
+  .ruling-confidence { flex: 0 0 168px; text-align: center; }
+  .ruling-confidence .hint { font-size: 10px; line-height: 1.5; margin-top: 5px; }
+  .ruling-decision { flex: 1; min-width: 0; }
+  .gauge { position: relative; width: 128px; height: 128px; margin: 0 auto; }
   .gauge svg { transform: rotate(-90deg); }
-  .gauge .val { position: absolute; inset: 0; display: grid; place-items: center; font-size: 30px; font-weight: 800; }
-  .verdict { font-size: 20px; font-weight: 800; margin: 4px 0; }
-  .amount { font-size: 34px; font-weight: 800; color: var(--accent-2); }
-  .reason { text-align: left; background: var(--panel-2); border: 1px solid var(--border); border-radius: 11px; padding: 14px; font-size: 13.5px; color: var(--text); margin-top: 14px; }
-  .reason .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
-  .pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
-  .pill { font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(79,140,255,.14); color: var(--accent); border: 1px solid rgba(79,140,255,.25); }
-  .escalate { background: rgba(248,113,113,.15); color: var(--driver); border: 1px solid rgba(248,113,113,.3); padding: 12px; border-radius: 11px; margin-top: 12px; font-weight: 700; }
+  .gauge .val { position: absolute; inset: 0; display: grid; place-items: center; font-size: 27px; font-weight: 650; letter-spacing: -.04em; }
+  .verdict { font-size: 19px; line-height: 1.3; font-weight: 650; letter-spacing: -.025em; margin: 4px 0 6px; }
+  .amount { font-size: 35px; line-height: 1.25; font-weight: 650; letter-spacing: -.04em; color: var(--text); font-variant-numeric: tabular-nums; }
+  .reason { text-align: left; background: var(--bg-2); border: 1px solid #e9edf2; border-radius: 11px; padding: 15px; font-size: 12px; line-height: 1.7; color: var(--text); margin-top: 10px; }
+  .reason .lbl { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+  .pill { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: var(--accent-soft); color: #2863a5; border: 1px solid #d8e7f9; overflow-wrap: anywhere; }
+  button.pill { cursor: pointer; font: inherit; font-size: 10px; text-align: left; }
+  button.pill:hover { background: #dfedff; border-color: #a9caef; }
+  .escalate { background: #fcf5e9; color: var(--gold); border: 1px solid #ebd9b5; padding: 13px; border-radius: 10px; margin-top: 12px; font-size: 12px; font-weight: 600; }
+  .empty { color: var(--muted); font-size: 12px; line-height: 1.65; text-align: center; padding: 32px 18px; }
+  .hint { font-size: 11px; line-height: 1.6; color: var(--muted); margin-top: 10px; }
+  .claim, .step, .reason, .evt .v { overflow-wrap: anywhere; }
+  .ruling + .body .btn { width: auto; }
 
-  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 40px 20px; }
-  .hint { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
-  .section-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 18px 0 8px; }
-
-  .arch-btn { position: fixed; right: 24px; bottom: 24px; z-index: 20; }
-  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; place-items: center; padding: 30px; }
+  /* Source and architecture dialogs */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(29, 39, 56, .28); backdrop-filter: blur(6px); z-index: 100; place-items: center; padding: 30px; }
   .modal.open { display: grid; }
-  .modal .box { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; max-width: 980px; width: 100%; max-height: 90vh; overflow: auto; padding: 24px; }
-  .modal h2 { margin-bottom: 16px; }
-  .close { float: right; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; }
+  .modal .box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; max-width: 980px; width: 100%; max-height: 90vh; overflow: auto; padding: 26px; box-shadow: 0 24px 90px rgba(24, 37, 59, .2); }
+  #referenceModal .box { max-width: 680px; }
+  .modal h2 { font-size: 20px; font-weight: 650; letter-spacing: -.025em; margin: 0 42px 20px 0; overflow-wrap: anywhere; }
+  .close { float: right; background: var(--panel-2); border: 1px solid transparent; color: var(--muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+  .close:hover { background: #e6eaf0; color: var(--text); }
+  .catalog-row { margin: 18px 0; font-size: 13px; overflow-wrap: anywhere; }
+  .catalog-row dt { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 5px; text-transform: capitalize; }
+  .catalog-row dd { white-space: pre-wrap; }
+  @media (max-width: 1080px) { .grid { grid-template-columns: 310px minmax(0, 1fr); } .run-controls .btn { width: 100%; } }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } .run-controls .btn { width: auto; } header { position: static; } }
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; gap: 13px; flex-wrap: wrap; }
+    .brand p { font-size: 10px; }
+    .badge { max-width: 100%; }
+    .wrap { padding: 24px 14px 36px; }
+    .workspace-heading { align-items: flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+    .workspace-heading h2 { font-size: 27px; }
+    .workspace-heading p { font-size: 12px; }
+    .simulation-banner { display: block; margin-bottom: 20px; }
+    .simulation-banner p { margin-top: 7px; }
+    .card h2 { padding: 18px 16px 13px; }
+    .card .body { padding: 0 16px 18px; }
+    .run-controls { align-items: stretch; flex-direction: column; gap: 10px; }
+    .run-controls .btn { width: 100%; margin-top: 3px; }
+    .tabs { margin: 0 16px; }
+    .evt { padding: 12px 16px 18px; }
+    .evt .row { gap: 12px; }
+    .claim-group { padding: 16px; }
+    .ruling { padding: 0 16px 16px; }
+    .ruling-summary { flex-direction: column; gap: 16px; text-align: center; }
+    .ruling-confidence { flex-basis: auto; max-width: 180px; }
+    .ruling-decision .pills { justify-content: center; }
+    .ruling + .body .btn { width: 100%; }
+    .modal { padding: 12px; }
+    .modal .box { padding: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .step { animation: none; } * { transition: none !important; } }
 </style>
 </head>
 <body>
@@ -152,23 +229,28 @@
     <div class="logo">R</div>
     <div>
       <h1>Ryde Dispute AI</h1>
-      <p>Multi-Agent Autonomous Dispute Resolution System · Digital Native Track</p>
+      <p>Evidence-led dispute resolution</p>
     </div>
   </div>
-  <div class="badge" id="llmBadge"><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
+  <div class="badge" id="llmBadge" title="Service overview; each run has separate agent results below."><span class="dot off"></span><span id="llmText">Checking backend…</span></div>
 </header>
 
-<div class="wrap">
+<main class="wrap">
+  <div class="workspace-heading">
+    <div><h2>Dispute workbench</h2><p>Review the evidence. Hear both sides. Follow every decision.</p></div>
+    <button class="btn ghost arch-btn" id="archBtn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6.5" y="2" width="7" height="4" rx="1"/><path d="M10 6v4M4 13v-3h12v3"/><rect x="1.5" y="13" width="5" height="4" rx="1"/><rect x="13.5" y="13" width="5" height="4" rx="1"/></svg>Architecture</button>
+  </div>
+  <div class="simulation-banner"><strong id="modeTitle">Simulation · Demo</strong><p id="modeDescription">Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.</p></div>
   <div class="grid">
     <!-- LEFT: case selection + evidence -->
-    <div>
+    <div class="column">
       <div class="card">
-        <h2>Dispute Cases</h2>
+        <h2><span class="section-index" aria-hidden="true">01</span>Choose a sample case</h2>
         <div class="body" id="disputeList"><div class="empty">Loading cases…</div></div>
       </div>
 
-      <div class="card" style="margin-top:16px;">
-        <h2>Evidence & Case File</h2>
+      <div class="card">
+        <h2>Evidence &amp; case file</h2>
         <div class="tabs" id="evtTabs">
           <button data-tab="gps" class="active">GPS / Trip</button>
           <button data-tab="chat">Chat</button>
@@ -180,32 +262,40 @@
     </div>
 
     <!-- RIGHT: pipeline + ruling -->
-    <div>
+    <div class="column">
       <div class="card">
-        <h2>Agent Orchestration — Live Communication Log</h2>
+        <h2><span class="section-index" aria-hidden="true">02</span>Agent workflow</h2>
         <div class="body">
-          <button class="btn" id="resolveBtn" disabled>⚡ Resolve Dispute</button>
-          <div class="pipeline" id="pipeline"><div class="empty">The multi-agent workflow will appear here when you resolve a case.</div></div>
+          <div class="run-controls"><label for="modeSelect">Run mode
+            <select id="modeSelect" aria-describedby="modeAvailability"><option value="simulation" selected>Simulation</option><option id="liveModeOption" value="live" disabled>Live API</option></select>
+          </label><label id="scenarioControl" for="scenarioSelect">Simulation scenario
+            <select id="scenarioSelect"><option value="success">All agents succeed</option><option value="rider_rejected">Rider draft rejected → fallback</option><option value="retry_success">Invalid draft → retry succeeds</option><option value="provider_error">Provider error → fallback</option></select>
+          </label><button class="btn" id="resolveBtn" disabled>Run simulation</button></div>
+          <p class="hint" id="modeAvailability">Checking live API availability…</p>
+          <div id="runStatus" class="run-status" role="status" aria-live="polite">Select a sample case to begin.</div>
+          <div class="agent-results" id="agentResults" aria-live="polite"><div class="hint">Agent results will appear after a run.</div></div>
+          <div class="pipeline" id="pipeline" role="region" aria-label="Execution events" tabindex="0"><div class="empty">The multi-agent workflow will appear here when you resolve a case.</div></div>
         </div>
       </div>
 
-      <div class="card" style="margin-top:16px;">
-        <h2>Ruling</h2>
-        <div class="ruling" id="ruling"><div class="empty">No ruling yet.</div></div>
+      <div class="card"><h2><span class="section-index" aria-hidden="true">03</span>Claims &amp; citations</h2><div id="claims" role="region" aria-label="Cited claims from all three agents" tabindex="0"><div class="empty">Each party’s cited claims appear after completion.</div></div></div>
+      <div class="card">
+        <h2><span class="section-index" aria-hidden="true">04</span>Guarded ruling</h2>
+        <div class="ruling" id="ruling"><div class="empty">No ruling yet.</div></div><div class="body"><button class="btn ghost" id="downloadBtn" disabled>Download audit JSON</button><p class="hint">Demo recommendation only. No payment is executed.</p></div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
-<button class="btn ghost arch-btn" id="archBtn" style="width:auto;">🗺 Architecture</button>
-
-<div class="modal" id="archModal">
+<div class="modal" id="archModal" role="dialog" aria-modal="true" aria-labelledby="archTitle">
   <div class="box">
-    <button class="close" id="archClose">✕</button>
-    <h2>System Architecture</h2>
+    <button class="close" id="archClose" aria-label="Close architecture">✕</button>
+    <h2 id="archTitle">System architecture</h2>
     <div id="archSvg"></div>
   </div>
 </div>
+
+<div class="modal" id="referenceModal" role="dialog" aria-modal="true" aria-labelledby="referenceTitle"><div class="box"><button class="close" id="referenceClose" aria-label="Close reference">✕</button><h2 id="referenceTitle">Source reference</h2><div id="referenceContent"></div></div></div>
 
 <script>
 const $ = (s, el=document) => el.querySelector(s);
@@ -214,14 +304,54 @@ const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 let disputes = [];
 let selected = null;
 let selectedData = null;
+let selectedMode = 'simulation';
+let liveEnabled = false;
+let runInProgress = false;
+let requestGeneration = 0;
+let activeController = null;
+let pollTimer = null;
+let releasePoll = null;
+let currentResult = null;
+let runEvents = [];
+let openModalId = null;
+let modalReturnFocus = null;
+
+function invalidateRequests() {
+  requestGeneration++;
+  runInProgress = false;
+  activeController?.abort();
+  activeController = new AbortController();
+  if (pollTimer != null) clearTimeout(pollTimer);
+  releasePoll?.();
+  releasePoll = null;
+  return requestGeneration;
+}
+
+function resetResults() {
+  currentResult = null;
+  runEvents = [];
+  $('#downloadBtn').disabled = true;
+  $('#claims').innerHTML = '<div class="empty">Cited claims will appear when this run completes.</div>';
+  $('#agentResults').innerHTML = '<div class="hint">Agent results pending for this case.</div>';
+  if (openModalId) closeModal();
+}
+
+async function readResponse(response) {
+  if (response.ok) return response.json();
+  const error = await response.json().catch(() => null);
+  const detail = error?.detail;
+  const message = Array.isArray(detail) ? detail.map(item => item.msg || 'Invalid request').join('; ')
+    : typeof detail === 'string' ? detail : null;
+  throw new Error(message || `Request failed (HTTP ${response.status})`);
+}
 
 const AGENT_META = {
-  "Evidence Collection": { cls: "agent-evidence", icon: "📦" },
-  "Fraud & Bad-Faith Detection": { cls: "agent-fraud", icon: "🛡" },
-  "Policy & Precedent": { cls: "agent-policy", icon: "📚" },
-  "Rider Advocate": { cls: "agent-rider", icon: "🙋" },
-  "Driver Advocate": { cls: "agent-driver", icon: "🚗" },
-  "Judge": { cls: "agent-judge", icon: "⚖" },
+  "Evidence Collection": { cls: "agent-evidence", icon: "E" },
+  "Fraud & Bad-Faith Detection": { cls: "agent-fraud", icon: "F" },
+  "Policy & Precedent": { cls: "agent-policy", icon: "P" },
+  "Rider Advocate": { cls: "agent-rider", icon: "R" },
+  "Driver Advocate": { cls: "agent-driver", icon: "D" },
+  "Judge": { cls: "agent-judge", icon: "J" },
 };
 
 async function init() {
@@ -232,57 +362,149 @@ async function init() {
     renderEvidenceTab(b.dataset.tab);
   }));
   try {
-    const [h, d] = await Promise.all([fetch('/api/health').then(r=>r.json()), fetch('/api/disputes').then(r=>r.json())]);
+    const [h, d] = await Promise.all([fetch('/api/health').then(readResponse), fetch('/api/disputes').then(readResponse)]);
     renderHealth(h);
     disputes = d;
     renderDisputes();
   } catch (e) {
+    renderHealth(null);
     $('#llmText').textContent = 'Backend unreachable';
     $('#disputeList').innerHTML = '<div class="empty">Could not load cases. Is the server running?</div>';
   }
 }
 
 function renderHealth(h) {
+  liveEnabled = h?.live_enabled === true;
+  $('#liveModeOption').disabled = !liveEnabled;
+  $('#modeAvailability').textContent = liveEnabled
+    ? `Live API available${typeof h.live_model === 'string' ? ` · ${h.live_model}` : ''}. Model calls may incur usage charges.`
+    : 'Live API unavailable. Check backend configuration and refresh the page. Simulation remains available.';
+  renderModeControls();
   const dot = $('#llmBadge .dot');
-  const state = h.state || 'no_key';
+  const state = h && h.state;
   if (state === 'ok') {
     dot.className = 'dot';
-    $('#llmText').textContent = `LLM online · ${h.model || ''}`;
+    $('#llmText').textContent = `Service: LLM online · ${h.model || ''}`;
   } else if (state === 'fallback' || state === 'configured') {
     dot.className = 'dot warn';
     $('#llmText').textContent = state === 'configured'
-      ? `LLM configured (${h.model || ''}) · not yet called`
-      : `LLM configured · falling back (last call failed)`;
+      ? `Service: LLM configured (${h.model || ''}) · not yet called`
+      : `Service: LLM configured · falling back (last call failed)`;
+  } else if (state === 'no_key') {
+    dot.className = 'dot off';
+    $('#llmText').textContent = 'Service: deterministic mode (no API key)';
   } else {
     dot.className = 'dot off';
-    $('#llmText').textContent = 'Deterministic mode (no API key)';
+    $('#llmText').textContent = 'Service: LLM status unavailable';
+  }
+}
+
+function renderModeControls() {
+  const live = selectedMode === 'live';
+  $('#modeSelect').value = selectedMode;
+  $('#scenarioControl').hidden = live;
+  $('#scenarioSelect').disabled = live;
+  $('#modeTitle').textContent = live ? 'Live API · Demo' : 'Simulation · Demo';
+  $('#modeDescription').textContent = live
+    ? 'Sample case evidence · external model calls and real rule checks. Model usage may incur charges. Demo recommendation only; no payment is executed.'
+    : 'Sample case files · local simulated agent responses · real rule checks. No external model calls or payments are made in this mode.';
+  $('#resolveBtn').disabled = runInProgress || !selectedData || (live && !liveEnabled);
+  $('#resolveBtn').textContent = runInProgress ? (live ? 'Running live API…' : 'Running simulation…') : (live ? 'Run live API' : 'Run simulation');
+}
+
+function renderReadyState() {
+  renderModeControls();
+  $('#runStatus').className = 'run-status';
+  $('#runStatus').textContent = selectedData
+    ? `Ready · ${selected} · sample case · ${selectedMode === 'live' ? 'live API' : 'simulation'}`
+    : 'Select a sample case to begin.';
+  $('#ruling').innerHTML = '<div class="empty">Run the selected mode to inspect the guarded ruling.</div>';
+  $('#pipeline').innerHTML = '<div class="empty">Execution events will appear here.</div>';
+}
+
+$('#modeSelect').addEventListener('change', async () => {
+  const nextMode = $('#modeSelect').value;
+  if (!['simulation', 'live'].includes(nextMode) || (nextMode === 'live' && !liveEnabled)) {
+    $('#modeSelect').value = selectedMode;
+    return;
+  }
+  if (nextMode === selectedMode) return;
+  invalidateRequests();
+  selectedMode = nextMode;
+  resetResults();
+  renderReadyState();
+  // Changing mode during case loading cancels that request; reload for the new generation.
+  if (selected && !selectedData) await selectDispute(selected);
+});
+
+async function refreshHealth(token = requestGeneration) {
+  try {
+    const response = await fetch('/api/health');
+    if (!response.ok) throw new Error('Health status unavailable');
+    const h = await response.json();
+    if (token !== requestGeneration) return;
+    renderHealth(h);
+    $('#archSvg').innerHTML = architectureSvg(h);
+  } catch (_) {
+    if (token !== requestGeneration) return;
+    renderHealth(null);
+    $('#archSvg').innerHTML = architectureSvg(null);
   }
 }
 
 function renderDisputes() {
   const wrap = $('#disputeList');
   wrap.innerHTML = disputes.map(d => `
-    <div class="dispute" data-id="${d.case_id}">
-      <span class="tag ${d.category}">${d.category.replace('_',' ')}</span>
-      <h3>${d.case_id}</h3>
+    <button type="button" class="dispute" data-id="${esc(d.case_id)}">
+      <span class="tag ${esc(d.category)}">${esc(String(d.category || 'unknown').replace('_',' '))}</span>
+      <h3>${esc(d.case_id)}</h3>
       <p>${esc(d.rider_claim)}</p>
-    </div>`).join('');
+    </button>`).join('');
   $$('.dispute', wrap).forEach(el => el.addEventListener('click', () => selectDispute(el.dataset.id)));
 }
 
 async function selectDispute(id) {
+  const token = invalidateRequests();
   selected = id;
+  selectedData = null;
+  resetResults();
   $$('.dispute').forEach(el => el.classList.toggle('active', el.dataset.id === id));
-  $('#resolveBtn').disabled = false;
+  renderModeControls();
+  $('#runStatus').className = 'run-status';
+  $('#runStatus').textContent = 'Loading sample case…';
+  $('#evidencePanel').innerHTML = '<div class="empty">Loading evidence…</div>';
+  $('#ruling').innerHTML = '<div class="empty">No ruling for this case yet.</div>';
+  $('#pipeline').innerHTML = '<div class="empty">Waiting for case file.</div>';
   try {
-    selectedData = await fetch(`/api/disputes/${id}`).then(r=>r.json());
+    const data = await readResponse(await fetch(`/api/disputes/${encodeURIComponent(id)}`, {signal: activeController.signal}));
+    if (token !== requestGeneration) return;
+    selectedData = data;
     renderEvidence();
-    $('#ruling').innerHTML = '<div class="empty">Case loaded. Press “Resolve Dispute” to run the agents.</div>';
-    $('#pipeline').innerHTML = '<div class="empty">Ready. Press “Resolve Dispute” to begin.</div>';
-  } catch(e) { console.error(e); }
+    $$('#evtTabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'gps'));
+    renderReadyState();
+  } catch(e) {
+    if (token !== requestGeneration) return;
+    $('#runStatus').textContent = 'Case could not be loaded. Select the case again to retry.';
+    $('#evidencePanel').innerHTML = `<div class="empty">${esc(e.message)}</div>`;
+  }
 }
 
-function esc(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function provided(value, suffix='') {
+  return value == null ? 'Not provided' : `${esc(value)}${suffix}`;
+}
+
+function money(value, currency) {
+  return typeof value === 'number' && Number.isFinite(value)
+    ? `${value.toFixed(2)}${currency == null ? '' : ` ${esc(currency)}`}`
+    : 'Not provided';
+}
+
+function tripMeasure(actual, reference, unit, label) {
+  if (actual == null && reference == null) return 'Not provided';
+  return `${provided(actual, ` ${unit}`)} (${label} ${provided(reference, ` ${unit}`)})`;
+}
 
 function renderEvidence() {
   // Bug #10: tab listeners are bound ONCE at startup (see init()), not on every render.
@@ -290,58 +512,62 @@ function renderEvidence() {
 }
 
 function renderEvidenceTab(tab) {
-  const d = selectedData;
+  const d = selectedData || {};
   const p = $('#evidencePanel');
   if (tab === 'gps') {
+    const trip = d.trip || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Pickup</span><span class="v">${esc(d.trip.pickup.name)}</span></div>
-      <div class="row"><span class="k">Dropoff</span><span class="v">${esc(d.trip.dropoff.name)}</span></div>
-      <div class="row"><span class="k">Distance</span><span class="v">${d.trip.actual_distance_km} km (optimal ${d.trip.optimal_distance_km} km)</span></div>
-      <div class="row"><span class="k">Duration</span><span class="v">${d.trip.actual_duration_min} min (est. ${d.trip.estimated_duration_min} min)</span></div>
-      <div class="row"><span class="k">Traffic detected</span><span class="v">${d.trip.traffic_detected ? 'Yes' : 'No'}</span></div>
+      <div class="row"><span class="k">Pickup</span><span class="v">${provided(trip.pickup?.name)}</span></div>
+      <div class="row"><span class="k">Dropoff</span><span class="v">${provided(trip.dropoff?.name)}</span></div>
+      <div class="row"><span class="k">Distance</span><span class="v">${tripMeasure(trip.actual_distance_km, trip.optimal_distance_km, 'km', 'optimal')}</span></div>
+      <div class="row"><span class="k">Duration</span><span class="v">${tripMeasure(trip.actual_duration_min, trip.estimated_duration_min, 'min', 'est.')}</span></div>
+      <div class="row"><span class="k">Traffic detected</span><span class="v">${trip.traffic_detected == null ? 'Not provided' : trip.traffic_detected ? 'Yes' : 'No'}</span></div>
       <div class="map-wrap" style="margin-top:12px;">${routeMap(d)}</div>
       <div class="legend">
-        <span><span style="width:12px;height:3px;background:#34d399;display:inline-block;"></span> Optimal route</span>
-        <span><span style="width:12px;height:3px;background:#f87171;display:inline-block;"></span> Actual route</span>
-        <span><span style="width:8px;height:8px;border-radius:50%;background:#f5b942;display:inline-block;"></span> Stop</span>
+        <span><span style="width:12px;height:3px;background:#287863;display:inline-block;"></span> Optimal route</span>
+        <span><span style="width:12px;height:3px;background:#2474ce;display:inline-block;"></span> Actual route</span>
+        <span><span style="width:8px;height:8px;border-radius:50%;background:#a16a14;display:inline-block;"></span> Stop</span>
       </div>
     </div>`;
   } else if (tab === 'chat') {
     const msgs = (d.chat_log||[]).map(m => `
-      <div class="msg ${m.from}">
-        <div class="who">${m.from}</div>${esc(m.text)}
+      <div class="msg ${esc(m.from)}">
+        <div class="who">${esc(m.from)}</div>${esc(m.text)}
       </div>`).join('');
     p.innerHTML = `<div class="evt active"><div class="chat">${msgs || '<div class="empty">No chat log.</div>'}</div></div>`;
   } else if (tab === 'fare') {
-    const f = d.fare;
+    const f = d.fare || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Base fare</span><span class="v">${f.base_fare.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${f.distance_fare_actual.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${f.distance_fare_optimal.toFixed(2)}</span></div>
-      <div class="row"><span class="k">Surge</span><span class="v">${f.surge_multiplier}×</span></div>
-      <div class="row"><span class="k">Total charged</span><span class="v">${f.total_charged.toFixed(2)} ${f.currency}</span></div>
-      <div class="row"><span class="k">Cancellation fee</span><span class="v">${f.cancellation_fee.toFixed(2)}</span></div>
+      <div class="row"><span class="k">Base fare</span><span class="v">${money(f.base_fare)}</span></div>
+      <div class="row"><span class="k">Distance fare (actual)</span><span class="v">${money(f.distance_fare_actual)}</span></div>
+      <div class="row"><span class="k">Distance fare (optimal)</span><span class="v">${money(f.distance_fare_optimal)}</span></div>
+      <div class="row"><span class="k">Surge</span><span class="v">${provided(f.surge_multiplier, '×')}</span></div>
+      <div class="row"><span class="k">Total charged</span><span class="v">${money(f.total_charged, f.currency)}</span></div>
+      <div class="row"><span class="k">Cancellation fee</span><span class="v">${money(f.cancellation_fee)}</span></div>
     </div>`;
   } else if (tab === 'history') {
-    const r = d.rider, dr = d.driver;
+    const r = d.rider || {}, dr = d.driver || {};
     p.innerHTML = `<div class="evt active">
-      <div class="row"><span class="k">Rider</span><span class="v">${esc(r.name)}</span></div>
-      <div class="row"><span class="k">Rider rating</span><span class="v">${r.avg_rating}</span></div>
-      <div class="row"><span class="k">Rider prior disputes</span><span class="v">${r.dispute_history}</span></div>
-      <div class="row"><span class="k">Driver</span><span class="v">${esc(dr.name)}</span></div>
-      <div class="row"><span class="k">Driver rating</span><span class="v">${dr.avg_rating}</span></div>
-      <div class="row"><span class="k">Driver prior disputes</span><span class="v">${dr.dispute_history}</span></div>
+      <div class="row"><span class="k">Rider</span><span class="v">${provided(r.name)}</span></div>
+      <div class="row"><span class="k">Rider rating</span><span class="v">${provided(r.avg_rating)}</span></div>
+      <div class="row"><span class="k">Rider prior disputes</span><span class="v">${provided(r.dispute_history)}</span></div>
+      <div class="row"><span class="k">Driver</span><span class="v">${provided(dr.name)}</span></div>
+      <div class="row"><span class="k">Driver rating</span><span class="v">${provided(dr.avg_rating)}</span></div>
+      <div class="row"><span class="k">Driver prior disputes</span><span class="v">${provided(dr.dispute_history)}</span></div>
     </div>`;
   }
 }
 
 function routeMap(d) {
-  const norm = arr => (arr || []).map(p => Array.isArray(p) ? p : [p.lat, p.lng]);
-  const opt = norm(d.gps.optimal_route);
-  const act = norm(d.gps.actual_route);
-  const stops = (d.trip.unexpected_stops || []).map(s => [s.lat, s.lng]);
+  const trip = d.trip || {}, gps = d.gps || {};
+  const point = p => Array.isArray(p) ? p : [p?.lat, p?.lng];
+  const valid = p => Number.isFinite(p[0]) && Number.isFinite(p[1]);
+  const norm = arr => (Array.isArray(arr) ? arr : []).map(point).filter(valid);
+  const opt = norm(gps.optimal_route);
+  const act = norm(gps.actual_route);
+  const stops = norm(trip.unexpected_stops);
   const pts = [...opt, ...act, ...stops];
-  if (!pts.length) return '<div class="empty">No GPS route available.</div>';
+  if (!pts.length) return '<div class="empty">GPS route: Not provided</div>';
   const lats = pts.map(p=>p[0]), lngs = pts.map(p=>p[1]);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
   const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
@@ -351,37 +577,102 @@ function routeMap(d) {
   const X = lng => pad + (lng-minLng)*scale + ((W-2*pad) - spanLng*scale)/2;
   const Y = lat => H - pad - (lat-minLat)*scale - ((H-2*pad) - spanLat*scale)/2;
   const path = arr => arr.map((p,i)=>`${i?'L':'M'}${X(p[1]).toFixed(1)},${Y(p[0]).toFixed(1)}`).join(' ');
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:#0d1428;border:1px solid var(--border);border-radius:10px;">`;
-  svg += `<path d="${path(opt)}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4 3"/>`;
-  svg += `<path d="${path(act)}" fill="none" stroke="#f87171" stroke-width="2.5"/>`;
-  svg += `<circle cx="${X(d.trip.pickup.lng)}" cy="${Y(d.trip.pickup.lat)}" r="4" fill="#4f8cff"/>`;
-  svg += `<circle cx="${X(d.trip.dropoff.lng)}" cy="${Y(d.trip.dropoff.lat)}" r="4" fill="#fff"/>`;
-  stops.forEach(s => { svg += `<circle cx="${X(s[1])}" cy="${Y(s[0])}" r="5" fill="#f5b942" stroke="#0b0f1a" stroke-width="2"/>`; });
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Sample GPS routes: optimal dashed, actual solid" style="background:#f7f9fc;border:1px solid var(--border);border-radius:10px;">`;
+  svg += `<path d="${path(opt)}" fill="none" stroke="#287863" stroke-width="2.5" stroke-dasharray="4 3"/>`;
+  svg += `<path d="${path(act)}" fill="none" stroke="#2474ce" stroke-width="2.5"/>`;
+  if (valid(point(trip.pickup))) svg += `<circle cx="${X(trip.pickup.lng)}" cy="${Y(trip.pickup.lat)}" r="4" fill="#2474ce"/>`;
+  if (valid(point(trip.dropoff))) svg += `<circle cx="${X(trip.dropoff.lng)}" cy="${Y(trip.dropoff.lat)}" r="4" fill="#394b61"/>`;
+  stops.forEach(s => { svg += `<circle cx="${X(s[1])}" cy="${Y(s[0])}" r="5" fill="#a16a14" stroke="#ffffff" stroke-width="2"/>`; });
   svg += `</svg>`;
   return svg;
 }
 
 $('#resolveBtn').addEventListener('click', async () => {
-  const btn = $('#resolveBtn');
-  btn.disabled = true; btn.textContent = '⚙ Agents resolving…';
+  if (!selected || !selectedData || (selectedMode === 'live' && !liveEnabled)) return;
+  const token = invalidateRequests();
+  const caseId = selected;
+  const mode = selectedMode;
+  const modeLabel = mode === 'live' ? 'Live API' : 'Simulation';
+  const scenario = $('#scenarioSelect').value || 'success';
+  const signal = activeController.signal;
+  resetResults();
+  runInProgress = true;
+  renderModeControls();
+  $('#runStatus').className = 'run-status';
+  $('#runStatus').textContent = `Starting ${modeLabel.toLowerCase()}…`;
   $('#pipeline').innerHTML = '<div class="empty">Dispatching agents…</div>';
-  $('#ruling').innerHTML = '<div class="empty">Deliberating…</div>';
+  $('#ruling').innerHTML = '<div class="empty">Waiting for the Policy Guard…</div>';
   try {
-    const res = await fetch('/api/resolve', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ case_id: selected })
-    }).then(r=>r.json());
-    animateTrace(res.trace, () => renderRuling(res));
+    const started = await readResponse(await fetch(mode === 'live' ? '/api/live-runs' : '/api/runs', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, signal,
+      body: JSON.stringify(mode === 'live' ? {case_id: caseId} : {case_id: caseId, scenario})
+    }));
+    if (token !== requestGeneration) return;
+    if (typeof started.run_id !== 'string') throw new Error('Invalid run response. Please retry.');
+    let after = 0;
+    while (token === requestGeneration) {
+      const snapshot = await readResponse(await fetch(`/api/runs/${encodeURIComponent(started.run_id)}?after=${after}`, {signal}));
+      if (token !== requestGeneration) return;
+      if (snapshot.run_id !== started.run_id) throw new Error('Run response mismatch. Please retry.');
+      for (const event of snapshot.events || []) {
+        if (Number.isInteger(event.seq) && event.seq > after) runEvents.push(event);
+      }
+      after = Math.max(after, Number.isInteger(snapshot.next_seq) ? snapshot.next_seq : after);
+      renderRunEvents();
+      $('#runStatus').textContent = `${modeLabel} running · ${runEvents.length} execution events · ${caseId}`;
+      if (snapshot.status === 'failed') throw new Error(`${modeLabel} failed (${snapshot.error_code || 'run_failed'}). Please retry.`);
+      if (snapshot.status === 'completed') {
+        if (!snapshot.result?.ruling) throw new Error('Completed run has no ruling. Please retry.');
+        if ((mode === 'live' && snapshot.result.execution?.mode !== 'live') ||
+            (snapshot.result.execution?.mode && snapshot.result.execution.mode !== mode)) {
+          throw new Error('Run mode mismatch. Please retry.');
+        }
+        renderRuling(snapshot.result);
+        currentResult = snapshot.result;
+        $('#downloadBtn').disabled = false;
+        const rows = ['rider', 'driver', 'judge'].map(party => snapshot.result.agent_results?.[party]);
+        const fallback = rows.some(row => row?.mode === 'fallback') || snapshot.result.ruling.guard?.status === 'rejected';
+        const agentsAccepted = rows.every(row => row?.mode === 'llm' && row.status === 'ok' && (mode !== 'live' || row.is_simulated !== true));
+        const outcome = fallback ? ' · fallback used; inspect agent results' : !agentsAccepted ? ' · agent status unavailable' : ' · all three agent selections accepted';
+        $('#runStatus').className = `run-status${fallback || !agentsAccepted ? ' warn' : ''}`;
+        $('#runStatus').textContent = `${modeLabel} completed${outcome} · ${runEvents.length} execution events · ${caseId}`;
+        break;
+      }
+      if (snapshot.status !== 'running') throw new Error('Unknown run status. Please retry.');
+      await new Promise(resolve => { releasePoll = resolve; pollTimer = setTimeout(resolve, 150); });
+      releasePoll = null;
+    }
   } catch(e) {
-    $('#pipeline').innerHTML = `<div class="empty">Error: ${esc(e.message)}</div>`;
+    if (token !== requestGeneration) return;
+    $('#runStatus').className = 'run-status warn';
+    $('#runStatus').textContent = `${modeLabel} failed. Run again to retry.`;
+    $('#pipeline').innerHTML += `<div class="empty" role="alert">Error: ${esc(e.message)}</div>`;
+    $('#ruling').innerHTML = '<div class="empty">Case could not be resolved. Please try again.</div>';
+    $('#agentResults').innerHTML = '<div class="hint">Agent results unavailable for this run.</div>';
   } finally {
-    btn.disabled = false; btn.textContent = '⚡ Resolve Dispute';
+    if (token === requestGeneration) {
+      runInProgress = false;
+      renderModeControls();
+      await refreshHealth(token);
+    }
   }
 });
 
+function renderRunEvents() {
+  $('#pipeline').innerHTML = `<div class="hint">Execution events · ${selectedMode === 'live' ? 'live API run · sample case evidence' : 'local backend · simulated responses'}</div>` + runEvents.map(m => {
+    const meta = AGENT_META[m.actor] || {cls: 'agent-judge', icon: '•'};
+    return `<div class="step"><div class="avatar ${meta.cls}" aria-hidden="true">${meta.icon}</div><div class="txt">
+      <div class="role">#${esc(m.seq)} · ${esc(m.kind)} · ${esc(m.status)}</div><div class="agent-name" style="color:${metaColor(m.actor)}">${esc(m.actor)}</div>
+      <div class="msg-body">${esc(m.output_summary || m.input_summary)}</div>
+      <span class="agent-detail">${m.duration_ms == null ? (['started', 'running'].includes(m.status) ? 'In progress' : 'Timing not provided') : `${esc(m.duration_ms)} ms`} · ${esc(m.mode || 'Mode not provided')}</span>
+      ${m.meta?.llm ? agentResultHtml(m.meta.llm) : ''}</div></div>`;
+  }).join('');
+  $('#pipeline').scrollTop = $('#pipeline').scrollHeight;
+}
+
 function animateTrace(trace, done) {
   const wrap = $('#pipeline');
-  wrap.innerHTML = '';
+  wrap.innerHTML = '<div class="hint">Run replay · recorded agent communication after resolution</div>';
   let i = 0;
   const step = () => {
     if (i >= trace.length) { done && done(); return; }
@@ -395,6 +686,7 @@ function animateTrace(trace, done) {
         <div class="role">${esc(m.role)}</div>
         <div class="agent-name" style="color:${metaColor(m.agent)}">${esc(m.agent)}</div>
         <div class="msg-body">${esc(m.content)}</div>
+        ${m.meta?.llm ? `<span class="agent-detail">${agentResultHtml(m.meta.llm)}</span>` : ''}
       </div>`;
     wrap.appendChild(el);
     wrap.scrollTop = wrap.scrollHeight;
@@ -404,61 +696,169 @@ function animateTrace(trace, done) {
 }
 
 function metaColor(agent) {
-  const map = { "Evidence Collection":"#4f8cff","Fraud & Bad-Faith Detection":"#fb923c","Policy & Precedent":"#a78bfa","Rider Advocate":"#34d399","Driver Advocate":"#f87171","Judge":"#f5b942" };
-  return map[agent] || '#fff';
+  const map = { "Evidence Collection":"var(--evidence)","Fraud & Bad-Faith Detection":"var(--fraud)","Policy & Precedent":"var(--policy)","Rider Advocate":"var(--rider)","Driver Advocate":"var(--driver)","Judge":"var(--judge)" };
+  return map[agent] || 'var(--text)';
+}
+
+function agentResultHtml(result) {
+  const knownFallback = result?.mode === 'fallback' && ['ok', 'no_key', 'error', 'rejected'].includes(result.status);
+  const isLlm = result?.mode === 'llm' && result.status === 'ok';
+  const mode = result?.is_simulated ? (knownFallback ? 'Simulated · Deterministic fallback' : isLlm ? 'Simulated' : 'Simulated · Status unavailable') : isLlm ? 'LLM' : knownFallback ? 'Deterministic fallback' : 'Status unavailable';
+  const cls = isLlm ? 'mode-llm' : knownFallback ? 'mode-fallback' : 'mode-unknown';
+  const status = isLlm ? 'structured selection accepted' : knownFallback
+    ? {ok: 'template selected', no_key: 'no API key', error: 'call failed', rejected: 'model draft rejected'}[result.status]
+    : '';
+  const details = [];
+  if (result?.scenario) details.push(`Scenario: ${esc(result.scenario)}`);
+  if (result?.model != null) details.push(`Model: ${esc(result.model)}`);
+  if (result?.prompt_version != null) details.push(`Prompt: ${esc(result.prompt_version)}`);
+  if (Number.isInteger(result?.attempts) && result.attempts >= 0) details.push(`Attempts: ${result.attempts}`);
+  if (typeof result?.latency_ms === 'number' && Number.isFinite(result.latency_ms)) details.push(`${result.latency_ms} ms`);
+  if (result?.error_code != null) details.push(`Reason: ${esc(result.error_code)}`);
+  if (Array.isArray(result?.attempt_errors) && result.attempt_errors.length) details.push(`Attempt errors: ${result.attempt_errors.map(esc).join(', ')}`);
+  const usageKeys = [['prompt_tokens', 'input'], ['completion_tokens', 'output'], ['total_tokens', 'total']];
+  const usage = usageKeys.filter(([key]) => Number.isInteger(result?.usage?.[key]) && result.usage[key] >= 0);
+  details.push(usage.length
+    ? `Tokens${result?.usage_complete === true && usage.length === usageKeys.length ? '' : ' (partial)'}: ${usage.map(([key, label]) => `${result.usage[key]} ${label}`).join(' / ')}`
+    : 'Tokens: unavailable');
+  return `<span class="${cls}">${mode}${status ? ` · ${status}` : ''}</span>${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}`;
+}
+
+function renderAgentResults(results) {
+  $('#agentResults').innerHTML = '<div class="hint">This run · per-agent results</div>' +
+    [['rider', 'Rider Advocate'], ['driver', 'Driver Advocate'], ['judge', 'Judge']].map(([party, name]) =>
+      `<div class="agent-result" data-agent="${party}"><strong>${name}</strong>${agentResultHtml(results?.[party])}</div>`
+    ).join('');
+}
+
+function guardHtml(guard) {
+  const state = guard?.status === 'approved' ? 'Reference checks passed · references and final decision match.'
+    : guard?.status === 'rejected' ? 'Model draft discarded · deterministic ruling applies.'
+    : 'Reference check status not provided.';
+  const reasons = Array.isArray(guard?.reasons) ? guard.reasons.map(esc).join(', ') : '';
+  const details = [];
+  if (Array.isArray(guard?.evidence_ids)) details.push(`Checked references: ${guard.evidence_ids.length}`);
+  if (guard?.policy_version != null) details.push(`Policy version: ${esc(guard.policy_version)}`);
+  return `<div class="reason"><div class="lbl">Evidence reference checks</div>${state}${reasons ? `<br>${reasons}` : ''}${details.length ? `<span class="agent-detail">${details.join(' · ')}</span>` : ''}</div>`;
 }
 
 function renderRuling(res) {
+  currentResult = res;
+  renderClaims(res);
   const r = res.ruling;
-  const conf = Math.round((r.confidence ?? 0) * 100);
-  const color = conf >= 80 ? '#22d3a5' : conf >= 60 ? '#f5b942' : '#ff6b6b';
-  const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human' }[r.action] || r.action;
-  const gauge = `<svg width="150" height="150"><circle cx="75" cy="75" r="64" fill="none" stroke="#26304f" stroke-width="12"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
-  const amountHtml = (r.amount != null) ? `<div class="amount">${r.currency} ${r.amount.toFixed(2)}</div>` : '';
-  const pills = (r.matched_policy_ids||[]).map(p=>`<span class="pill">${esc(p)}</span>`).join('');
+  renderAgentResults(res.agent_results);
+  const confNull = (r.confidence == null);
+  const conf = confNull ? 0 : Math.round(r.confidence * 100);
+  const color = conf >= 80 ? '#24734e' : conf >= 60 ? '#8d5d12' : '#b44338';
+  const actionLabel = { no_action:'No Action', partial_refund:'Partial Refund', full_refund:'Full Refund', compensation:'Compensation', escalate:'Escalate to Human', insufficient_evidence:'Insufficient Evidence' }[r.action] || r.action;
+  const gaugeSvg = `<svg viewBox="0 0 150 150" width="128" height="128" aria-hidden="true"><circle cx="75" cy="75" r="64" fill="none" stroke="#e8edf2" stroke-width="9"/><circle cx="75" cy="75" r="64" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${conf/100*402} 402"/></svg>`;
+  const gaugeHtml = confNull
+    ? `<div class="gauge"><div class="val" style="color:var(--muted);font-size:24px;">n/a</div></div>`
+    : `<div class="gauge">${gaugeSvg}<div class="val" style="color:${color}">${conf}%</div></div>`;
+  const amountHtml = typeof r.amount === 'number' && Number.isFinite(r.amount) ? `<div class="amount">${esc(r.currency)} ${r.amount.toFixed(2)}</div>` : '';
+  const pills = referenceButtons('policy', r.matched_policy_ids);
+  const missing = (r.missing_fields || []);
+  const missingHtml = missing.length ? `<div class="reason"><div class="lbl">Missing evidence</div>${missing.map(esc).join('<br>')}</div>` : '';
   $('#ruling').innerHTML = `
-    <div class="gauge">${gauge}<div class="val" style="color:${color}">${conf}%</div></div>
-    <div class="verdict">${esc(actionLabel)}</div>
-    ${amountHtml}
-    <div class="pills">${pills}</div>
-    ${r.escalated ? '<div class="escalate">⚠ Escalated to human review</div>' : ''}
-    <div class="reason"><div class="lbl">Judge's reasoning</div>${esc(r.reasoning)}</div>
+    <div class="ruling-summary">
+      <div class="ruling-confidence">${gaugeHtml}<div class="hint">Rule confidence score<br>Not a calibrated probability</div></div>
+      <div class="ruling-decision"><div class="verdict">${esc(actionLabel)}</div>${amountHtml}<div class="pills">${pills}</div></div>
+    </div>
+    ${r.escalated ? '<div class="escalate">Escalated to human review</div>' : ''}
+    ${missingHtml}
+    <div class="reason"><div class="lbl">${r.reasoning_source === 'verified_template' ? 'Verified template · checked evidence selection' : 'Ruling explanation · source not provided'}</div>${esc(r.reasoning)}</div>
+    ${guardHtml(r.guard)}
     ${(r.adjustment_notes||[]).length ? `<div class="reason"><div class="lbl">Risk adjustments</div>${r.adjustment_notes.map(esc).join('<br>')}</div>` : ''}
-    <div class="hint">Resolved in ${res.duration_ms} ms · ${res.trace.length} observable agent steps</div>`;
+    <div class="hint">Resolved in ${esc(res.duration_ms)} ms · ${res.trace?.length ?? 0} observable agent steps</div>`;
 }
 
-// Architecture modal
-$('#archBtn').addEventListener('click', async () => {
-  $('#archModal').classList.add('open');
-  const r = await fetch('/api/health').then(x=>x.json()).catch(()=>null);
-  $('#archSvg').innerHTML = architectureSvg(r);
+function referenceButtons(kind, ids) {
+  return (Array.isArray(ids) ? ids : []).map(id => `<button type="button" class="pill" data-ref-kind="${kind}" data-ref-id="${esc(id)}">${kind === 'policy' ? 'Policy' : 'Evidence'} · ${esc(id)}</button>`).join('');
+}
+
+function renderClaims(res) {
+  const groups = [['Rider Advocate', res.rider_case?.structured], ['Driver Advocate', res.driver_case?.structured], ['Judge', res.ruling?.agent_output]];
+  $('#claims').innerHTML = groups.map(([name, result]) => `<section class="claim-group"><h3>${name}</h3>${Array.isArray(result?.claims) && result.claims.length ? result.claims.map(c => `<div class="claim">${esc(c.text)}<div class="claim-refs">${referenceButtons('evidence', c.evidence_ids)}${referenceButtons('policy', c.policy_ids)}</div></div>`).join('') : '<p class="hint">No structured claims provided for this agent.</p>'}</section>`).join('');
+}
+
+function showReference(kind, id) {
+  const catalog = kind === 'policy' ? currentResult?.policy_catalog : currentResult?.evidence_catalog;
+  const item = Array.isArray(catalog) ? catalog.find(row => row.id === id) : null;
+  $('#referenceTitle').textContent = `${kind === 'policy' ? 'Policy' : 'Evidence'} · ${id}`;
+  const value = v => typeof v === 'object' && v !== null ? JSON.stringify(v, null, 2) : v;
+  $('#referenceContent').innerHTML = item ? `<p class="hint">${item.is_simulated === false ? 'Source record' : 'Sample / simulation source'} · inspect the returned record below</p><dl>${['title', 'text', 'value', 'source', 'source_path', 'version'].map(key => `<div class="catalog-row"><dt>${esc(key.replace('_', ' '))}</dt><dd>${item[key] == null ? 'Not provided' : esc(value(item[key]))}</dd></div>`).join('')}</dl>` : '<p class="empty">Reference not found in this run’s catalog. No source content is available.</p>';
+  openModal('referenceModal', 'referenceClose');
+}
+
+function openModal(id, focusId) {
+  if (!openModalId) modalReturnFocus = document.activeElement;
+  if (openModalId) $(`#${openModalId}`).classList.remove('open');
+  openModalId = id;
+  $(`#${id}`).classList.add('open');
+  $(`#${focusId}`).focus();
+}
+
+function closeModal() {
+  if (!openModalId) return;
+  $(`#${openModalId}`).classList.remove('open');
+  openModalId = null;
+  modalReturnFocus?.focus();
+  modalReturnFocus = null;
+}
+
+for (const target of ['#claims', '#ruling']) $(target).addEventListener('click', event => {
+  const button = event.target.closest('[data-ref-id]');
+  if (button) showReference(button.dataset.refKind, button.dataset.refId);
 });
-$('#archClose').addEventListener('click', () => $('#archModal').classList.remove('open'));
-$('#archModal').addEventListener('click', e => { if (e.target.id === 'archModal') $('#archModal').classList.remove('open'); });
+$('#referenceClose').addEventListener('click', closeModal);
+$('#archClose').addEventListener('click', closeModal);
+for (const id of ['referenceModal', 'archModal']) $(`#${id}`).addEventListener('click', e => { if (e.target.id === id) closeModal(); });
+document.addEventListener('keydown', event => {
+  if (!openModalId) return;
+  if (event.key === 'Escape') { event.preventDefault(); closeModal(); }
+  if (event.key === 'Tab') {
+    const focusable = $$('button, [href], input, select, [tabindex="0"]', $(`#${openModalId}`)).filter(el => !el.disabled);
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  }
+});
+$('#archBtn').addEventListener('click', async () => { openModal('archModal', 'archClose'); await refreshHealth(); });
+$('#downloadBtn').addEventListener('click', () => {
+  if (!currentResult || $('#downloadBtn').disabled) return;
+  const mode = currentResult.execution?.mode || selectedMode;
+  const payload = {artifact: `Ryde ${mode === 'live' ? 'live API' : 'simulation'} audit`, execution: currentResult.execution || {mode}, payment_executed: false, result: currentResult, events: runEvents};
+  const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'}));
+  const link = document.createElement('a'); link.href = url;
+  link.download = `ryde-${mode}-${String(currentResult.case_id || selected).replace(/[^a-zA-Z0-9_-]/g, '_')}.json`;
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
 
 function architectureSvg(health) {
-  const llm = health && health.llm_available ? `LLM (${health.llm_model})` : 'Deterministic fallback';
-  const t = 'fill="#e8ecf8" font-family="sans-serif" font-size="14" font-weight="700" text-anchor="middle"';
-  const s = 'fill="#8a94b8" font-family="sans-serif" font-size="11" text-anchor="middle"';
-  const box = (x,y,w,h,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="11" fill="#151d33" stroke="${extra||'#26304f'}" stroke-width="${extra?2.2:1.5}"/>`;
-  const ln = (d,color='#4f8cff',dash='') => `<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" ${dash?`stroke-dasharray="${dash}"`:''} marker-end="url(#arw)"/>`;
-  return `<svg viewBox="0 0 900 560" width="100%" xmlns="http://www.w3.org/2000/svg" style="background:#0d1428;border-radius:12px;display:block;">
-  <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4f8cff"/></marker></defs>
+  const llm = {ok: 'LLM online', configured: 'LLM configured · not yet called',
+    fallback: 'Fallback · last call failed', no_key: 'Deterministic · no API key'}[health?.state] || 'Status unavailable';
+  const model = health?.model == null ? '' : `<tspan x="450" dy="12">${esc(health.model)}</tspan>`;
+  const t = 'fill="#202733" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle"';
+  const s = 'fill="#626d7d" font-family="sans-serif" font-size="11" text-anchor="middle"';
+  const box = (x,y,w,h,extra='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="11" fill="#ffffff" stroke="${extra||'#dce2ea'}" stroke-width="${extra?2.2:1.5}"/>`;
+  const ln = (d,color='#718399',dash='') => `<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" ${dash?`stroke-dasharray="${dash}"`:''} marker-end="url(#arw)"/>`;
+  return `<svg viewBox="0 0 900 560" width="100%" xmlns="http://www.w3.org/2000/svg" style="background:#f7f9fc;border-radius:12px;display:block;">
+  <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#718399"/></marker></defs>
 
   ${box(30,60,210,64)}<text ${t} x="135" y="88">Dispute Filed</text><text ${s} x="135" y="108">text + structured evidence</text>
-  ${box(30,170,210,70,'#f5b942')}<text ${t} x="135" y="198">Evidence Collection</text><text ${s} x="135" y="218">GPS · chat · fare · history</text>
+  ${box(30,170,210,70,'#aab8c9')}<text ${t} x="135" y="198">Evidence Collection</text><text ${s} x="135" y="218">GPS · chat · fare · history</text>
   ${box(30,290,210,92)}<text ${t} x="135" y="316">Data Sources</text><text ${s} x="135" y="338">GPS/Telemetry · Chat Logs</text><text ${s} x="135" y="354">Fare/Payment · Profiles</text><text ${s} x="135" y="370">(mocked APIs)</text>
-  ${box(30,410,210,60,'#f5b942')}<text ${t} x="135" y="435">Fraud &amp; Bad-Faith</text><text ${s} x="135" y="454">risk scoring</text>
-  ${box(30,490,210,56,'#f5b942')}<text ${t} x="135" y="513">Policy &amp; Precedent</text><text ${s} x="135" y="530">RAG over policy/precedent KB</text>
+  ${box(30,410,210,60,'#aab8c9')}<text ${t} x="135" y="435">Fraud &amp; Bad-Faith</text><text ${s} x="135" y="454">risk scoring</text>
+  ${box(30,490,210,56,'#aab8c9')}<text ${t} x="135" y="513">Policy &amp; Precedent</text><text ${s} x="135" y="530">Local policy / precedent rules</text>
 
-  ${box(340,150,220,70,'#22d3a5')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
-  ${box(340,300,220,70,'#22d3a5')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
+  ${box(340,150,220,70,'#5b8fc8')}<text ${t} x="450" y="178">Rider Advocate Agent</text><text ${s} x="450" y="197">argues rider-favourable case</text>
+  ${box(340,300,220,70,'#5b8fc8')}<text ${t} x="450" y="328">Driver Advocate Agent</text><text ${s} x="450" y="347">argues driver-favourable case</text>
 
-  ${box(680,190,200,140,'#22d3a5')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
+  ${box(680,190,200,140,'#5b8fc8')}<text ${t} x="780" y="220">Judge Agent</text><text ${s} x="780" y="240">weighs cases · applies policy</text><text ${s} x="780" y="256">confidence score</text><text ${s} x="780" y="272">natural-language ruling</text><text ${s} x="780" y="288">escalation protocol</text>
 
   ${box(680,410,200,80)}<text ${t} x="780" y="438">Ruling Output</text><text ${s} x="780" y="458">refund / compensation /</text><text ${s} x="780" y="474">no action + reasoning</text>
 
-  ${box(340,430,220,70)}<text ${t} x="450" y="455">Reasoning Layer</text><text ${s} x="450" y="474">${llm}</text><text ${s} x="450" y="490">deterministic policy engine</text>
+  ${box(340,430,220,82)}<text ${t} x="450" y="455">Reasoning Layer</text><text ${s} x="450" y="474">${llm}${model}</text><text ${s} x="450" y="503">deterministic policy engine</text>
 
   ${ln('M240,92 L340,92 L340,185')}
   ${ln('M240,205 L340,205 L340,185')}
@@ -466,12 +866,12 @@ function architectureSvg(health) {
   ${ln('M560,185 L680,230')}
   ${ln('M560,335 L680,300')}
   ${ln('M780,330 L780,410')}
-  ${ln('M240,440 L340,440 L340,335','#fb923c')}
-  ${ln('M240,518 L560,518 L560,335','#a78bfa')}
-  ${ln('M135,490 L135,382','#a78bfa','4 3')}
+  ${ln('M240,440 L340,440 L340,335','#718399')}
+  ${ln('M240,518 L560,518 L560,335','#718399')}
+  ${ln('M135,490 L135,382','#718399','4 3')}
 
-  <text ${s} x="780" y="360" fill="#22d3a5">Core agents (required)</text>
-  <text ${s} x="780" y="378" fill="#f5b942">Stretch agents (bonus)</text>
+  <text ${s} x="780" y="360">Core agents (required)</text>
+  <text ${s} x="780" y="378">Stretch agents (bonus)</text>
 </svg>`;
 }
 

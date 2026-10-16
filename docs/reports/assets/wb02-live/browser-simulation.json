@@ -1,0 +1,65 @@
+{
+  "mode": "simulation",
+  "evidence_mode": "sample",
+  "payment_executed": false,
+  "case_id": "RYDE-2026-0003",
+  "run_id": "8f5bb89fa2ab4cfda0dc4ddf245aa7f9",
+  "agents": {
+    "rider": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "local-simulation",
+      "prompt_version": "rider@1.0.0",
+      "latency_ms": 0,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": null,
+      "usage_complete": false,
+      "is_simulated": true,
+      "scenario": "success"
+    },
+    "driver": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "local-simulation",
+      "prompt_version": "driver@1.0.0",
+      "latency_ms": 0,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": null,
+      "usage_complete": false,
+      "is_simulated": true,
+      "scenario": "success"
+    },
+    "judge": {
+      "mode": "llm",
+      "status": "ok",
+      "model": "local-simulation",
+      "prompt_version": "judge@1.0.0",
+      "latency_ms": 0,
+      "error_code": null,
+      "attempts": 1,
+      "attempt_errors": [],
+      "usage": null,
+      "usage_complete": false,
+      "is_simulated": true,
+      "scenario": "success"
+    }
+  },
+  "usage": null,
+  "usage_complete": false,
+  "http_attempts": 0,
+  "actual": {
+    "action": "no_action",
+    "amount": 0.0
+  },
+  "checks": {
+    "all_agents_live": false,
+    "ruling_matches_expected": true,
+    "guard_approved": true
+  },
+  "duration_ms": 4,
+  "passed": true
+}

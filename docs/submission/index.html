@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Ryde Dispute AI · Submission kit</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1d1d1f;background:#f5f5f7;line-height:1.55;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0}a{color:#0066cc;text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible{outline:3px solid #0066cc;outline-offset:5px;border-radius:4px}.skip{position:absolute;left:24px;top:-80px;background:#fff;padding:12px;z-index:2}.skip:focus{top:12px}
+    header,main,footer{max-width:1200px;margin:auto;padding:0 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-top:28px;padding-bottom:28px}.brand{font-size:17px;font-weight:650;color:#1d1d1f;text-decoration:none}.status{color:#626268;font-size:13px}main{padding-bottom:56px}.hero{margin:0 -16px 48px}.hero img{display:block;width:100%;height:auto}.intro{max-width:820px;margin:0 0 28px}h1{font-size:36px;line-height:1.2;letter-spacing:-1px;margin:0 0 16px}h2{font-size:26px;line-height:1.25;letter-spacing:-.5px;margin:0 0 12px}h3{font-size:18px;margin:0 0 10px}p{margin:0 0 16px;color:#5b5b61}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{display:inline-block;padding:11px 18px;border-radius:980px;background:#0066cc;color:#fff;text-decoration:none;font-size:15px;font-weight:600}.button.secondary{background:#e7eef7;color:#0066cc}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:30px 0 48px}.card{background:#fff;border:1px solid #dedee3;border-radius:20px;padding:26px}.card p{font-size:15px}.card a{font-size:15px;font-weight:600}.eyebrow{display:block;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;color:#626268;margin-bottom:12px}.diagram{margin:24px 0 40px;border:1px solid #dedee3;border-radius:20px;overflow:hidden;background:#fff}.diagram img{display:block;width:100%;height:auto}.diagram figcaption{padding:16px 24px;font-size:14px;color:#5b5b61;background:#fff}.check{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding-top:12px}.check ul{padding-left:20px;color:#5b5b61}.check li{margin-bottom:10px}footer{border-top:1px solid #dedee3;padding-top:24px;padding-bottom:32px;color:#626268;font-size:13px}footer p{margin-bottom:8px}@media(max-width:760px){header,main,footer{padding-left:22px;padding-right:22px}header{align-items:flex-start;flex-direction:column;gap:6px}.hero{margin:0 -10px 28px}.grid,.check{grid-template-columns:1fr;gap:16px}.grid{margin-bottom:36px}h1{font-size:30px}.card{padding:23px}.diagram{margin-left:-10px;margin-right:-10px}.diagram figcaption{padding:14px 18px}}@media print{header,.actions,.skip{display:none}body{background:#fff}.card,.diagram{break-inside:avoid}main,footer{max-width:none}.grid{gap:12px}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#materials">Skip to materials</a>
+  <header>
+    <a class="brand" href="README.md">Ryde Dispute AI</a>
+    <span class="status">Local submission kit · Prepared 16 October 2026</span>
+  </header>
+  <main>
+    <figure class="hero"><img src="cover.svg" width="1920" height="1080" alt="Ryde Dispute AI. Two sides. One inspectable decision. Rider Advocate, Driver Advocate and Guarded Judge. Sample evidence, two dispute categories, simulation and explicit Live API, no payments."></figure>
+    <section id="materials" aria-labelledby="materials-title">
+      <div class="intro">
+        <h1 id="materials-title">A clear path through the project.</h1>
+        <p>Review the submission copy, rehearse the two dispute categories, and inspect how the agents use evidence. The prototype runs locally in Simulation mode by default. DeepSeek has been connected and tested in bounded live checks.</p>
+        <div class="actions"><a class="button" href="http://127.0.0.1:8765">Open local workbench</a><a class="button secondary" href="FORM-COPY.md">Open form copy</a></div>
+        <p style="font-size:13px;margin-top:12px">Start the local service first. The local address is not a public demo URL.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><span class="eyebrow">01 / Submission</span><h3>Copy with clear boundaries.</h3><p>English project name, seven-word introduction, description and fields still needing verified details.</p><a href="FORM-COPY.md">Read the form copy</a></article>
+        <article class="card"><span class="eyebrow">02 / Demo</span><h3>Six minutes. Two case types.</h3><p>Show route deviation, no-show charges, inspectable citations and visible failure handling.</p><a href="DEMO.md">Read the demo script</a></article>
+        <article class="card"><span class="eyebrow">03 / WorkBuddy</span><h3>Small tasks. Real contribution.</h3><p>Run three auxiliary review tasks, keep their actual outputs, and document what was used.</p><a href="WORKBUDDY-PROMPTS.md">Open the task prompts</a></article>
+      </div>
+    </section>
+    <section aria-labelledby="architecture-title">
+      <h2 id="architecture-title">Models explain. Code controls the outcome.</h2>
+      <p>The fixed sequence, validation rules and bounded audit store reflect the implemented prototype.</p>
+      <figure class="diagram"><a href="architecture.png" aria-label="Open full-size architecture diagram"><img src="architecture.svg" width="1920" height="1080" alt="Sample case tools feed evidence and deterministic policy context. Rider, Driver and Judge use a guarded per-role pipeline. Code controls the recommendation. Actual tool and agent events feed a bounded in-memory store and the workbench."></a><figcaption><a href="architecture.png" download>Architecture PNG</a> · <a href="cover.png" download>Cover PNG</a> · <a href="architecture.svg" download>Architecture SVG</a> · <a href="cover.svg" download>Cover SVG</a> · Confirm upload limits in the official form.</figcaption></figure>
+    </section>
+    <div class="check">
+      <section aria-labelledby="evidence-title"><h2 id="evidence-title">Review the evidence.</h2><ul><li><a href="../reports/WB03-WB04.md">Simulation report</a>: repeatable cases, citations, fallbacks and offline evaluation.</li><li><a href="../reports/WB02-LIVE.md">Live API report</a>: actual DeepSeek requests, rejected outputs, usage and limitations.</li><li><a href="../../backend/prompts/">Versioned role prompts</a>: supplied evidence and explicit role boundaries.</li><li><a href="../../README.md">Run the prototype</a>: setup and operating instructions.</li></ul></section>
+      <section aria-labelledby="pending-title"><h2 id="pending-title">Complete before submitting.</h2><ul><li>Run the WorkBuddy tasks and retain at least three genuine conversation screenshots. Evidence remains pending.</li><li>Use the verified source-code URL recorded in <a href="FORM-COPY.md">form copy</a>.</li><li>Fill personal and team details in the official form; confirm its upload limits and save the submission receipt.</li><li>Video and public deployment remain optional and are not supplied in this kit.</li></ul></section>
+    </div>
+  </main>
+  <footer><p>Demonstration data and policies · No payments executed · No claim of production accuracy or measured business savings</p><p>Official requirements: <a href="../REQUIREMENTS.md">submission checklist</a>. Current progress: <a href="../STATUS.md">project status</a>. This kit is not a submission receipt.</p></footer>
+</body>
+</html>
