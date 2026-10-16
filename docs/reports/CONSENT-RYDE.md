@@ -70,4 +70,12 @@ OPENAI_API_KEY= LLM_API_KEY= LLM_LIVE_ENABLED=false .venv/bin/python -m backend.
 
 实际服务已重启加载本轮代码，启动输出Application startup complete，仍为127.0.0.1:8766、禁用收费调用。
 
-本轮发布回执将在实际合并后追加；交付ZIP从最终远端main生成，外部使用说明保存完整commit、tree和SHA256。
+[PR #7](https://github.com/luoziming49-ops/ryde-hackathon/pull/7)已正常合并。远端产品提交5c9b3fba423ff7417b72c1f1ec469692f75fd06f，本机开发提交fd96643的完整树与其一致；GitHub返回：
+
+```json
+{"sha":"462045e4711bfa6246075adb79d28d4c57cdbdbf","merged":true,"message":"Pull Request successfully merged"}
+```
+
+fetch后git diff --exit-code HEAD origin/main退出0；随后本机main快进接到该合并提交。完整树为4b4622a86bab47eac63400f243aec8fa3bbd7a9a。没有强推、删分支或更改保护。本地开发分支保留。
+
+随后仅同步修订21与本次实际发布凭据，不改变已验证代码。交付ZIP从最终远端main生成，外部使用说明保存最终完整commit、tree和SHA256；记录complete不表示赛事已提交。
